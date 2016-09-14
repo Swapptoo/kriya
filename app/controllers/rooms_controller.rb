@@ -1,17 +1,18 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:edit, :update, :destroy]
   before_action :authenticate_user!
+  before_action :collect_rooms, only: %w(index show new)
+  after_action :verify_policy_scoped, only: :index
 
   # GET /rooms
   # GET /rooms.json
   def index
-    @rooms = Room.all
   end
 
   # GET /rooms/1
   # GET /rooms/1.json
   def show
-    @room = current_user.joined_rooms.find params[:id]
+    @room = @rooms.find params[:id]
     @messages = @room.messages.includes(:user, :attachment).order(:created_at).page(params[:page])
   end
 
@@ -86,4 +87,8 @@ class RoomsController < ApplicationController
         messages_attributes: [:id, :body]
       )
     end
+
+  def collect_rooms
+    @rooms = policy_scope(Room).includes(:user)
+  end
 end

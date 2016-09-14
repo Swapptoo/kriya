@@ -2,6 +2,7 @@ class User < ApplicationRecord
   include Followable
 
   devise :database_authenticatable, :registerable, :omniauthable, :recoverable, :rememberable, :trackable, :validatable
+  enum role: { client: 0, project_manager: 1 }
 
   has_many :goomps, dependent: :destroy
   has_many :memberships, dependent: :destroy

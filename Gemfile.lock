@@ -284,6 +284,8 @@ GEM
       spoon (~> 0.0)
     puma (3.6.0)
     puma (3.6.0-java)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     rack (2.0.1)
     rack-contrib (1.2.0)
       rack (>= 0.9.1)
@@ -466,6 +468,7 @@ DEPENDENCIES
   omniauth-twitter
   pg (~> 0.18)
   puma (~> 3.0)
+  pundit
   rack-livereload
   rack-mini-profiler
   rails (~> 5.0.0, >= 5.0.0.1)
@@ -490,7 +493,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 2.3.1p112
+   ruby 2.3.0p0
 
 BUNDLED WITH
-   1.13.0.rc.2
+   1.13.1
