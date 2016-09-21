@@ -1,7 +1,13 @@
-#$(document).on 'turbolinks:load', ()->
 setTimeout =>
+  channelArray = []
+  $( "#tasks > a" ).each((index) ->
+    val = this.href.split('/').pop()
+    console.log val
+    if index > 0 
+      channelArray.push parseInt(val)
+  )
   numberOfChannels = $("#tasks>a").length-1
-  for num in [1..numberOfChannels]
+  for num in channelArray 
     App.cable.subscriptions.create channel: "RoomChannel", room:"#{num}",
       collection: -> $("#messages")
 
