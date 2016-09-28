@@ -92,7 +92,7 @@ class RoomsController < ApplicationController
       @room.messages.new({:body => 'What is your budge estimate for this task?', :room => @room, :user => @room.manager})
       @room.messages.new({:body => @room.budget, :room => @room, :user => @room.user})
       @room.messages.new({:body => 'Please give detailed description of what needs to be done by creating a post, meanwhile I\'ll get this started with our workforce', :room => @room, :user => @room.manager})
-      @room.messages.last.create_attachment(:message => @room.messages.last, :html => "<br/>#{view_context.link_to 'Add Description', new_post_path, :data => {:modal => true}, :class => 'tiny ui primary button custom-padding'}")
+      @room.messages.last.create_attachment(:message => @room.messages.last, :html => "<br/>#{view_context.link_to 'Add Description', new_post_path, :data => {:modal => true}, :class => 'mini ui green button custom-padding'}")
 
       if @room.save!
         redirect_to @room and return
