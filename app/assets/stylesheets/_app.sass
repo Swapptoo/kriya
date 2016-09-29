@@ -34,6 +34,10 @@
   margin-left: auto
   max-height: calc( 100vh - 150px)
 
+  &.no-header
+    top: 0
+    width: inherit
+
   .main
     float: left
     width: $main-content-width
@@ -49,7 +53,7 @@
       #messages
         height: calc( 100vh - 204px)
         overflow-y: scroll
-        
+
   &.small
     margin: 30px auto 0 auto
 

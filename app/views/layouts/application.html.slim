@@ -2,21 +2,23 @@ doctype html
 html
   head = render "layouts/head"
   body
-    .ui.borderless.fixed.menu
-      a.header.item href="/"
-        = image_tag "logo.png", alt: "Kriya", class: "logo ui"
-      - if user_signed_in?
-        .right.menu
-          div class="ui pointing dropdown link item"
-            = image_tag current_user.picture, size: "45x45", class: "ui"
-            i class="dropdown icon"
-            .menu
-              = link_to "Create Task", new_room_path, class: "item new"
-              = link_to "Sign Out", destroy_user_session_path, method: :delete, class: "ui item"
 
-    = render "layouts/goomp_header"
+    - unless no_header?
+      .ui.borderless.fixed.menu
+        a.header.item href="/"
+          = image_tag "logo.png", alt: "Kriya", class: "logo ui"
+        - if user_signed_in?
+          .right.menu
+            div class="ui pointing dropdown link item"
+              = image_tag current_user.picture, size: "45x45", class: "ui"
+              i class="dropdown icon"
+              .menu
+                = link_to "Create Task", new_room_path, class: "item new"
+                = link_to "Sign Out", destroy_user_session_path, method: :delete, class: "ui item"
 
-    .site-container
+      = render "layouts/goomp_header"
+
+    .site-container class="#{toggle_class_name('no-header', no_header?)}"
       #modal-holder
       = yield
 

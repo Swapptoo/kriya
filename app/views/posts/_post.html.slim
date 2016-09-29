@@ -5,8 +5,6 @@
     .content
       .summary
         = link_to post.user.full_name, post.user, class: "user"
-        span.helper posted to
-        = link_to post.goomp.name, post.goomp, class: "goomp-primary"
       span.date
         = time_ago_in_words post.created_at
         '  ago

@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/mshibuya/remotipart.git
-  revision: 88d9a7d55bde66acb6cf3a3c6036a5a1fc991d5e
+  revision: 7e244e78e148430b7720e6cf8f86263d6a1dfddf
   specs:
-    remotipart (1.2.1)
+    remotipart (1.3.0)
 
 GEM
   remote: https://rubygems.org/
@@ -45,13 +45,9 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
-    airbrake (5.4.5)
-      airbrake-ruby (~> 1.4)
-    airbrake-ruby (1.4.6)
     ansi (1.5.0)
-    arel (7.1.1)
+    arel (7.1.2)
     bcrypt (3.1.11)
-    bcrypt (3.1.11-java)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -61,7 +57,7 @@ GEM
     builder (3.2.2)
     byebug (9.0.5)
     callsite (0.0.11)
-    capybara (2.8.1)
+    capybara (2.9.1)
       addressable
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -84,7 +80,6 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.2)
-    concurrent-ruby (1.0.2-java)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.2)
@@ -103,11 +98,10 @@ GEM
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
     erubis (2.7.0)
-    ethon (0.9.0)
+    ethon (0.9.1)
       ffi (>= 1.3.0)
     eventmachine (1.2.0.1)
-    eventmachine (1.2.0.1-java)
-    excon (0.52.0)
+    excon (0.53.0)
     execjs (2.7.0)
     factory_girl (4.7.0)
       activesupport (>= 3.0.0)
@@ -119,13 +113,12 @@ GEM
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.14)
-    ffi (1.9.14-java)
-    fog-aws (0.11.0)
+    fog-aws (0.12.0)
       fog-core (~> 1.38)
       fog-json (~> 1.0)
       fog-xml (~> 0.1)
       ipaddress (~> 0.8)
-    fog-core (1.42.0)
+    fog-core (1.43.0)
       builder
       excon (~> 0.49)
       formatador (~> 0.2)
@@ -165,11 +158,10 @@ GEM
     haml (4.0.7)
       tilt
     hashdiff (0.3.0)
-    hashie (3.4.4)
+    hashie (3.4.6)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     http_parser.rb (0.6.0)
-    http_parser.rb (0.6.0-java)
     i18n (0.7.0)
     ipaddress (0.8.3)
     jbuilder (2.6.0)
@@ -186,16 +178,12 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (1.8.3)
-    json (1.8.3-java)
-    jwt (1.5.4)
+    jwt (1.5.6)
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    launchy (2.4.3-java)
-      addressable (~> 2.3)
-      spoon (~> 0.0.1)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -215,7 +203,7 @@ GEM
     mimemagic (0.3.2)
     mini_magick (4.5.1)
     mini_portile2 (2.1.0)
-    minitest (5.9.0)
+    minitest (5.9.1)
     minitest-reporters (1.1.11)
       ansi
       builder
@@ -237,13 +225,11 @@ GEM
     nenv (0.3.0)
     nested_form (0.3.2)
     netrc (0.11.0)
-    newrelic_rpm (3.16.2.321)
+    newrelic_rpm (3.16.3.323)
     nio4r (1.2.1)
-    nio4r (1.2.1-java)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
-    nokogiri (1.6.8-java)
     nokogumbo (1.4.9)
       nokogiri
     notiffany (0.1.1)
@@ -274,19 +260,13 @@ GEM
       json (~> 1.3)
       omniauth-oauth (~> 1.1)
     orm_adapter (0.5.0)
-    pg (0.18.4)
+    pg (0.19.0)
     pkg-config (1.1.7)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry (0.10.4-java)
-      coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
-      spoon (~> 0.0)
     puma (3.6.0)
-    puma (3.6.0-java)
     rack (2.0.1)
     rack-contrib (1.2.0)
       rack (>= 0.9.1)
@@ -316,7 +296,7 @@ GEM
       nokogiri (~> 1.6.0)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    rails_admin (1.0.0.rc)
+    rails_admin (1.0.0)
       builder (~> 3.1)
       coffee-rails (~> 4.0)
       font-awesome-rails (>= 3.0, < 5)
@@ -327,7 +307,7 @@ GEM
       nested_form (~> 0.3)
       rack-pjax (>= 0.7)
       rails (>= 4.0, < 6)
-      remotipart (~> 1.0)
+      remotipart (~> 1.3)
       sass-rails (>= 4.0, < 6)
     rails_autolink (1.1.6)
       rails (> 3.1)
@@ -337,7 +317,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (11.2.2)
+    rake (11.3.0)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
@@ -350,7 +330,7 @@ GEM
       netrc (~> 0.8)
     ruby-progressbar (1.8.1)
     safe_yaml (1.0.4)
-    sanitize (4.2.0)
+    sanitize (4.3.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4.1)
@@ -376,8 +356,6 @@ GEM
       railties (>= 3.1)
       slim (~> 3.0)
     slop (3.6.0)
-    spoon (0.0.4)
-      ffi
     spring (1.7.2)
     spring-watcher-listen (2.0.0)
       listen (>= 2.7, < 4.0)
@@ -389,14 +367,13 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    stripe (1.54.0)
+    stripe (1.55.0)
       rest-client (>= 1.4, < 4.0)
     temple (0.7.7)
     terminal-notifier (1.6.3)
     terminal-notifier-guard (1.7.0)
     thor (0.19.1)
     thread_safe (0.3.5)
-    thread_safe (0.3.5-java)
     tilt (2.0.5)
     turbolinks (5.0.1)
       turbolinks-source (~> 5)
@@ -409,7 +386,6 @@ GEM
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
-    unf (0.1.4-java)
     unf_ext (0.0.7.2)
     vcr (3.0.3)
     warden (1.2.6)
@@ -425,19 +401,15 @@ GEM
       hashdiff
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
-    websocket-driver (0.6.4-java)
-      websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
 PLATFORMS
-  java
   ruby
 
 DEPENDENCIES
   addressable
-  airbrake
   better_errors
   binding_of_caller
   byebug
@@ -501,4 +473,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.1
+   1.13.0.rc.2

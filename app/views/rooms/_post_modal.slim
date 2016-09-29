@@ -13,4 +13,5 @@
       = ff.fields_for :post do |pf|
         = pf.text_field :title, :placeholder => 'Task Title', autofocus: true
         = pf.text_area :content, :class => 'editable'
+
     = f.submit 'Create', class: "ui button basic blue"
