@@ -59,4 +59,14 @@ Rails.application.configure do
 
   config.assets.precompile += %w( channels/room.coffee )
 
+  ActionMailer::Base.smtp_settings = {
+    :user_name => 'username',
+    :password => 'password',
+    :domain => 'kriya.ai',
+    :address => 'smtp.sendgrid.net',
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
+
 end
