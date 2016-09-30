@@ -1,6 +1,6 @@
 .sidebar.sidebar--left
   #tasks.ui.vertical.inverted.fluid.menu
-    = link_to 'Create Task', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
+    = link_to 'Create Project', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
 
     - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
       = link_to room, class: "item primary #{'active' if @room == room}" do
