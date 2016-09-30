@@ -93,7 +93,7 @@
     }
   ];
   var budget = [
-    'What is your budge estimate for this task?',
+    'What is your budge estimate for this project?',
     {
       type: 'write',
       path: "<%= new_user ? 'dummy' : 'description' %>",
@@ -135,7 +135,7 @@
   ];
 
   var sign_up = [
-    'Sounds good, please sign up to help us understand more about your task',
+    'Sounds good, please sign up to help us understand more about your project',
     {
       type: 'visit',
       answers: [{
@@ -154,7 +154,7 @@
     }
   ];
   var login = [
-    'Cool, please login to get to your tasks',
+    'Cool, please login to get to your projects',
     {
       type: 'visit',
       answers: [{
@@ -189,7 +189,7 @@
           type: 'choose',
           answers: [
             {
-              'text': 'Create Task',
+              'text': 'Create Project',
               'path': 'options'
             },
             {
