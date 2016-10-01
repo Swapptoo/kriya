@@ -92,14 +92,16 @@ AppView = {
     $('#new_message').on "click", "#message_body", ->
       roomId = $("#messages").data("room-id")
 
-      $.ajax(
-        url: "/tasks/#{roomId}/mark_messages_seen.json"
-        type: "POST",
-        success: (message) ->
-          console.log message
-        error: (resp) ->
-          console.log resp
-      )
+      if $("#messages").data("has-new-message") == true
+        $("#messages").data("has-new-message", false)
+        $.ajax(
+          url: "/tasks/#{roomId}/mark_messages_seen.json"
+          type: "POST",
+          success: (message) ->
+            console.log message
+          error: (resp) ->
+            console.log resp
+        )
 
 
   chargeUser: ->

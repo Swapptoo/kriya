@@ -3,10 +3,10 @@ setTimeout =>
   $( "#tasks > a" ).each((index) ->
     val = this.href.split('/').pop()
     console.log val
-    if index > 0 
+    if index > 0
       channelArray.push parseInt(val)
   )
-  
+
   for num in channelArray
     App.cable.subscriptions.create channel: "RoomChannel", room:"#{num}",
       collection: -> $("#messages")
@@ -27,6 +27,7 @@ setTimeout =>
           $('#messages').append(data.message)
           $('#messages').imagesLoaded ->
             ChatWindow.update()
+            $("#messages").data("has-new-message", true)
             $(".ui.progress").hide()
         else
           count = $('a[href="/tasks/'+room_id+'"]').val()
