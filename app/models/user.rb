@@ -60,6 +60,10 @@ class User < ApplicationRecord
     goomp.user == self
   end
 
+  def online?
+    last_seen_at > 15.minutes.ago
+  end
+
   def full_name
     [first_name, last_name].join(' ')
   end

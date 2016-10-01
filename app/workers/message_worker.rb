@@ -11,14 +11,8 @@ class MessageWorker
 
   def notify_user
     room = @message.room
-
-    # Message created by manager, notify client
-    if room.manager == @message.user
-      puts "notify client"
-      UserNotifierMailer.notify_unseen_message(@message, @message.user).deliver_now
-    else
-      puts "notify manager"
-      UserNotifierMailer.notify_unseen_message(@message, @message.manager).deliver_now
-    end
+    user = @message.user
+    user = room.manager if room.manager == @message.user
+    UserNotifierMailer.notify_unseen_message(@message, user).deliver_now if user.online?
   end
 end
