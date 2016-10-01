@@ -34,6 +34,10 @@ class Room < ApplicationRecord
     "#{self.category_name&.downcase}-#{index+1}"
   end
 
+  def title
+    posts.first.try(:title)
+  end
+
   def get_room_name_for_user(user, index = nil)
     if user == self.user && !posts.first.nil?
       posts.first.title.parameterize

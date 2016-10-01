@@ -4,34 +4,47 @@ class UserNotifierMailer < ApplicationMailer
   include SendGrid
   include SendgridCredentialHelper
 
-  def notify_room_user(room)
-    headers "X-SMTPAPI" => {
-      category: ["Task"]
-    }.to_json
+  default 'X-SMTPAPI' => proc { disable_sendgrid_subscription_header }
 
-    mail(:to => room.user.email, :subject => 'Thanks for signing up for our amazing app')
+  def notify_room_user(room)
+    @sendgrid_category = "Room #{room.id}"
+    @user = room.user
+
+    mail(:to => @user.email, :subject => "[Kriya] #{room.title}")
   end
 
   def notify_room_manager(room)
-    headers "X-SMTPAPI" => {
-      category: ["Task"]
-    }.to_json
+    @sendgrid_category = "Room #{room.id}"
+    @user = room.manager
 
-    mail(:to => room.manager.email, :subject => 'Thanks for signing up for our amazing app')
+    mail(:to => @user.email, :subject => "[Kriya] #{room.title}")
   end
 
   def notify_unseen_message(message, user)
-    puts user.email
-
-    headers "X-SMTPAPI" => {
-      category: ['Unseen Message']
-    }.to_json
+    @sendgrid_category = "Room #{message.room_id}"
+    @user = user
 
     mail(
       :to => user.email,
-      :subject => "Here is what you've missed!",
+      :subject => "[Kriya] #{message.room.title}",
       :body => message.body
     )
   end
 
+  private
+
+  def disable_sendgrid_subscription_header
+    smtp_api = {
+      filters: {
+        subscriptiontrack: {
+          settings: {
+            enable: 0
+          }
+        }
+      },
+      category: @sendgrid_category
+    }
+
+    headers['X-SMTPAPI'] = smtp_api.to_json
+  end
 end

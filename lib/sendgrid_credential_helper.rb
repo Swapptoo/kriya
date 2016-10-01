@@ -1,6 +1,6 @@
 module SendgridCredentialHelper
   def self.included(base)
-    base.before_filter  :set_sendgrid_smtp_settings
+    base.before_action :set_sendgrid_smtp_settings
   end
 
   protected
