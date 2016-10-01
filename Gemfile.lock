@@ -45,6 +45,9 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    annotate (2.7.1)
+      activerecord (>= 3.2, < 6.0)
+      rake (>= 10.4, < 12.0)
     ansi (1.5.0)
     arel (7.1.2)
     bcrypt (3.1.11)
@@ -418,6 +421,7 @@ PLATFORMS
 
 DEPENDENCIES
   addressable
+  annotate (~> 2.7.1)
   better_errors
   binding_of_caller
   byebug

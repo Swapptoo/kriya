@@ -48,6 +48,7 @@ gem 'redis'
 gem 'jquery-fileupload-rails'
 gem 'sanitize'
 gem 'sidekiq', '~> 4.2.2'
+gem 'annotate', '~> 2.7.1'
 
 group :development, :test do
   gem 'byebug'

@@ -1,3 +1,34 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :integer          not null, primary key
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  reset_password_token   :string
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  sign_in_count          :integer          default(0), not null
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :inet
+#  last_sign_in_ip        :inet
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  username               :string
+#  bio                    :string
+#  first_name             :string
+#  last_name              :string
+#  picture                :string
+#  headline               :string
+#  work_experience        :string
+#  gender                 :string           default("male")
+#  avatar                 :string
+#  slug                   :string
+#  stipe_customer_id      :string
+#  follows_count          :integer          default(0)
+#
+
 class User < ApplicationRecord
   include Followable
 
