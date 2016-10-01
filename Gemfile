@@ -47,6 +47,7 @@ gem 'rails_admin', '>= 1.0.0.rc'
 gem 'redis'
 gem 'jquery-fileupload-rails'
 gem 'sanitize'
+gem 'redis-namespace', '~> 1.5.2'
 gem 'sidekiq', '~> 4.2.2'
 gem 'annotate', '~> 2.7.1'
 
