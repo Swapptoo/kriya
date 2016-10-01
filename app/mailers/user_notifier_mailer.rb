@@ -6,7 +6,7 @@ class UserNotifierMailer < ApplicationMailer
 
   def notify_room_user(room)
     headers "X-SMTPAPI" => {
-      category: ["Task"],
+      category: ["Task"]
     }.to_json
 
     mail(:to => room.user.email, :subject => 'Thanks for signing up for our amazing app')
@@ -14,15 +14,17 @@ class UserNotifierMailer < ApplicationMailer
 
   def notify_room_manager(room)
     headers "X-SMTPAPI" => {
-      category: ["Task"],
+      category: ["Task"]
     }.to_json
 
     mail(:to => room.manager.email, :subject => 'Thanks for signing up for our amazing app')
   end
 
   def notify_unseen_message(message, user)
+    puts user.email
+
     headers "X-SMTPAPI" => {
-      category: ['Unseen Message'],
+      category: ['Unseen Message']
     }.to_json
 
     mail(
