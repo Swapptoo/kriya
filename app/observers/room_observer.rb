@@ -1,5 +1,5 @@
 class RoomObserver < ActiveRecord::Observer
   def after_create(room)
-    # Send mail
+    RoomWorker.perform_async(room.id)
   end
 end

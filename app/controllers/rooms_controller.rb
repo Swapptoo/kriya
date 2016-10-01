@@ -55,9 +55,6 @@ class RoomsController < ApplicationController
           message.post.save!
         end
 
-        UserNotifierMailer.notify_room_user(@room).deliver
-        UserNotifierMailer.notify_room_manager(@room).deliver
-
         format.html { redirect_to @room, notice: 'Room was successfully created.' }
         format.json { render :show, status: :created, location: @room }
       else
