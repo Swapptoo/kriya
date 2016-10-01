@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get '/tasks/from_sign_up' => 'rooms#create_room_from_sign_up', :as => 'task_from_sign_up'
   resources :rooms, shallow: true, path: 'tasks' do
     resources :messages
+
+    post :mark_messages_seen, on: :member
   end
   resources :photos
   resources :follows

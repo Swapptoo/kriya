@@ -25,6 +25,9 @@ class Message < ApplicationRecord
 
   # after_create :process_command
 
+  scope :un_seen, -> { where(seen: false) }
+  scope :not_by, -> (user) { where.not(user: user) }
+
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1

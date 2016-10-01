@@ -18,7 +18,10 @@ module Dantos
       config.autoload_paths += %W(#{config.root}/app/observers #{config.root}/app/workers)
 
       config.active_record.observers   ||= []
-      config.active_record.observers    += [:'room_observer']
+      config.active_record.observers    += [
+        :'room_observer',
+        :'message_observer'
+      ]
     end
   end
 end

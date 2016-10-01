@@ -1,5 +1,5 @@
 class RoomsController < ApplicationController
-  before_action :set_room, only: [:edit, :update, :destroy]
+  before_action :set_room, only: [:edit, :update, :destroy, :mark_messages_seen]
   before_action :authenticate_user!, :except => :create_dummy
 
   # GET /rooms
@@ -111,6 +111,18 @@ class RoomsController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @room.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def mark_messages_seen
+    messages = @room.messages.not_by(current_user).un_seen
+
+    respond_to do |format|
+      if messages.update_all(seen: true)
+        format.json { render json: '', status: :ok }
+      else
+        format.json { render json: '', status: :unprocessable_entity }
       end
     end
   end
