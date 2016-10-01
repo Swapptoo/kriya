@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.3.1"
+ruby '2.3.1'
 
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 gem 'pg', '~> 0.18'
@@ -15,7 +15,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'slim-rails'
 gem 'kaminari'
 gem 'carrierwave'
-gem "fog-aws"
+gem 'fog-aws'
 gem 'mini_magick'
 gem 'dalli'
 gem 'rack-mini-profiler'
@@ -45,8 +45,9 @@ gem 'simple_form'
 gem 'remotipart', github: 'mshibuya/remotipart'
 gem 'rails_admin', '>= 1.0.0.rc'
 gem 'redis'
-gem "jquery-fileupload-rails"
+gem 'jquery-fileupload-rails'
 gem 'sanitize'
+gem 'sidekiq', '~> 4.2.2'
 
 group :development, :test do
   gem 'byebug'
@@ -64,7 +65,7 @@ group :development do
   gem 'meta_request'
 
   gem 'rack-livereload'
-  gem "guard", ">= 2.2.2"
+  gem 'guard', '>= 2.2.2'
   gem 'guard-livereload'
   gem 'guard-minitest'
   gem 'terminal-notifier'
