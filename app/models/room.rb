@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: rooms
+#
+#  id              :integer          not null, primary key
+#  user_id         :integer
+#  manager_id      :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  category_name   :string
+#  budget_cents    :integer          default(0), not null
+#  budget_currency :string           default("USD"), not null
+#  timeline        :string
+#  quality         :string
+#  description     :text
+#
+
 class Room < ApplicationRecord
   has_many :messages, dependent: :destroy
   belongs_to :user
@@ -15,6 +32,10 @@ class Room < ApplicationRecord
 
   def room_name_for_client(index)
     "#{self.category_name&.downcase}-#{index+1}"
+  end
+
+  def title
+    posts.first.try(:title)
   end
 
   def get_room_name_for_user(user, index = nil)
