@@ -1,5 +1,5 @@
 class RoomsController < ApplicationController
-  before_action :set_room, only: [:edit, :update, :destroy]
+  before_action :set_room, only: [:edit, :update, :destroy, :mark_messages_seen]
   before_action :authenticate_user!, :except => :create_dummy
 
   # GET /rooms
@@ -42,22 +42,19 @@ class RoomsController < ApplicationController
         post_body = params.dig(:room, :messages, :post, :content)
         post_title = params.dig(:room, :messages, :post, :title)
 
-        @room.messages.create({:body => 'Please choose one your project timeline', :room => @room, :user => @room.manager})
-        @room.messages.create({:body => @room.timeline, :room => @room, :user => @room.user})
-        @room.messages.create({:body => 'Please choose the expertise level', :room => @room, :user => @room.manager})
-        @room.messages.create({:body => @room.quality, :room => @room, :user => @room.user})
-        @room.messages.create({:body => 'What is your budge estimate for this task?', :room => @room, :user => @room.manager})
-        @room.messages.create({:body => @room.budget, :room => @room, :user => @room.user})
-        @room.messages.create({:body => 'Please give detailed description of what needs to be done by creating a post, meanwhile I\'ll get this started with our workforce', :room => @room, :user => @room.manager})
+        @room.messages.create({:seen => true, :body => 'Please choose one your project timeline', :room => @room, :user => @room.manager})
+        @room.messages.create({:seen => true, :body => @room.timeline, :room => @room, :user => @room.user})
+        @room.messages.create({:seen => true, :body => 'Please choose the expertise level', :room => @room, :user => @room.manager})
+        @room.messages.create({:seen => true, :body => @room.quality, :room => @room, :user => @room.user})
+        @room.messages.create({:seen => true, :body => 'What is your budge estimate for this task?', :room => @room, :user => @room.manager})
+        @room.messages.create({:seen => true, :body => @room.budget, :room => @room, :user => @room.user})
+        @room.messages.create({:seen => true, :body => 'Please give detailed description of what needs to be done by creating a post, meanwhile I\'ll get this started with our workforce', :room => @room, :user => @room.manager})
 
         if post_body
-          message = @room.messages.create :body => msg_body, :user => @room.user
+          message = @room.messages.create(:body => msg_body, :user => @room.user, :seen => true)
           message.post = Post.new(:content => post_body, :title => post_title, :user => @room.user)
           message.post.save!
         end
-
-        UserNotifierMailer.notify_room_user(@room).deliver
-        UserNotifierMailer.notify_room_manager(@room).deliver
 
         format.html { redirect_to @room, notice: 'Room was successfully created.' }
         format.json { render :show, status: :created, location: @room }
@@ -85,17 +82,17 @@ class RoomsController < ApplicationController
       @room.user = current_user
       @room.manager = User.where(:email => 'manager@goomp.co').first || User.where.not(id: current_user.id).all.sample
 
-      @room.messages.new({:body => 'Welcome to Kriya. We are pleased to have you here. Please select from the following options', :room => @room, :user => @room.manager})
-      @room.messages.new({:body => 'Create Task', :room => @room, :user => @room.user})
-      @room.messages.new({:body => 'Hi! I am Kriya, helping startups and businesses to get their work done with the help of top skilled freelancers across the world. Choose one of the fields below:', :room => @room, :user => @room.manager})
-      @room.messages.new({:body => @room.category_name, :room => @room, :user => @room.user})
-      @room.messages.new({:body => 'Please choose one your project timeline', :room => @room, :user => @room.manager})
-      @room.messages.new({:body => @room.timeline, :room => @room, :user => @room.user})
-      @room.messages.new({:body => 'Please choose the expertise level', :room => @room, :user => @room.manager})
-      @room.messages.new({:body => @room.quality, :room => @room, :user => @room.user})
-      @room.messages.new({:body => 'What is your budge estimate for this task?', :room => @room, :user => @room.manager})
-      @room.messages.new({:body => @room.budget, :room => @room, :user => @room.user})
-      @room.messages.new({:body => 'Please give detailed description of what needs to be done by creating a post, meanwhile I\'ll get this started with our workforce', :room => @room, :user => @room.manager})
+      @room.messages.new({:seen => true, :body => 'Welcome to Kriya. We are pleased to have you here. Please select from the following options', :room => @room, :user => @room.manager})
+      @room.messages.new({:seen => true, :body => 'Create Task', :room => @room, :user => @room.user})
+      @room.messages.new({:seen => true, :body => 'Hi! I am Kriya, helping startups and businesses to get their work done with the help of top skilled freelancers across the world. Choose one of the fields below:', :room => @room, :user => @room.manager})
+      @room.messages.new({:seen => true, :body => @room.category_name, :room => @room, :user => @room.user})
+      @room.messages.new({:seen => true, :body => 'Please choose one your project timeline', :room => @room, :user => @room.manager})
+      @room.messages.new({:seen => true, :body => @room.timeline, :room => @room, :user => @room.user})
+      @room.messages.new({:seen => true, :body => 'Please choose the expertise level', :room => @room, :user => @room.manager})
+      @room.messages.new({:seen => true, :body => @room.quality, :room => @room, :user => @room.user})
+      @room.messages.new({:seen => true, :body => 'What is your budge estimate for this task?', :room => @room, :user => @room.manager})
+      @room.messages.new({:seen => true, :body => @room.budget, :room => @room, :user => @room.user})
+      @room.messages.new({:seen => true, :body => 'Please give detailed description of what needs to be done by creating a post, meanwhile I\'ll get this started with our workforce', :room => @room, :user => @room.manager})
       @room.messages.last.create_attachment(:message => @room.messages.last, :html => "<br/>#{view_context.link_to 'Add Description', new_post_path, :data => {:modal => true}, :class => 'mini ui green button custom-padding'}")
 
       if @room.save!
@@ -115,6 +112,18 @@ class RoomsController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @room.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def mark_messages_seen
+    messages = @room.messages.not_by(current_user).un_seen
+
+    respond_to do |format|
+      if messages.update_all(seen: true)
+        format.json { render json: '', status: :ok }
+      else
+        format.json { render json: '', status: :unprocessable_entity }
       end
     end
   end

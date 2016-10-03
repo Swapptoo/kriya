@@ -113,10 +113,11 @@ ActiveRecord::Schema.define(version: 20161002225538) do
     t.string   "body"
     t.integer  "room_id"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.string   "image"
     t.integer  "post_id"
+    t.boolean  "seen",       default: false
     t.index ["post_id"], name: "index_messages_on_post_id", using: :btree
     t.index ["room_id"], name: "index_messages_on_room_id", using: :btree
     t.index ["user_id"], name: "index_messages_on_user_id", using: :btree
@@ -231,6 +232,7 @@ ActiveRecord::Schema.define(version: 20161002225538) do
     t.text     "professional_profile_link",  default: [],                  array: true
     t.string   "professional_profile_link1"
     t.string   "professional_profile_link2"
+    t.datetime "last_seen_at"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end

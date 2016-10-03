@@ -6,6 +6,11 @@ class ApplicationController < ActionController::Base
     if current_user && current_user.email == "cqpanxu@gmail.com"
       Rack::MiniProfiler.authorize_request
     end
+
+    if user_signed_in? && (session[:last_seen_at] == nil || session[:last_seen_at] < 15.minutes.ago)
+      current_user.update_attribute(:last_seen_at, Time.now)
+      session[:last_seen_at] = Time.now
+    end
   end
 
   def set_meta(options={})

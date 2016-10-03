@@ -2,10 +2,17 @@ Rails.application.routes.draw do
   resources :payments
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
+  require 'sidekiq/web'
+  mount Sidekiq::Web => 'sidekiq'
+
+  mount_griddler('/email/incoming')
+
   post '/tasks/dummy' => 'rooms#create_dummy'
   get '/tasks/from_sign_up' => 'rooms#create_room_from_sign_up', :as => 'task_from_sign_up'
   resources :rooms, shallow: true, path: 'tasks' do
     resources :messages
+
+    post :mark_messages_seen, on: :member
   end
   resources :photos
   resources :follows
