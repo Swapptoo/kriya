@@ -221,7 +221,8 @@ ActiveRecord::Schema.define(version: 20161002225538) do
     t.string   "slug"
     t.string   "stipe_customer_id"
     t.integer  "follows_count",              default: 0
-    t.integer  "role"
+    t.datetime "last_seen_at"
+    t.integer  "role",                       default: 0
     t.string   "category"
     t.datetime "availability"
     t.string   "skills",                     default: [],                  array: true
@@ -229,10 +230,8 @@ ActiveRecord::Schema.define(version: 20161002225538) do
     t.integer  "years_of_experiences"
     t.string   "project_description"
     t.string   "project_url"
-    t.text     "professional_profile_link",  default: [],                  array: true
     t.string   "professional_profile_link1"
     t.string   "professional_profile_link2"
-    t.datetime "last_seen_at"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
