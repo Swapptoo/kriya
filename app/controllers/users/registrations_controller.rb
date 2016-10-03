@@ -5,6 +5,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     super do |user|
+      user.role = session["new_user_role"]
       authdata = session["devise.oauth_data"]
       if authdata
         user.first_name = authdata["first_name"]
@@ -21,13 +22,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     authdata = session["devise.oauth_data"]
-
     super do |user|
+      resource.role = session["new_user_role"]
       if authdata
         resource.email ||= authdata["email"]
         resource.password = authdata["password"] || Devise.friendly_token[0,20]
-        resource.save
+        resource.role = session["new_user_role"]
       end
+      resource.save
       #debugger
       if resource.persisted? && authdata
         resource.authorizations.create!(
@@ -80,7 +82,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    task_from_sign_up_path
+    if resource.role == 'client'
+      task_from_sign_up_path
+    else  
+      root_path
+    end
   end
 
   # The path used after sign up for inactive accounts.

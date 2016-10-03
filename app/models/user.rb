@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   include Followable
-
+  enum role: {client: 0, freelancer: 1, manager: 2}
+  
   devise :database_authenticatable, :registerable, :omniauthable, :recoverable, :rememberable, :trackable, :validatable
 
   has_many :goomps, dependent: :destroy
@@ -22,11 +23,25 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name, :picture, :headline, presence: true
 
+  validates :category, :availability, :primary_skill, :skills, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, presence: true, if: -> {self.role == 'freelancer' || self.role == 1}
+
   extend FriendlyId
   friendly_id :full_name, use: :slugged
 
   def is_manager_of? goomp
     goomp.user == self
+  end
+
+  def manager?
+    self.role == 'manager'
+  end
+
+  def freelancer?
+    self.role == 'freelancer'
+  end
+  
+  def client?
+    self.role == 'client' || self.role.blank? 
   end
 
   def full_name

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :photos
   resources :follows
   root to: "pages#index"
+  get '/network' => 'pages#network', :as => 'network'
 
   concern :likable do
     post :like, on: :member
