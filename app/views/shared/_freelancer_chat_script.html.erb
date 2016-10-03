@@ -1,0 +1,89 @@
+<%- new_user ||= false %>
+<script>
+
+  var sign_up = [
+    'Join Kriya Network to work on some cool projects.',
+    {
+      type: 'visit',
+      answers: [{
+        'text': 'Twitter',
+        'path': '/users/auth/twitter'
+      },{
+        'text': 'Facebook',
+        'path': '/users/auth/facebook'
+      },{
+        'text': 'LinkedIn',
+        'path': '/users/auth/linkedin'
+      },{
+        'text': 'Email',
+        'path': '/users/sign_up'
+      }]
+    }
+  ];
+  var login = [
+    'Cool, please login to get to your projects',
+    {
+      type: 'visit',
+      answers: [{
+        'text': 'Twitter',
+        'path': '/users/auth/twitter'
+      },{
+        'text': 'Facebook',
+        'path': '/users/auth/facebook'
+      },{
+        'text': 'LinkedIn',
+        'path': '/users/auth/linkedin'
+      },{
+        'text': 'Email',
+        'path': '/users/sign_in'
+      }]
+    }
+  ];
+  var dummy = [
+    '',
+    {
+      type: 'submitDummy',
+      path: 'signup',
+      key: 'submit-dummy'
+    }
+  ];
+
+  var description = [
+    'We will email you soon when there\'s a gig. Keep watching this space'
+  ];
+
+  <%- if new_user %>
+    var configs = {
+      greeting: [
+        'Hi, I am Kriya. Welcome! I am an AI powered bot that helps in getting your work done through high quality, cost effective project managers & freelancers across the world.',
+        {
+          type: 'choose',
+          answers: [
+            {
+              'text': 'Sign Up',
+              'path': 'signup'
+            },
+            {
+              'text': 'Sign In',
+              'path': 'login'
+            }
+          ]
+        }
+      ],
+      dummy: dummy,
+      login: login,
+      signup: sign_up
+    };
+  <%- else %>
+    var configs = {
+      greeting: description
+    };
+  <%- end %>
+
+  new Chat(
+    configs,
+    {
+      targetNode: '#chat'
+    }
+  );
+</script>

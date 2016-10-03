@@ -63,13 +63,31 @@ class ApplicationController < ActionController::Base
       headline
       work_experience
       gender
+      category
+      availability
+      primary_skill
+      years_of_experiences
+      project_description
+      project_url
+      professional_profile_link
     )
-    devise_parameter_sanitizer.permit(:sign_up, keys: keys)
+    devise_parameter_sanitizer.permit(:sign_up) do |user|
+      user.permit(:email, :password, :password_confirmation, :unsername, :bio, :first_name, :last_name, :picture, :headline, :work_experience, :gender, :category, :availability, :primary_skill, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, :professional_profile_link2, skills: [])
+    end
   end
 
   def respond_modal_with(*args, &blk)
     options = args.extract_options!
     options[:responder] = ModalResponder
     respond_with *args, options, &blk
+  end
+
+  # The path used after sign in.
+  def after_sign_in_path_for(resource)
+    if resource.role == 'client'
+      task_from_sign_up_path
+    else  
+      root_path
+    end
   end
 end
