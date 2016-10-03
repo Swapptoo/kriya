@@ -1,7 +1,6 @@
 require_relative 'boot'
 
 require 'rails/all'
-require 'rails-observers'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -15,13 +14,7 @@ module Dantos
       g.stylesheets true
       g.stylesheet_engine :sass
 
-      config.autoload_paths += %W(#{config.root}/app/observers #{config.root}/app/workers)
-
-      config.active_record.observers   ||= []
-      config.active_record.observers    += [
-        :'room_observer',
-        :'message_observer'
-      ]
+      config.eager_load_paths += %W(#{config.root}/app/workers)
     end
   end
 end

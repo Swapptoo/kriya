@@ -24,7 +24,9 @@ class Room < ApplicationRecord
   has_many :posts, :through => :messages
 
   validates_presence_of :category_name
+
   before_create { self.category_name ||= "Design" }
+  after_create :send_notification
 
   def room_name_for_manager(index)
     "#{self.user.slug}-#{self.category_name.downcase}-#{index+1}"
@@ -50,5 +52,11 @@ class Room < ApplicationRecord
 
   def get_index(user)
     user.joined_rooms.includes(:user).find_index(self)
+  end
+
+  private
+
+  def send_notification
+    RoomWorker.perform_in(30.seconds, id)
   end
 end

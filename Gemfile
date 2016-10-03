@@ -53,9 +53,6 @@ gem 'annotate', '~> 2.7.1'
 gem 'sendgrid', '~> 1.2.4'
 gem 'griddler', '~> 1.3.1'
 
-# Point to commit that supports Rails 5
-gem 'rails-observers', :git => 'git://github.com/rails/rails-observers.git', :ref => '3fe157d6cbb5b5e767ded248009fc59443d63fa1'
-
 group :development, :test do
   gem 'byebug'
 end
