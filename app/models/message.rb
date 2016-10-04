@@ -14,10 +14,34 @@ class Message < ApplicationRecord
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1
-      self.create_attachment html: <<~HTML.squish
+      self.create_attachment html: "<br/>"
+      if self.room.user.stripe_id != nil then
+        self.attachment.html += <<~HTML.squish
+        <button id="customButton-#{self.id}" class="mini ui green button custom-padding">Pay</button>
+        <script>
+          document.getElementById("customButton-#{self.id}").addEventListener('click', function(e) {
+            $.post("/payments.json", {
+                amount: #{(amount.to_f*100).to_i},
+                update_customer: false,
+                message_id: #{self.id},
+                payment: {
+                  user_id: #{self.room.user.id}
+                }
+              });
+            e.preventDefault();
+
+          });
+        </script>
+        HTML
+        title = "Change card"
+        update_customer = false
+      else
+        title = "Pay with card"
+        update_customer = true
+      end
+      self.attachment.html += <<~HTML.squish
       <script src="https://checkout.stripe.com/checkout.js"></script>
-      <br/>
-      <button id="customButton-#{self.id}" class="mini ui green button custom-padding">Pay with Card</button>
+      <button id="customButton-#{self.id}-2" class="mini ui #{if update_customer then "green" else "white" end} button custom-padding">#{title}</button>
         <script>
           var handler = StripeCheckout.configure({
             key: $("meta[name=stripePublishableKey]").attr("content"),
@@ -28,6 +52,8 @@ class Message < ApplicationRecord
               return $.post("/payments.json", {
                 token: token,
                 amount: #{(amount.to_f*100).to_i},
+                update_customer: #{update_customer},
+                message_id: #{self.id},
                 payment: {
                   user_id: #{self.room.user.id}
                 }
@@ -35,13 +61,14 @@ class Message < ApplicationRecord
             }
           });
 
-          document.getElementById("customButton-#{self.id}").addEventListener('click', function(e) {
+          document.getElementById("customButton-#{self.id}-2").addEventListener('click', function(e) {
             handler.open({
               name: 'Kriya',
               zipCode: true,
               amount: "#{(amount.to_f*100).to_i}"
             });
             e.preventDefault();
+
           });
 
           window.addEventListener('popstate', function() {
@@ -49,8 +76,10 @@ class Message < ApplicationRecord
           });
         </script>
       HTML
+      self.attachment.save
       self.update body: "The charge for this task is $#{amount}, can you confirm so we can get it started?"
       logger.debug self.inspect
+      logger.debug self.attachment.html.inspect
       logger.debug self.errors.inspect
       logger.debug self.reload.inspect
     end
