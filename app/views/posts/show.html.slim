@@ -6,9 +6,6 @@
       .right
         .summary
           = link_to @post.user.full_name, @post.user, class: "user"
-          span.helper
-            ' posted to
-          = link_to "#{@post.message.room.get_room_name_for_user(current_user)}", @post.message.room, :class => "goomp-primary"
         span.date
           = time_ago_in_words @post.created_at
           '  ago
@@ -26,18 +23,3 @@
     / = @post.subtopic
     .cf
     .ui.divider
-
-    = render "posts/like_button", likable: @post unless @post.user == current_user
-
-    .ui.comments
-      = render partial: "comments/comment", collection: @post.comments, cached: false
-
-      - if user_signed_in? && @post.user != current_user
-        .comment
-          a.avatar
-            = image_tag current_user.picture
-          .content
-            = form_for [@post, Comment.new], html: {class: "ui text authorreply form"}, remote: true do |f|
-              = f.text_field :body, placeholder: "Write Something.."
-
-
