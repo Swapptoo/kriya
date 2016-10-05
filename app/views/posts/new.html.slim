@@ -12,11 +12,11 @@
     = f.hidden_field :link_url
 
     = current_user.avatar
-    = f.text_field :title, :placeholder => "Title", :autofocus => true
+    = f.text_field :title, :placeholder => "Project Title", :autofocus => true
     = f.text_area :content, :class => "editable"
 
     .ui.divider
-    .field#submit_field = f.submit 'Publish', :class => "ui button basic blue"
+    .field#submit_field = f.submit 'Save', :class => "ui button basic blue"
 css:
   #submit_field {
     text-align: center;

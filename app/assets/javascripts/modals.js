@@ -10,7 +10,7 @@ $(function() {
 
       this.editor = new MediumEditor('.editable', {
         placeholder: {
-          text: 'Describe your task in as much detailing as possible..',
+          text: 'Describe your project in as much detailing as possible..',
           hideOnClick: false
         }
       });
