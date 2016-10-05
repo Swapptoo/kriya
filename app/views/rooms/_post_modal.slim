@@ -3,7 +3,7 @@
     = image_tag current_user.picture, class: 'ui avatar image'
     span = current_user.full_name
 
-  = form_for @room || Room.new, html: { class: "ui form", autocomplete: "off" }, remote: true do |f|
+  = form_for @room || Room.new, html: { class: "ui form", autocomplete: "off" } do |f|
     = f.hidden_field :category_name
     = f.hidden_field :timeline
     = f.hidden_field :quality
