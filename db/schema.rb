@@ -220,7 +220,6 @@ ActiveRecord::Schema.define(version: 20161003202119) do
     t.string   "avatar"
     t.string   "slug"
     t.string   "stipe_customer_id"
-    t.string   "stripe_id"
     t.integer  "follows_count",              default: 0
     t.datetime "last_seen_at"
     t.integer  "role",                       default: 0
@@ -233,6 +232,7 @@ ActiveRecord::Schema.define(version: 20161003202119) do
     t.string   "project_url"
     t.string   "professional_profile_link1"
     t.string   "professional_profile_link2"
+    t.string   "stripe_id"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
