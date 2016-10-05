@@ -31,7 +31,7 @@
 
 class User < ApplicationRecord
   include Followable
-  enum role: {client: 0, freelancer: 1, manager: 2}
+  enum role: {client: 'client', freelancer: 'freelancer', manager: 'manager'}
   
   devise :database_authenticatable, :registerable, :omniauthable, :recoverable, :rememberable, :trackable, :validatable
 
@@ -48,13 +48,17 @@ class User < ApplicationRecord
   has_many :managed_rooms, dependent: :destroy, class_name: "Room", foreign_key: :manager_id
   has_many :messages, dependent: :destroy
 
+  has_many :user_skills
+  has_many :skills, through: :user_skills, dependent: :destroy
+  has_one :profile, class_name: 'FreelancerProfile'
+
+  accepts_nested_attributes_for :profile, allow_destroy: true
+
   def joined_rooms
     Room.where("user_id = ? OR manager_id = ?", self.id, self.id)
   end
 
   validates :first_name, :last_name, :picture, :headline, presence: true
-
-  validates :category, :availability, :primary_skill, :skills, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, presence: true, if: -> {self.role == 'freelancer' || self.role == 1}
 
   extend FriendlyId
   friendly_id :full_name, use: :slugged
