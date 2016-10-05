@@ -31,7 +31,7 @@
 
 class User < ApplicationRecord
   include Followable
-  enum role: {client: 0, freelancer: 1, manager: 2}
+  enum role: {client: 'client', freelancer: 'freelancer', manager: 'manager'}
   
   devise :database_authenticatable, :registerable, :omniauthable, :recoverable, :rememberable, :trackable, :validatable
 

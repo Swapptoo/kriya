@@ -7,7 +7,7 @@ class PagesController < ApplicationController
         render "dashboard", layout: "application"
       end
     else
-      session["new_user_role"] = 0
+      session["new_user_role"] = 'client'
       render "index"
     end
   end
@@ -20,7 +20,7 @@ class PagesController < ApplicationController
         render "dashboard", layout: "application"
       end
     else
-      session["new_user_role"] = 1
+      session["new_user_role"] = 'freelancer'
       render "network"
     end
   end
