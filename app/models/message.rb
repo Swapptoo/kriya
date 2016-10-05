@@ -39,7 +39,6 @@ class Message < ApplicationRecord
           document.getElementById("customButton-#{self.id}").addEventListener('click', function(e) {
             $.post("/payments.json", {
                 amount: #{(amount.to_f*100).to_i},
-                update_customer: false,
                 message_id: #{self.id},
                 payment: {
                   user_id: #{self.room.user.id}
@@ -51,14 +50,14 @@ class Message < ApplicationRecord
         </script>
         HTML
         title = "Change card"
-        update_customer = false
+        update_customer = 1
       else
         title = "Pay with card"
-        update_customer = true
+        update_customer = 0
       end
       self.attachment.html += <<~HTML.squish
       <script src="https://checkout.stripe.com/checkout.js"></script>
-      <button id="customButton-#{self.id}-2" class="mini ui #{if update_customer then "green" else "white" end} button custom-padding">#{title}</button>
+      <button id="customButton-#{self.id}-2" class="mini ui #{if not update_customer then "green" else "white" end} button custom-padding">#{title}</button>
         <script>
           var handler = StripeCheckout.configure({
             key: $("meta[name=stripePublishableKey]").attr("content"),
