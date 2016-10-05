@@ -63,16 +63,10 @@ class ApplicationController < ActionController::Base
       headline
       work_experience
       gender
-      category
-      availability
-      primary_skill
-      years_of_experiences
-      project_description
-      project_url
-      professional_profile_link
+      profile_attributes
     )
     devise_parameter_sanitizer.permit(:sign_up) do |user|
-      user.permit(:email, :password, :password_confirmation, :unsername, :bio, :first_name, :last_name, :picture, :headline, :work_experience, :gender, :category, :availability, :primary_skill, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, :professional_profile_link2, skills: [])
+      user.permit(:email, :password, :password_confirmation, :unsername, :bio, :first_name, :last_name, :picture, :headline, :work_experience, :gender, skill_ids: [], profile_attributes: [:category, :availability, :primary_skill, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, :professional_profile_link2])
     end
   end
 
