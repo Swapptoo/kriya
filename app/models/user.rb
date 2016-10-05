@@ -1,6 +1,38 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :integer          not null, primary key
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  reset_password_token   :string
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  sign_in_count          :integer          default(0), not null
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :inet
+#  last_sign_in_ip        :inet
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  username               :string
+#  bio                    :string
+#  first_name             :string
+#  last_name              :string
+#  picture                :string
+#  headline               :string
+#  work_experience        :string
+#  gender                 :string           default("male")
+#  avatar                 :string
+#  slug                   :string
+#  stipe_customer_id      :string
+#  follows_count          :integer          default(0)
+#
+
 class User < ApplicationRecord
   include Followable
-
+  enum role: {client: 0, freelancer: 1, manager: 2}
+  
   devise :database_authenticatable, :registerable, :omniauthable, :recoverable, :rememberable, :trackable, :validatable
 
   has_many :goomps, dependent: :destroy
@@ -22,6 +54,8 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name, :picture, :headline, presence: true
 
+  validates :category, :availability, :primary_skill, :skills, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, presence: true, if: -> {self.role == 'freelancer' || self.role == 1}
+
   extend FriendlyId
   friendly_id :full_name, use: :slugged
 
@@ -29,6 +63,22 @@ class User < ApplicationRecord
     goomp.user == self
   end
 
+  def manager?
+    self.role == 'manager'
+  end
+
+  def freelancer?
+    self.role == 'freelancer'
+  end
+  
+  def client?
+    self.role == 'client' || self.role.blank? 
+  end
+
+  def online?
+    last_seen_at > 15.minutes.ago
+  end
+  
   def full_name
     [first_name, last_name].join(' ')
   end

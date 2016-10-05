@@ -1,6 +1,7 @@
 .sidebar.sidebar--left
   .ui.vertical.inverted.fluid.menu
-    = link_to 'Create Task', new_room_path, class: 'item new'
+    - if current_user.client?
+      = link_to 'Create Task', new_room_path, class: 'item new'
     - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
       = link_to room, class: "item primary #{'active' if @room == room}" do
         = room.get_room_name_for_user current_user, index
@@ -27,7 +28,6 @@
 
     - else
       = render "goomp_bot/new_goomp"
-
 
 coffee:
   setTimeout =>

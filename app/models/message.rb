@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: messages
+#
+#  id         :integer          not null, primary key
+#  body       :string
+#  room_id    :integer
+#  user_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  image      :string
+#  post_id    :integer
+#
+
 class Message < ApplicationRecord
   mount_uploader :image, ImageUploader
   belongs_to :room
@@ -10,6 +24,9 @@ class Message < ApplicationRecord
   # validate :body_or_image_present
 
   # after_create :process_command
+
+  scope :un_seen, -> { where(seen: false) }
+  scope :not_by, -> (user) { where.not(user: user) }
 
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/

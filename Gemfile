@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.3.1"
+ruby '2.3.1'
 
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 gem 'pg', '~> 0.18'
@@ -15,7 +15,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'slim-rails'
 gem 'kaminari'
 gem 'carrierwave'
-gem "fog-aws"
+gem 'fog-aws'
 gem 'mini_magick'
 gem 'dalli'
 gem 'rack-mini-profiler'
@@ -45,8 +45,16 @@ gem 'simple_form'
 gem 'remotipart', github: 'mshibuya/remotipart'
 gem 'rails_admin', '>= 1.0.0.rc'
 gem 'redis'
-gem "jquery-fileupload-rails"
+gem 'jquery-fileupload-rails'
 gem 'sanitize'
+gem 'redis-namespace', '~> 1.5.2'
+gem 'sidekiq', '~> 4.2.2'
+gem 'annotate', '~> 2.7.1'
+gem 'sendgrid', '~> 1.2.4'
+gem 'griddler', '~> 1.3.1'
+
+# Point to commit that supports Rails 5
+gem 'rails-observers', :git => 'git://github.com/rails/rails-observers.git', :ref => '3fe157d6cbb5b5e767ded248009fc59443d63fa1'
 
 group :development, :test do
   gem 'byebug'
@@ -59,12 +67,13 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 
   # gem 'pry-rails'
+  gem 'pry'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
 
   gem 'rack-livereload'
-  gem "guard", ">= 2.2.2"
+  gem 'guard', '>= 2.2.2'
   gem 'guard-livereload'
   gem 'guard-minitest'
   gem 'terminal-notifier'

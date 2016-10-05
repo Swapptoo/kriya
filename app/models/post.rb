@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: posts
+#
+#  id               :integer          not null, primary key
+#  body             :text
+#  comments_count   :integer
+#  goomp_id         :integer
+#  user_id          :integer
+#  subtopic_id      :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  title            :string
+#  likes_count      :integer          default(0)
+#  link_title       :string
+#  link_url         :string
+#  link_image       :string
+#  link_description :string
+#  content          :text
+#  link_video       :string
+#
+
 class Post < ApplicationRecord
   belongs_to :goomp, touch: true, counter_cache: true
   belongs_to :user, touch: true

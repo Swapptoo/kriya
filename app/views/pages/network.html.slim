@@ -1,0 +1,23 @@
+css:
+  #example.index .masthead .container {
+    padding-bottom: 210px;
+  }
+
+#example.index
+  .following.bar
+    .ui.container
+      .ui.large.secondary.network.menu.inverted
+        .right.menu.inverted
+          - if user_signed_in?
+            = link_to "Sign Out", destroy_user_session_path, method: :delete, class: "item"
+            br
+
+  .masthead.segment.bg7
+    .ui.container
+      .introduction
+        span.library = image_tag "logo-invert.png", style: "height: 55px", alt: "Goomp Logo"
+        div.ui.inverted.header
+          span.tagline The AI powered messaging bot that helps work done for cheaper, faster and better!
+        = render "goomp_bot/new_freelancer"
+        .ui.hidden.divider
+        = render "social_buttons_modal", modal_id: "social-buttons-modal"

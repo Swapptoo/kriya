@@ -82,10 +82,28 @@ AppView = {
     @initInfinitePage()
     @initStripe()
     @initFileupload()
+    @markMessagesSeen()
     ChatWindow.initialize()
 
+
   createPost: ->
-    
+
+  markMessagesSeen: ->
+    $('#new_message').on "click", "#message_body", ->
+      roomId = $("#messages").data("room-id")
+
+      if $("#messages").data("has-new-message") == true
+        $("#messages").data("has-new-message", false)
+        $.ajax(
+          url: "/tasks/#{roomId}/mark_messages_seen.json"
+          type: "POST",
+          success: (message) ->
+            console.log message
+          error: (resp) ->
+            console.log resp
+        )
+
+
   chargeUser: ->
     $("#message_body").val "/charge $100"
     $("#message_body").focus()
@@ -300,6 +318,54 @@ AppView = {
           rules: [{
             type   : 'empty',
             prompt : 'Please enter headline'
+          }]
+        category:
+          identifier: 'user[category]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please select type'
+          }]
+        availability:
+          identifier: 'user[availability]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please select availability'
+          }]
+        skills:
+          identifier: 'user[skills]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please select skills'
+          }]
+        primary_skill:
+          identifier: 'user[primary_skill]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please select primary skill'
+          }]
+        years_of_experiences:
+          identifier: 'user[years_of_experiences]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please input years of experiences'
+          }]
+        project_description:
+          identifier: 'user[project_description]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please input project description'
+          }]
+        project_url:
+          identifier: 'user[project_url]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please input project url'
+          }]
+        professional_profile_link1:
+          identifier: 'user[professional_profile_link1]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please input professional profile_link'
           }]
         password:
           identifier: 'user[password]'
