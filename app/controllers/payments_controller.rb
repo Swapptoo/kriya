@@ -28,7 +28,7 @@ class PaymentsController < ApplicationController
     user = User.find payment_params[:user_id]
     msg = Message.find params[:message_id]
     room = msg.room
-    update_customer = params[:update_customer]
+    update_customer = params[:update_customer].to_i
 
     # If user.stripe_id is nil, then this is the first payment for this user
     if user.stripe_id.nil? then
@@ -43,7 +43,7 @@ class PaymentsController < ApplicationController
       user.save
     end
 
-    if update_customer != "false" then
+    if update_customer == 1 then
       token = params[:token][:id]
       cu = Stripe::Customer.retrieve(user.stripe_id)
       cu.source = token
