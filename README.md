@@ -55,3 +55,8 @@ Things you may want to cover:
     After the deployment, you can see that a new version has been created in the [dashboard](https://us-west-2.console.aws.amazon.com/elasticbeanstalk/home?region=us-west-2#/application/versions?applicationName=dantos). These versions can be redeployed just by selecting it in the versions list and hitting the "**deploy**" button.
    
     Another way to deploy the application is to zip the contents of the project and manually upload it to the aws dashboard [here](https://us-west-2.console.aws.amazon.com/elasticbeanstalk/home?region=us-west-2#/environment/dashboard?applicationName=dantos&environmentId=e-gxbz3wkymp), just by hitting the "**upload and deploy**" button.
+
+    5. DB Migration
+        rake db:create
+        rake db:migrate
+        rake db:seed
