@@ -4,6 +4,8 @@ class RoomWorker
 
   def perform(id)
     room = Room.find(id)
+    
+    UserNotifierMailer.notify_goomp(room).deliver_now
     UserNotifierMailer.notify_room_user(room).deliver_now
     UserNotifierMailer.notify_room_manager(room).deliver_now
   end
