@@ -27,7 +27,9 @@ class Room < ApplicationRecord
   has_many :posts, :through => :messages
 
   validates_presence_of :category_name
+
   before_create { self.category_name ||= "Design" }
+  after_create :send_notification
 
   def get_status(user)
     if user.id == self.manager.id
@@ -87,5 +89,11 @@ class Room < ApplicationRecord
         }
       end
     end
+  end
+
+  private
+
+  def send_notification
+    RoomWorker.perform_in(30.seconds, id)
   end
 end

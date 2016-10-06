@@ -205,9 +205,9 @@ class User < ApplicationRecord
       field :status do
         formatted_value{ bindings[:object].profile ? bindings[:object].profile.status : "" }
       end
+      field :role
       field :headline
       field :gender
-      field :role
     end
 
     update do
