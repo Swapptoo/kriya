@@ -75,9 +75,28 @@
       signup: sign_up
     };
   <%- else %>
-    var configs = {
-      greeting: description
-    };
+    <%- if current_user.pending_rooms.any? %>  
+      var description = [
+        "You are now asigned to <%= @room.title %>. Are you available to finish this project within the given timeline?",
+        {
+          type: 'visit',
+          path: 'notice',
+          key: "description",
+          answers: [{
+            'text': 'Accept task',
+            'path': '/tasks/<%= @room.id %>/accept' ,
+            'key': 'quality'
+          }]
+        }
+      ];
+      var configs = {
+        greeting: description
+      };
+    <%- else %>
+      var configs = {
+        greeting: description
+      };
+    <%- end %>
   <%- end %>
 
   new Chat(

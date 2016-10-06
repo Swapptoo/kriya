@@ -31,6 +31,13 @@ class UserNotifierMailer < ApplicationMailer
     )
   end
 
+  def notify_asigned_room(room, user)
+    @sendgrid_category = "Room #{room.id}"
+    @user = user
+    @room = room
+    mail(:to => @user.email, :subject => "[Kriya] #{room.title}")
+  end
+
   private
 
   def disable_sendgrid_subscription_header

@@ -21,3 +21,7 @@
 
 en:
   hello: "Hello world"
+  admin:
+    actions:
+      update_user_status:
+        menu: 'Update Status'

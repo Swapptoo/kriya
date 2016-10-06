@@ -12,7 +12,11 @@ class RoomsController < ApplicationController
   # GET /rooms/1.json
   def show
     #debugger
-    @room = current_user.joined_rooms.find params[:id]
+    if current_user.freelancer?
+      @room = current_user.asigned_rooms.find params[:id]
+    else
+      @room = current_user.joined_rooms.find params[:id]
+    end
     #@messages = @room.messages.includes(:user, :attachment, :post).order(:created_at).page(params[:page])
     @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
   end
@@ -26,6 +30,25 @@ class RoomsController < ApplicationController
 
   # GET /rooms/1/edit
   def edit
+  end
+
+  # POST /rooms/:id/accept
+  def accept
+    if current_user.freelancer?
+      @room = current_user.asigned_rooms.find params[:id]
+    else
+      @room = current_user.joined_rooms.find params[:id]
+    end
+    ru = @room.rooms_users.where('user_id = ?', current_user.id)
+    if ru.any? && ru[0].status == 'pending'
+      ru[0].update_attribute(:status, 'accepted')
+        @message = Message.new({body: 'Your work has been started and is in progress'})
+        @message.room = @room
+        @message.user = @room.manager
+
+        @message.save
+    end
+    redirect_to @room
   end
 
   # POST /rooms

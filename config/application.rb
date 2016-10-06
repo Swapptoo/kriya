@@ -7,6 +7,8 @@ require 'rails-observers'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+ENV['RAILS_ADMIN_THEME'] = 'rollincode'
+
 module Dantos
   class Application < Rails::Application
     config.generators do |g|
@@ -14,7 +16,6 @@ module Dantos
       g.javascripts true
       g.stylesheets true
       g.stylesheet_engine :sass
-
       config.autoload_paths += %W(#{config.root}/app/observers #{config.root}/app/workers)
 
       config.active_record.observers   ||= []

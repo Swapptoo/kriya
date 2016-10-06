@@ -1,13 +1,23 @@
 .sidebar.sidebar--left
-  #tasks.ui.vertical.inverted.fluid.menu
-    - if current_user.client?
-      = link_to 'Create Project', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
-    - else
-      a
-    - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
-      = link_to room, class: "item primary #{'active' if @room == room}" do
-        = room.get_room_name_for_user current_user, index
-        .unread_message_number
+  .ui.vertical.inverted.fluid.menu
+    - if current_user.freelancer? && current_user.pending_rooms.any?
+      span style="color:white" Pending Tasks
+      - current_user.pending_rooms.includes(:user).each_with_index do |room, index|
+        = link_to room, class: "item primary #{'active' if @room == room}" do
+          = room.get_room_name_for_user current_user, index
+          .unread_message_number
+        hr
+    #tasks
+      - if current_user.client?
+        = link_to 'Create Project', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
+      - else
+        a
+      - if current_user.freelancer?
+        span style="color:white" In-progress Tasks
+      - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
+        = link_to room, class: "item primary #{'active' if @room == room}" do
+          = room.get_room_name_for_user current_user, index
+          .unread_message_number
 
 coffee:
   setTimeout =>
