@@ -86,7 +86,7 @@ class User < ApplicationRecord
     if self.freelancer?
       accepted_rooms
     else
-      Room.where("user_id = ? OR manager_id = ?", self.id, self.id)
+      Room.where("user_id = ? OR manager_id = ?", self.id, self.id).order("created_at desc")
     end
   end
 
