@@ -9,7 +9,7 @@
         hr
     #tasks
       - if current_user.client?
-        = link_to 'Create Project', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
+        = link_to 'New Project', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
       - else
         a
       - if current_user.freelancer?
