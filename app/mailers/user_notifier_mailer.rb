@@ -44,7 +44,7 @@ class UserNotifierMailer < ApplicationMailer
 
     mail(
       :to => user.email,
-      :subject => "[Kriya Project] #{room.title}"
+      :subject => "[Project] #{room.title}"
     )
   end
 
