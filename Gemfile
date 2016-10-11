@@ -25,6 +25,7 @@ gem 'friendly_id', '~> 5.1.0'
 gem 'semantic-ui-sass'
 
 gem 'devise'
+gem 'whenever'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
