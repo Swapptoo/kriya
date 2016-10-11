@@ -21,12 +21,30 @@ class Room < ApplicationRecord
   belongs_to :manager, class_name: "User"
   monetize :budget_cents
 
+  has_many :rooms_users, class_name: 'RoomsUsers'
+  has_and_belongs_to_many :asigned_users, join_table: :rooms_users, class_name: "User", after_add: :send_asigned_room_email_to_user
+
   has_many :posts, :through => :messages
 
   validates_presence_of :category_name
 
   before_create { self.category_name ||= "Design" }
   after_create :send_notification
+
+  def get_status(user)
+    if user.id == self.manager.id
+      'manager'
+    elsif user.id == self.user_id
+      'owner'
+    else
+      room_user = self.rooms_users.where('user_id = ?', user.id)
+      if room_user.any?
+        room_user[0].status
+      else
+        ''
+      end
+    end
+  end
 
   def room_name_for_manager(index)
     "#{self.user.slug}-#{self.category_name.downcase}-#{index+1}"
@@ -51,7 +69,26 @@ class Room < ApplicationRecord
   end
 
   def get_index(user)
-    user.joined_rooms.includes(:user).find_index(self)
+    if user.freelancer?
+      user.asigned_rooms.includes(:user).find_index(self)
+    else
+      user.joined_rooms.includes(:user).find_index(self)
+    end
+  end
+
+  def send_asigned_room_email_to_user(record)
+    UserNotifierMailer.delay(queue: :room).notify_asigned_room(self, record)
+  end
+
+  rails_admin do
+    configure :asigned_users do
+      associated_collection_cache_all false
+      associated_collection_scope do
+        Proc.new { |scope|
+          scope = scope.freelancers.live
+        }
+      end
+    end
   end
 
   private

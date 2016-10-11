@@ -2,7 +2,7 @@
 
 .main
   .twelve.wide.column
-    - if @room
+    - if @room && @room.get_status(current_user) != 'pending'
       .ui.divided.grid
         .twelve.wide.column
           .ui.stacked.segment

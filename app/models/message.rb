@@ -10,6 +10,7 @@
 #  updated_at :datetime         not null
 #  image      :string
 #  post_id    :integer
+#  seen       :boolean          default(FALSE)
 #
 
 class Message < ApplicationRecord

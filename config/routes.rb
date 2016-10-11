@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resources :messages
 
     post :mark_messages_seen, on: :member
+    get :accept, on: :member
   end
   resources :photos
   resources :follows

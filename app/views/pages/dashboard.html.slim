@@ -1,14 +1,19 @@
 .sidebar.sidebar--left
-  .ui.vertical.inverted.fluid.menu
+  - if current_user.pending_rooms.any?
+    .ui.vertical.inverted.fluid.menu
+      - current_user.pending_rooms.includes(:user).each_with_index do |room, index|
+        = link_to room, class: "item primary #{'active' if @room == room}" do
+          = room.get_room_name_for_user current_user, index
+          .unread_message_number
+  #tasks.ui.vertical.inverted.fluid.menu
     - if current_user.client?
-      = link_to 'Create Task', new_room_path, class: 'item new'
+      = link_to 'Create Project', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
+    - else
+      a
     - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
       = link_to room, class: "item primary #{'active' if @room == room}" do
         = room.get_room_name_for_user current_user, index
         .unread_message_number
-
-    / = link_to 'New Room', new_room_path, class: 'item'
-
 .main
   .twelve.wide.column
     - if @room

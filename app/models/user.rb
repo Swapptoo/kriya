@@ -27,6 +27,9 @@
 #  slug                   :string
 #  stipe_customer_id      :string
 #  follows_count          :integer          default(0)
+#  role                   :string
+#  last_seen_at           :datetime
+#  stripe_id              :string
 #
 
 class User < ApplicationRecord
@@ -48,20 +51,50 @@ class User < ApplicationRecord
   has_many :managed_rooms, dependent: :destroy, class_name: "Room", foreign_key: :manager_id
   has_many :messages, dependent: :destroy
 
+  has_and_belongs_to_many :rooms_users, class_name: 'RoomsUsers'
+  has_and_belongs_to_many :asigned_rooms, join_table: :rooms_users, class_name: "Room", after_add: :send_asigned_room_email_to_user
+
   has_many :user_skills
   has_many :skills, through: :user_skills, dependent: :destroy
   has_one :profile, class_name: 'FreelancerProfile'
 
   accepts_nested_attributes_for :profile, allow_destroy: true
 
+  scope :freelancers, -> { where(role: 'freelancer') }
+
+  scope :live, lambda {
+    joins(:profile).where('freelancer_profiles.status = ?', 'live')
+  }
+
+  def live?
+    if self.profile
+      self.profile.status == 'live'
+    else
+      true
+    end
+  end
+
+  def pending_rooms
+    self.asigned_rooms.where(rooms_users: { status: 'pending' })
+  end
+
+  def accepted_rooms
+    self.asigned_rooms.where(rooms_users: { status: 'accepted' })
+  end
+
   def joined_rooms
-    Room.where("user_id = ? OR manager_id = ?", self.id, self.id)
+    if self.freelancer?
+      accepted_rooms
+    else
+      Room.where("user_id = ? OR manager_id = ?", self.id, self.id)
+    end
   end
 
   validates :first_name, :last_name, :picture, :headline, presence: true
 
   extend FriendlyId
   friendly_id :full_name, use: :slugged
+
 
   def is_manager_of? goomp
     goomp.user == self
@@ -87,6 +120,10 @@ class User < ApplicationRecord
     [first_name, last_name].join(' ')
   end
 
+  def name
+    [first_name, last_name].join(' ')
+  end
+
   def join goomp, token = nil
     membership = Membership.where(user: self, goomp: goomp).first_or_initialize
 
@@ -104,6 +141,10 @@ class User < ApplicationRecord
 
       membership.save
     end
+  end
+
+  def send_asigned_room_email_to_user(record)
+    UserNotifierMailer.delay(queue: :room).notify_asigned_room(record, self)
   end
 
   def self.from_omniauth auth
@@ -151,5 +192,43 @@ class User < ApplicationRecord
     auth = Authorization.find_by uid: authdata[:uid], provider: authdata[:provider]
 
     return auth&.user || authdata
+  end
+
+  rails_admin do
+    list do
+      field :email
+      field :first_name
+      field :last_name
+      field :professional_profile_link do
+        formatted_value{ bindings[:object].profile ? bindings[:object].profile.professional_profile_link1 : "" }
+      end
+      field :status do
+        formatted_value{ bindings[:object].profile ? bindings[:object].profile.status : "" }
+      end
+      field :role
+      field :headline
+      field :gender
+    end
+
+    update do
+      field :email
+      field :first_name
+      field :last_name
+      field :headline
+      field :gender
+      field :role
+      field :profile
+      field :password
+      field :asigned_rooms
+    end
+
+  end
+
+  private
+  def update_status
+    if self.profile
+      new_status = self.profile.status == 'pause' ? 'live' : 'pause'
+      self.profile.update_attribute(:status, new_status)
+    end
   end
 end
