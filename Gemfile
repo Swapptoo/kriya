@@ -25,7 +25,6 @@ gem 'friendly_id', '~> 5.1.0'
 gem 'semantic-ui-sass'
 
 gem 'devise'
-gem 'simple_token_authentication', '~> 1.14.0'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
@@ -53,7 +52,6 @@ gem 'sidekiq', '~> 4.2.2'
 gem 'annotate', '~> 2.7.1'
 gem 'sendgrid', '~> 1.2.4'
 gem 'griddler', '~> 1.3.1'
-gem 'whenever', require: false
 
 group :development, :test do
   gem 'byebug'

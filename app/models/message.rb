@@ -24,6 +24,7 @@ class Message < ApplicationRecord
   # validate :body_or_image_present
 
   # after_create :process_command
+  after_create :send_notification
 
   scope :un_seen, -> { where(seen: false) }
   scope :not_by, -> (user) { where.not(user: user) }
@@ -133,5 +134,11 @@ class Message < ApplicationRecord
 
   def next_message
     room.messages.where('id > ?', self.id).first
+  end
+
+  private
+
+  def send_notification
+    MessageWorker.perform_in(2.minutes, id)
   end
 end

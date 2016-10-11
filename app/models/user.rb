@@ -31,10 +31,8 @@
 
 class User < ApplicationRecord
   include Followable
-  acts_as_token_authenticatable
-
-  enum role: { client: 'client', freelancer: 'freelancer', manager: 'manager' }
-
+  enum role: {client: 'client', freelancer: 'freelancer', manager: 'manager'}
+  
   devise :database_authenticatable, :registerable, :omniauthable, :recoverable, :rememberable, :trackable, :validatable
 
   has_many :goomps, dependent: :destroy
@@ -56,8 +54,6 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :profile, allow_destroy: true
 
-  before_save :ensure_authentication_token
-
   def joined_rooms
     Room.where("user_id = ? OR manager_id = ?", self.id, self.id)
   end
@@ -78,20 +74,15 @@ class User < ApplicationRecord
   def freelancer?
     self.role == 'freelancer'
   end
-
+  
   def client?
-    self.role == 'client' || self.role.blank?
+    self.role == 'client' || self.role.blank? 
   end
 
   def online?
-    return false if last_seen_at.nil?
-    last_seen_at > 10.minutes.ago
+    last_seen_at > 15.minutes.ago
   end
-
-  def offline?
-    !online?
-  end
-
+  
   def full_name
     [first_name, last_name].join(' ')
   end
@@ -160,16 +151,5 @@ class User < ApplicationRecord
     auth = Authorization.find_by uid: authdata[:uid], provider: authdata[:provider]
 
     return auth&.user || authdata
-  end
-
-  private
-
-  def ensure_authentication_token
-    if authentication_token.blank?
-      self.authentication_token = loop do
-        token = Devise.friendly_token
-        break token unless User.where(authentication_token: token).first
-      end
-    end
   end
 end

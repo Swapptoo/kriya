@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  acts_as_token_authentication_handler_for User
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   before_action do
@@ -8,7 +7,7 @@ class ApplicationController < ActionController::Base
       Rack::MiniProfiler.authorize_request
     end
 
-    if user_signed_in? && (session[:last_seen_at] == nil || session[:last_seen_at] < 10.minutes.ago)
+    if user_signed_in? && (session[:last_seen_at] == nil || session[:last_seen_at] < 15.minutes.ago)
       current_user.update_attribute(:last_seen_at, Time.now)
       session[:last_seen_at] = Time.now
     end
@@ -81,7 +80,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     if resource.role == 'client'
       task_from_sign_up_path
-    else
+    else  
       root_path
     end
   end

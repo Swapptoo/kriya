@@ -54,21 +54,9 @@ class Room < ApplicationRecord
     user.joined_rooms.includes(:user).find_index(self)
   end
 
-  def notify_user?
-    notify?(user)
-  end
-
-  def notify_manager?
-    notify?(manager)
-  end
-
   private
 
-  def notify?(user)
-    user.offline? && messages.not_by(user).un_seen.any?
-  end
-
   def send_notification
-    RoomWorker.perform_async(id)
+    RoomWorker.perform_in(30.seconds, id)
   end
 end

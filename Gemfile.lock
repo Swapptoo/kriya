@@ -73,7 +73,6 @@ GEM
       json (>= 1.7)
       mime-types (>= 1.16)
       mimemagic (>= 0.3.0)
-    chronic (0.10.2)
     cocoon (1.2.9)
     coderay (1.1.1)
     coffee-rails (4.2.1)
@@ -365,10 +364,6 @@ GEM
     simple_form (3.3.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
-    simple_token_authentication (1.14.0)
-      actionmailer (>= 3.2.6, < 6)
-      actionpack (>= 3.2.6, < 6)
-      devise (>= 3.2, < 6)
     sixarm_ruby_unaccent (1.1.1)
     slim (3.0.7)
       temple (~> 0.7.6)
@@ -425,8 +420,6 @@ GEM
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    whenever (0.9.7)
-      chronic (>= 0.6.3)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -487,7 +480,6 @@ DEPENDENCIES
   sendgrid (~> 1.2.4)
   sidekiq (~> 4.2.2)
   simple_form
-  simple_token_authentication (~> 1.14.0)
   slim-rails
   spring
   spring-watcher-listen (~> 2.0.0)
@@ -500,7 +492,6 @@ DEPENDENCIES
   vcr
   web-console
   webmock
-  whenever
 
 RUBY VERSION
    ruby 2.3.1p112
