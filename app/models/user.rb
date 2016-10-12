@@ -34,8 +34,10 @@
 
 class User < ApplicationRecord
   include Followable
-  enum role: {client: 'client', freelancer: 'freelancer', manager: 'manager'}
-  
+  acts_as_token_authenticatable
+
+  enum role: { client: 'client', freelancer: 'freelancer', manager: 'manager' }
+
   devise :database_authenticatable, :registerable, :omniauthable, :recoverable, :rememberable, :trackable, :validatable
 
   has_many :goomps, dependent: :destroy
@@ -59,6 +61,8 @@ class User < ApplicationRecord
   has_one :profile, class_name: 'FreelancerProfile'
 
   accepts_nested_attributes_for :profile, allow_destroy: true
+
+  before_save :ensure_authentication_token
 
   scope :freelancers, -> { where(role: 'freelancer') }
 
@@ -107,15 +111,20 @@ class User < ApplicationRecord
   def freelancer?
     self.role == 'freelancer'
   end
-  
+
   def client?
-    self.role == 'client' || self.role.blank? 
+    self.role == 'client' || self.role.blank?
   end
 
   def online?
-    last_seen_at > 15.minutes.ago
+    return false if last_seen_at.nil?
+    last_seen_at > 10.minutes.ago
   end
-  
+
+  def offline?
+    !online?
+  end
+
   def full_name
     [first_name, last_name].join(' ')
   end
@@ -225,10 +234,20 @@ class User < ApplicationRecord
   end
 
   private
+
   def update_status
     if self.profile
       new_status = self.profile.status == 'pause' ? 'live' : 'pause'
       self.profile.update_attribute(:status, new_status)
+    end
+  end
+
+  def ensure_authentication_token
+    if authentication_token.blank?
+      self.authentication_token = loop do
+        token = Devise.friendly_token
+        break token unless User.where(authentication_token: token).first
+      end
     end
   end
 end

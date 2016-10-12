@@ -367,6 +367,10 @@ GEM
     simple_form (3.3.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
+    simple_token_authentication (1.14.0)
+      actionmailer (>= 3.2.6, < 6)
+      actionpack (>= 3.2.6, < 6)
+      devise (>= 3.2, < 6)
     sixarm_ruby_unaccent (1.1.1)
     slim (3.0.7)
       temple (~> 0.7.6)
@@ -486,6 +490,7 @@ DEPENDENCIES
   sendgrid (~> 1.2.4)
   sidekiq (~> 4.2.2)
   simple_form
+  simple_token_authentication (~> 1.14.0)
   slim-rails
   spring
   spring-watcher-listen (~> 2.0.0)
