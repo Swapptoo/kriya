@@ -18,6 +18,7 @@
 //= require jquery.infinite-pages
 //= require chat
 
+//= require select2.full.min
 //= require medium-editor
 //= require handlebars.runtime.min
 //= require jquery-sortable-min

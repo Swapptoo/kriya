@@ -9,4 +9,10 @@
 
 class Skill < ApplicationRecord
 
+  def to_select2
+    {
+      id: id,
+      text: skill
+    }
+  end
 end

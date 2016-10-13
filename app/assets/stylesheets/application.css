@@ -19,5 +19,6 @@
  *= require home
  *= require jquery.fileupload
  *= require fluidbox.min
+ *= require select2.min
  *= require_self
  */

@@ -81,6 +81,7 @@ AppView = {
     @initEditor()
     @initInfinitePage()
     @initStripe()
+    @initSelect2()
     @initFileupload()
     @markMessagesSeen()
     ChatWindow.initialize()
@@ -387,6 +388,20 @@ AppView = {
     if val.length == 0 || val.indexOf("default-male") > -1
       $("#user-avatar").attr("src", url)
       $("#user_picture").val(url)
+
+  initSelect2: ->
+    $('.select2').select2
+      minimumInputLength: 2
+      ajax:
+        url: '/search_skills'
+        dataType: 'json'
+        type: 'GET'
+        quietMillis: 50
+        results: (data) ->
+          console.log data
+          return {
+            results: data
+          }
 
   setMaleAvatar: ->
     url = ""
