@@ -17,14 +17,6 @@ class UserNotifierMailer < ApplicationMailer
     mail(:to => @user.email, :subject => "[Kriya] #{room.title}")
   end
 
-  def notify_room_manager(room)
-    @sendgrid_category = "Room #{room.id}"
-    @user = room.manager
-    @room = room
-
-    mail(:to => @user.email, :subject => "[Kriya] #{room.title}")
-  end
-
   def notify_goomp(room)
     @sendgrid_category = "Room #{room.id}"
     @user = room.user
