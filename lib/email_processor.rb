@@ -30,7 +30,5 @@ class EmailProcessor
         ),
         room_id: room.id,
       )
-	
-	render :json => { "message" => "RIGHT" }, :status => 200
   end
 end
