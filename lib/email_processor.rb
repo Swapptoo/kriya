@@ -14,7 +14,16 @@ class EmailProcessor
 	
 	num = @email.to.first[:token].tr('^0-9', '')
 	room = Room.find num
-	room.messages.create({:seen => false, :body => @email.body, :room => room, :user => room.user})
+	body = @email.body
+	lines = body.split("\n")
+	body = ""
+	lines.each do |line|
+		if line.include? "Kriya Notification" then 
+			break
+		end
+		body += line + "\n"
+	end
+	room.messages.create({:seen => false, :body => body, :room => room, :user => room.user})
 	@email.attachments.each do |attachment|
 		room.messages.create({:seen => false, :body => '', :room => room, :user => room.user, :image => attachment})
 	end
