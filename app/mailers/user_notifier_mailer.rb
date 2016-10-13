@@ -33,11 +33,16 @@ class UserNotifierMailer < ApplicationMailer
     full_name = 'Kriya Bot' if other_user == room.manager
     @messages = messages.map { |msg| "#{full_name}: #{msg.body}" }
     messages.update_all(seen: true)
+	if other_user == room.manager then
+	  usertype = "manager"
+	else
+	  usertype = "client"
+	end
 
     mail(
       :to => user.email,
       :subject => "[Project] #{room.title}",
-      :from => "Kriya Notification <room-" + room.id.to_s + "@messages.kriya.ai>"
+      :from => "Kriya Notification <" + usertype + "-" + room.id.to_s + "@messages.kriya.ai>"
     )
   end
 
