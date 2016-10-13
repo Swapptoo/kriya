@@ -17,16 +17,15 @@ class EmailProcessor
     #   subject: @email.subject,
     #   body: @email.body
     # )
-    puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+	num = @email.to.tr('^0-9', '')
+	room = Room.find num
+	room.messages.create({:seen => true, :body => @email.body, :room => room, :user => room.user})
+	room.save
+    
+	puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@"
     puts @email.subject
     puts @email.body
     puts @email.headers
     puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-  end
-
-  private
-
-  def room
-    # return @user.joined_rooms.first if @user.joined_rooms.count == 1
   end
 end

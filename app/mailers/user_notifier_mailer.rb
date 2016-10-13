@@ -45,7 +45,7 @@ class UserNotifierMailer < ApplicationMailer
     mail(
       :to => user.email,
       :subject => "[Project] #{room.title}",
-      :from => "room-" + room.id.to_s + "@messages.kriya.ai"
+      :from => "Kriya Notification <room-" + room.id.to_s + "@messages.kriya.ai>"
     )
   end
 
