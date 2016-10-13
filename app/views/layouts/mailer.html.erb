@@ -9,6 +9,6 @@
 
   <body style="font-family: AvenirNextLTPro-Regular; font-size: 14px;">
     <%= yield %>
-    <%= link_to 'Show full conversation', room_url(@room, user_email: @user.email, user_token: @user.authentication_token), style: "font-size: 12px; color: #888;" %>
+    Reply to this email or <%= link_to 'View full conversation', room_url(@room, user_email: @user.email, user_token: @user.authentication_token), style: "font-size: 12px; color: #888;" %>
   </body>
 </html>
