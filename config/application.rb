@@ -16,6 +16,8 @@ module Dantos
       g.stylesheets true
       g.stylesheet_engine :sass
 
+      config.active_job.queue_adapter = :sidekiq
+
       config.eager_load_paths += %W(#{config.root}/app/workers)
     end
   end
