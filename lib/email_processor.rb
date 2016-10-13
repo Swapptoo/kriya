@@ -14,9 +14,9 @@ class EmailProcessor
 	
 	num = @email.to.first[:token].tr('^0-9', '')
 	room = Room.find num
-	room.messages.create({:seen => true, :body => @email.body, :room => room, :user => room.user})
+	room.messages.create({:seen => false, :body => @email.body, :room => room, :user => room.user})
 	@email.attachments.each do |attachment|
-		room.messages.create({:seen => true, :body => '', :room => room, :user => room.user, :image => attachment})
+		room.messages.create({:seen => false, :body => '', :room => room, :user => room.user, :image => attachment})
 	end
 	room.save
 	
