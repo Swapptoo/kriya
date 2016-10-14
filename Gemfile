@@ -57,6 +57,9 @@ gem 'griddler', '~> 1.3.1'
 gem 'griddler-sendgrid'
 gem 'whenever', require: false
 
+## Utils
+gem 'activerecord-import', '~> 0.16.1'
+
 group :development, :test do
   gem 'byebug'
 end
