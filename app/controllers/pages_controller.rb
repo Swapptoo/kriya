@@ -27,15 +27,6 @@ class PagesController < ApplicationController
     end
   end
 
-  def search_skills
-    @skills = Skill.where('skill iLIKE ?', "%#{params[:term]}%") if params[:term]
-    respond_to do |format|
-      format.json {
-        render :json => @skills.map(&:to_select2)
-      }
-    end
-  end
-
   protected
 
   def set_room

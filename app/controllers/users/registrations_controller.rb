@@ -29,17 +29,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
         resource.password = authdata["password"] || Devise.friendly_token[0,20]
         resource.role = session["new_user_role"]
       end
+
       resource.save
-      #debugger
-      if resource.persisted? && authdata
-        resource.authorizations.create!(
-          uid: authdata["uid"],
-          provider: authdata["provider"],
-          token: authdata["token"],
-          refresh_token: authdata["refresh_token"]
-          # expires_at: authdata["expires_at"],
-        )
+
+      if resource.persisted?
+
+        params[:skill_ids].each do |skill_id|
+          resource.user_skills.create(skill_id: skill_id)
+        end
+
+        if authdata
+          resource.authorizations.create!(
+            uid: authdata["uid"],
+            provider: authdata["provider"],
+            token: authdata["token"],
+            refresh_token: authdata["refresh_token"]
+            # expires_at: authdata["expires_at"],
+          )
+        end
       end
+
       @oauth = !authdata.nil?
     end
   end
@@ -84,7 +93,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def after_sign_up_path_for(resource)
     if resource.role == 'client'
       task_from_sign_up_path
-    else  
+    else
       root_path
     end
   end

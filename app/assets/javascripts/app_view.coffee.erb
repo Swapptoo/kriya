@@ -338,8 +338,8 @@ AppView = {
             type   : 'empty',
             prompt : 'Please select skills'
           }]
-        primary_skill:
-          identifier: 'user[profile_attributes][primary_skill]'
+        primary_skill_id:
+          identifier: 'user[profile_attributes][primary_skill_id]'
           rules: [{
             type   : 'empty',
             prompt : 'Please select primary skill'
@@ -390,18 +390,9 @@ AppView = {
       $("#user_picture").val(url)
 
   initSelect2: ->
-    $('.select2').select2
-      minimumInputLength: 2
-      ajax:
-        url: '/search_skills'
-        dataType: 'json'
-        type: 'GET'
-        quietMillis: 50
-        results: (data) ->
-          console.log data
-          return {
-            results: data
-          }
+    $('.ui.dropdown.search').dropdown
+      minCharacters: 2
+      apiSettings: url: '/skills/search?query={query}'
 
   setMaleAvatar: ->
     url = ""

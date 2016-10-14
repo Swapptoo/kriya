@@ -92,10 +92,10 @@ css:
                 .two.fields
                   .field
                     = f.label :skills, "Your skills"
-                    = select_tag 'skill_ids', '', :prompt => 'Your skills', :multiple => true, :size =>10, class: "ui selection multiple dropdown select2", "tabindex" => -1, "data-remote-url" => search_skills_path
+                    = select_tag 'skill_ids', '', :prompt => 'Your skills', :multiple => true, :size =>10, class: "ui selection multiple dropdown search", "tabindex" => -1
                   .field
                     = p.label :primary_skill, "Your primary skill"
-                    = p.collection_select :primary_skill, Skill.all, :id, :skill, {prompt: "Select Your primary skill"}, {class: "ui selection dropdown", "tabindex" => -1}
+                    = p.collection_select :primary_skill_id, [], :id, :skill, {prompt: "Select Your primary skill"}, {class: "ui selection dropdown search", "tabindex" => -1}
                 .field
                   = p.label :years_of_experiencesT, "Years of experiences"
                   = p.text_field :years_of_experiences, placeholder: "Years of experiences"
