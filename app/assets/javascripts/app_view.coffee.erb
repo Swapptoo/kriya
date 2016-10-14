@@ -81,7 +81,7 @@ AppView = {
     @initEditor()
     @initInfinitePage()
     @initStripe()
-    @initSelect2()
+    @initSearch()
     @initFileupload()
     @markMessagesSeen()
     ChatWindow.initialize()
@@ -389,7 +389,7 @@ AppView = {
       $("#user-avatar").attr("src", url)
       $("#user_picture").val(url)
 
-  initSelect2: ->
+  initSearch: ->
     $('.ui.dropdown.search').dropdown
       minCharacters: 2
       apiSettings: url: '/skills/search?query={query}'
