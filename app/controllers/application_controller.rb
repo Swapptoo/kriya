@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
-  
+
   acts_as_token_authentication_handler_for User, fallback: :none
 
   before_action do
@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
       profile_attributes
     )
     devise_parameter_sanitizer.permit(:sign_up) do |user|
-      user.permit(:email, :password, :password_confirmation, :unsername, :bio, :first_name, :last_name, :picture, :headline, :work_experience, :gender, skill_ids: [], profile_attributes: [:category, :availability, :primary_skill, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, :professional_profile_link2])
+      user.permit(:email, :password, :password_confirmation, :unsername, :bio, :first_name, :last_name, :picture, :headline, :work_experience, :gender, skill_ids: [], profile_attributes: [:category, :availability, :primary_skill_id, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, :professional_profile_link2])
     end
   end
 
