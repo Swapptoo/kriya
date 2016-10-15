@@ -2,17 +2,27 @@
 #
 # Table name: rooms
 #
-#  id              :integer          not null, primary key
-#  user_id         :integer
-#  manager_id      :integer
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  category_name   :string
 #  budget_cents    :integer          default(0), not null
 #  budget_currency :string           default("USD"), not null
-#  timeline        :string
-#  quality         :string
+#  category_name   :string
+#  created_at      :datetime         not null
 #  description     :text
+#  id              :integer          not null, primary key
+#  manager_id      :integer
+#  quality         :string
+#  timeline        :string
+#  updated_at      :datetime         not null
+#  user_id         :integer
+#
+# Indexes
+#
+#  index_rooms_on_manager_id  (manager_id)
+#  index_rooms_on_user_id     (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_676194d148  (manager_id => users.id)
+#  fk_rails_a63cab0c67  (user_id => users.id)
 #
 
 class Room < ApplicationRecord

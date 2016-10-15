@@ -2,34 +2,41 @@
 #
 # Table name: users
 #
-#  id                     :integer          not null, primary key
+#  authentication_token   :string(30)
+#  avatar                 :string
+#  bio                    :string
+#  created_at             :datetime         not null
+#  current_sign_in_at     :datetime
+#  current_sign_in_ip     :inet
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :inet
-#  last_sign_in_ip        :inet
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  username               :string
-#  bio                    :string
 #  first_name             :string
-#  last_name              :string
-#  picture                :string
-#  headline               :string
-#  work_experience        :string
+#  follows_count          :integer          default(0)
 #  gender                 :string           default("male")
-#  avatar                 :string
+#  headline               :string
+#  id                     :integer          not null, primary key
+#  last_name              :string
+#  last_seen_at           :datetime
+#  last_sign_in_at        :datetime
+#  last_sign_in_ip        :inet
+#  picture                :string
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string
+#  role                   :string           default(NULL)
+#  sign_in_count          :integer          default(0), not null
 #  slug                   :string
 #  stipe_customer_id      :string
-#  follows_count          :integer          default(0)
-#  role                   :string
-#  last_seen_at           :datetime
 #  stripe_id              :string
+#  updated_at             :datetime         not null
+#  username               :string
+#  work_experience        :string
+#
+# Indexes
+#
+#  index_users_on_authentication_token  (authentication_token) UNIQUE
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
 class User < ApplicationRecord

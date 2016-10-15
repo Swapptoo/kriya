@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161014101017) do
+ActiveRecord::Schema.define(version: 20161015054121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20161014101017) do
     t.string   "professional_profile_link1"
     t.string   "professional_profile_link2"
     t.string   "status",                     default: "pause"
+    t.integer  "hourly_rate",                default: 0,       null: false
     t.index ["user_id"], name: "index_freelancer_profiles_on_user_id", using: :btree
   end
 

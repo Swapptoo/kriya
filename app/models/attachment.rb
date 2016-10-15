@@ -2,11 +2,19 @@
 #
 # Table name: attachments
 #
-#  id         :integer          not null, primary key
-#  html       :text
-#  message_id :integer
 #  created_at :datetime         not null
+#  html       :text
+#  id         :integer          not null, primary key
+#  message_id :integer
 #  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_attachments_on_message_id  (message_id)
+#
+# Foreign Keys
+#
+#  fk_rails_b804ba74cc  (message_id => messages.id)
 #
 
 class Attachment < ApplicationRecord

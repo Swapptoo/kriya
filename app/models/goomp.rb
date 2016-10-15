@@ -2,21 +2,30 @@
 #
 # Table name: goomps
 #
-#  id                :integer          not null, primary key
-#  name              :string
 #  cover             :string
-#  slug              :string
-#  description       :string
-#  memberships_count :integer          default(0)
-#  user_id           :integer
 #  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  description       :string
+#  id                :integer          not null, primary key
 #  logo              :string
+#  memberships_count :integer          default(0)
+#  name              :string
+#  posts_count       :integer          default(0)
 #  price_cents       :integer
 #  price_currency    :string           default("USD"), not null
 #  rating            :float
 #  reviews_count     :integer          default(0)
-#  posts_count       :integer          default(0)
+#  slug              :string
+#  updated_at        :datetime         not null
+#  user_id           :integer
+#
+# Indexes
+#
+#  index_goomps_on_slug     (slug) UNIQUE
+#  index_goomps_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_3bc0da7296  (user_id => users.id)
 #
 
 class Goomp < ApplicationRecord

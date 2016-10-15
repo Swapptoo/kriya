@@ -2,22 +2,34 @@
 #
 # Table name: posts
 #
-#  id               :integer          not null, primary key
 #  body             :text
 #  comments_count   :integer
-#  goomp_id         :integer
-#  user_id          :integer
-#  subtopic_id      :integer
+#  content          :text
 #  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  title            :string
+#  goomp_id         :integer
+#  id               :integer          not null, primary key
 #  likes_count      :integer          default(0)
+#  link_description :string
+#  link_image       :string
 #  link_title       :string
 #  link_url         :string
-#  link_image       :string
-#  link_description :string
-#  content          :text
 #  link_video       :string
+#  subtopic_id      :integer
+#  title            :string
+#  updated_at       :datetime         not null
+#  user_id          :integer
+#
+# Indexes
+#
+#  index_posts_on_goomp_id     (goomp_id)
+#  index_posts_on_subtopic_id  (subtopic_id)
+#  index_posts_on_user_id      (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_164bf18369  (goomp_id => goomps.id)
+#  fk_rails_5b5ddfd518  (user_id => users.id)
+#  fk_rails_fd6c84fdf0  (subtopic_id => subtopics.id)
 #
 
 class Post < ApplicationRecord

@@ -2,15 +2,27 @@
 #
 # Table name: messages
 #
-#  id         :integer          not null, primary key
 #  body       :string
-#  room_id    :integer
-#  user_id    :integer
 #  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id         :integer          not null, primary key
 #  image      :string
 #  post_id    :integer
+#  room_id    :integer
 #  seen       :boolean          default(FALSE)
+#  updated_at :datetime         not null
+#  user_id    :integer
+#
+# Indexes
+#
+#  index_messages_on_post_id  (post_id)
+#  index_messages_on_room_id  (room_id)
+#  index_messages_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_273a25a7a6  (user_id => users.id)
+#  fk_rails_a8db0fb63a  (room_id => rooms.id)
+#  fk_rails_f36d097b9e  (post_id => posts.id)
 #
 
 class Message < ApplicationRecord

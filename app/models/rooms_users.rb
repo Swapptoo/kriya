@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: rooms_users
+#
+#  id      :integer          not null, primary key
+#  room_id :integer
+#  status  :string           default("pending")
+#  user_id :integer
+#
+# Indexes
+#
+#  index_rooms_users_on_room_id_and_user_id  (room_id,user_id) UNIQUE
+#
+
 class RoomsUsers < ApplicationRecord
   enum status: {pending: 'pending', accepted: 'accepted', in_progress: 'in_progress', completed: 'completed'}
   

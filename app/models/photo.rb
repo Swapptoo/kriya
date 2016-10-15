@@ -2,9 +2,9 @@
 #
 # Table name: photos
 #
-#  id         :integer          not null, primary key
-#  data       :text
 #  created_at :datetime         not null
+#  data       :text
+#  id         :integer          not null, primary key
 #  updated_at :datetime         not null
 #
 
