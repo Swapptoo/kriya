@@ -1,7 +1,8 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:edit, :update, :destroy, :mark_messages_seen]
-  before_action :authenticate_user!, :except => :create_dummy
-
+  before_action :authenticate_user!, :except => [:create_dummy, :show, :accept]
+  before_action :authenticate_freelancer!, only: :accept
+  respond_to :html, :json, :js
   # GET /rooms
   # GET /rooms.json
   def index
@@ -12,13 +13,17 @@ class RoomsController < ApplicationController
   # GET /rooms/1.json
   def show
     #debugger
-    if current_user.freelancer?
-      @room = current_user.asigned_rooms.find params[:id]
-    else
+    if user_signed_in?
       @room = current_user.joined_rooms.find params[:id]
+      @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
+    elsif freelancer_signed_in?
+      @room = current_freelancer.asigned_rooms.find params[:id]
+      @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
+      render 'freelancer_show'
+    else
+      redirect_to root_path
     end
     #@messages = @room.messages.includes(:user, :attachment, :post).order(:created_at).page(params[:page])
-    @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
   end
 
   # GET /rooms/new
@@ -32,14 +37,58 @@ class RoomsController < ApplicationController
   def edit
   end
 
+  # GET /rooms/:id/freelancers_list
+  def freelancers_list
+    @room = current_user.joined_rooms.find params[:id]
+    @asigned_freelancer_ids = @room.asigned_freelancers.map(&:id)
+    if @asigned_freelancer_ids.any?
+      @freelancers = Freelancer.live.where('id not in (?)', @asigned_freelancer_ids)
+    else
+      @freelancers = Freelancer.live
+    end
+    respond_modal_with @freelancers and return
+  end
+
+  # GET /rooms/:id/asign_freelancer
+  def asign_freelancer
+    @room = current_user.joined_rooms.find params[:id]
+    @freelancer = Freelancer.live.find params[:freelancer_id]
+    @success = true
+    respond_to do |format|
+      format.js do
+        begin
+          @room.asigned_freelancers << @freelancer
+        rescue
+          @success = true
+          return
+        end
+      end
+      format.html do
+        redirect_to :back
+      end
+    end
+  end
+
+  def remove_asigned_freelancer
+    @room = current_user.joined_rooms.find params[:id]
+    @freelancer = Freelancer.live.find params[:freelancer_id]
+    @success = true
+    respond_to do |format|
+      format.js do
+        begin
+          @room.asigned_freelancers.delete(@freelancer)
+        rescue
+          @success = false
+          return
+        end
+      end
+    end
+  end
+
   # POST /rooms/:id/accept
   def accept
-    if current_user.freelancer?
-      @room = current_user.asigned_rooms.find params[:id]
-    else
-      @room = current_user.joined_rooms.find params[:id]
-    end
-    ru = @room.rooms_users.where('user_id = ?', current_user.id)
+    @room = current_freelancer.asigned_rooms.find params[:id]
+    ru = @room.freelancers_rooms.where('freelancer_id = ?', current_freelancer.id)
     if ru.any? && ru[0].status == 'pending'
       ru[0].update_attribute(:status, 'accepted')
         @message = Message.new({body: 'Your work has been started and is in progress'})

@@ -8,8 +8,8 @@ div class="ui segment feed"
       #chat.ui.form
       div class="extra text"
 
-- if current_user.client?
+- if user_signed_in?
   = render 'rooms/post_modal'
   = render "shared/chat_script"
-- if current_user.freelancer?
+- if freelancer_signed_in?
   = render 'shared/freelancer_chat_script'

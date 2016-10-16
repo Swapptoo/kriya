@@ -13,6 +13,11 @@ class ApplicationController < ActionController::Base
       current_user.update_attribute(:last_seen_at, Time.now)
       session[:last_seen_at] = Time.now
     end
+
+  end
+
+  def authenticate!
+    return user_signed_in? || freelancer_signed_in?
   end
 
   def set_meta(options={})
@@ -57,8 +62,21 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
+    keys = %i(
+      username
+      bio
+      first_name
+      last_name picture
+      headline
+      work_experience
+      gender
+      profile_attributes
+    )
     devise_parameter_sanitizer.permit(:sign_up) do |user|
-      user.permit(:email, :password, :password_confirmation, :unsername, :bio, :first_name, :last_name, :picture, :headline, :work_experience, :gender, skill_ids: [], profile_attributes: [:category, :availability, :primary_skill_id, :years_of_experiences, :hourly_rate_in_dollar, :project_description, :project_url, :professional_profile_link1, :professional_profile_link2])
+      user.permit(:email, :password, :password_confirmation, :unsername, :bio, :first_name, :last_name, :picture, :headline, :work_experience, :gender)
+    end
+    devise_parameter_sanitizer.permit(:sign_up) do |freelancer|
+      freelancer.permit(:email, :password, :password_confirmation, :unsername, :bio, :first_name, :last_name, :picture, :headline, :work_experience, :gender, :category, :availability, :primary_skill, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, :professional_profile_link2, skill_ids: [])
     end
   end
 
@@ -70,10 +88,6 @@ class ApplicationController < ActionController::Base
 
   # The path used after sign in.
   def after_sign_in_path_for(resource)
-    if resource.role == 'client'
-      task_from_sign_up_path
-    else
-      root_path
-    end
+    root_path
   end
 end

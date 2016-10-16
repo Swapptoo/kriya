@@ -14,6 +14,9 @@ Rails.application.routes.draw do
 
     post :mark_messages_seen, on: :member
     get :accept, on: :member
+    get :freelancers_list, on: :member
+    get :asign_freelancer, on: :member
+    get :remove_asigned_freelancer, on: :member
   end
   resources :photos
   resources :follows
@@ -50,5 +53,10 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
   resources :users, only: [:index, :show], concerns: :followable
+
+
+  devise_for :freelancers, controllers: {
+    registrations: 'freelancers/registrations'
+  }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

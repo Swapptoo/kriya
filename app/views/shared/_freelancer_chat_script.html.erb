@@ -7,16 +7,16 @@
       type: 'visit',
       answers: [{
         'text': 'Twitter',
-        'path': '/users/auth/twitter'
+        'path': '/freelancers/auth/twitter'
       },{
         'text': 'Facebook',
-        'path': '/users/auth/facebook'
+        'path': '/freelancers/auth/facebook'
       },{
         'text': 'LinkedIn',
-        'path': '/users/auth/linkedin'
+        'path': '/freelancers/auth/linkedin'
       },{
         'text': 'Email',
-        'path': '/users/sign_up'
+        'path': '/freelancers/sign_up'
       }]
     }
   ];
@@ -26,17 +26,25 @@
       type: 'visit',
       answers: [{
         'text': 'Twitter',
-        'path': '/users/auth/twitter'
+        'path': '/freelancers/auth/twitter'
       },{
         'text': 'Facebook',
-        'path': '/users/auth/facebook'
+        'path': '/freelancers/auth/facebook'
       },{
         'text': 'LinkedIn',
-        'path': '/users/auth/linkedin'
+        'path': '/freelancers/auth/linkedin'
       },{
         'text': 'Email',
-        'path': '/users/sign_in'
+        'path': '/freelancers/sign_in'
       }]
+    }
+  ];
+  var dummy = [
+    '',
+    {
+      type: 'submitDummy',
+      path: 'signup',
+      key: 'submit-dummy'
     }
   ];
 
@@ -62,11 +70,12 @@
           ]
         }
       ],
+      dummy: dummy,
       login: login,
       signup: sign_up
     };
   <%- else %>
-    <%- if current_user.pending_rooms.any? %>
+    <%- if current_freelancer.pending_rooms.any? %>  
       var description = [
         "You are now asigned to <%= @room.title %>. Are you available to finish this project within the given timeline?",
         {

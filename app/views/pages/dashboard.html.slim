@@ -1,39 +1,33 @@
-.sidebar.sidebar--left
-  - if current_user.pending_rooms.any?
-    .ui.vertical.inverted.fluid.menu
-      - current_user.pending_rooms.includes(:user).each_with_index do |room, index|
-        = link_to room, class: "item primary #{'active' if @room == room}" do
-          = room.get_room_name_for_user current_user, index
-          .unread_message_number
-  .ui.vertical.inverted.fluid.menu
-    #tasks
+- if user_signed_in?
+  .sidebar.sidebar--left
+    #tasks.ui.vertical.inverted.fluid.menu
       - if current_user.client?
-        = link_to 'New Task', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
+        = link_to 'New Project', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
       - else
         a
       - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
         = link_to room, class: "item primary #{'active' if @room == room}" do
           = room.get_room_name_for_user current_user, index
           .unread_message_number
-.main
-  .twelve.wide.column
-    - if @room
-      .ui.segment.narrow
-        #messages data-room-id=@room.id = render @messages, user: current_user
+  .main
+    .twelve.wide.column
+      - if @room
+        .ui.segment.narrow
+          #messages data-room-id=@room.id = render @messages, user: current_user
 
-        = form_for [@room, Message.new], remote: true, html: { class: "ui form" } do |f|
-          .ui.left.action.input
-            .ui.teal.icon.button.fileinput-button
-              = f.file_field :image
-              i.plus.icon
-            = f.text_field :body, autofocus: true, autocomplete: 'off'
+          = form_for [@room, Message.new], remote: true, html: { class: "ui form" } do |f|
+            .ui.left.action.input
+              .ui.teal.icon.button.fileinput-button
+                = f.file_field :image
+                i.plus.icon
+              = f.text_field :body, autofocus: true, autocomplete: 'off'
 
-          .ui.active.progress.primary style="display: none"
-            .bar
-              .progress
+            .ui.active.progress.primary style="display: none"
+              .bar
+                .progress
 
-    - else
-      = render "goomp_bot/new_goomp"
+      - else
+        = render "goomp_bot/new_goomp"
 
 coffee:
   setTimeout =>

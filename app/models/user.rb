@@ -2,35 +2,35 @@
 #
 # Table name: users
 #
-#  authentication_token   :string(30)
-#  avatar                 :string
-#  bio                    :string
-#  created_at             :datetime         not null
-#  current_sign_in_at     :datetime
-#  current_sign_in_ip     :inet
+#  id                     :integer          not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
-#  first_name             :string
-#  follows_count          :integer          default(0)
-#  gender                 :string           default("male")
-#  headline               :string
-#  id                     :integer          not null, primary key
-#  last_name              :string
-#  last_seen_at           :datetime
-#  last_sign_in_at        :datetime
-#  last_sign_in_ip        :inet
-#  picture                :string
-#  remember_created_at    :datetime
-#  reset_password_sent_at :datetime
 #  reset_password_token   :string
-#  role                   :string           default(NULL)
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
 #  sign_in_count          :integer          default(0), not null
-#  slug                   :string
-#  stipe_customer_id      :string
-#  stripe_id              :string
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :inet
+#  last_sign_in_ip        :inet
+#  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  username               :string
+#  bio                    :string
+#  first_name             :string
+#  last_name              :string
+#  picture                :string
+#  headline               :string
 #  work_experience        :string
+#  gender                 :string           default("male")
+#  avatar                 :string
+#  slug                   :string
+#  stipe_customer_id      :string
+#  follows_count          :integer          default(0)
+#  role                   :string
+#  last_seen_at           :datetime
+#  stripe_id              :string
+#  authentication_token   :string(30)
 #
 # Indexes
 #
@@ -60,45 +60,10 @@ class User < ApplicationRecord
   has_many :managed_rooms, dependent: :destroy, class_name: "Room", foreign_key: :manager_id
   has_many :messages, dependent: :destroy
 
-  has_and_belongs_to_many :rooms_users, class_name: 'RoomsUsers'
-  has_and_belongs_to_many :asigned_rooms, join_table: :rooms_users, class_name: "Room", after_add: :send_asigned_room_email_to_user
-
-  has_many :user_skills
-  has_many :skills, through: :user_skills, dependent: :destroy
-  has_one :profile, class_name: 'FreelancerProfile'
-
-  accepts_nested_attributes_for :profile, allow_destroy: true
-
   before_save :ensure_authentication_token
 
-  scope :freelancers, -> { where(role: 'freelancer') }
-
-  scope :live, lambda {
-    joins(:profile).where('freelancer_profiles.status = ?', 'live')
-  }
-
-  def live?
-    if self.profile
-      self.profile.status == 'live'
-    else
-      true
-    end
-  end
-
-  def pending_rooms
-    self.asigned_rooms.where(rooms_users: { status: 'pending' })
-  end
-
-  def accepted_rooms
-    self.asigned_rooms.where(rooms_users: { status: 'accepted' })
-  end
-
   def joined_rooms
-    if self.freelancer?
-      accepted_rooms
-    else
-      Room.where("user_id = ? OR manager_id = ?", self.id, self.id).order("created_at desc")
-    end
+    Room.where("user_id = ? OR manager_id = ?", self.id, self.id).order("created_at desc")
   end
 
   validates :first_name, :last_name, :picture, :headline, presence: true
@@ -114,11 +79,7 @@ class User < ApplicationRecord
   def manager?
     self.role == 'manager'
   end
-
-  def freelancer?
-    self.role == 'freelancer'
-  end
-
+  
   def client?
     self.role == 'client' || self.role.blank?
   end
@@ -157,10 +118,6 @@ class User < ApplicationRecord
 
       membership.save
     end
-  end
-
-  def send_asigned_room_email_to_user(record)
-    UserNotifierMailer.delay(queue: :room).notify_asigned_room(record, self)
   end
 
   def self.from_omniauth auth
@@ -210,44 +167,7 @@ class User < ApplicationRecord
     return auth&.user || authdata
   end
 
-  rails_admin do
-    list do
-      field :email
-      field :first_name
-      field :last_name
-      field :professional_profile_link do
-        formatted_value{ bindings[:object].profile ? bindings[:object].profile.professional_profile_link1 : "" }
-      end
-      field :status do
-        formatted_value{ bindings[:object].profile ? bindings[:object].profile.status : "" }
-      end
-      field :role
-      field :headline
-      field :gender
-    end
-
-    update do
-      field :email
-      field :first_name
-      field :last_name
-      field :headline
-      field :gender
-      field :role
-      field :profile
-      field :password
-      field :asigned_rooms
-    end
-
-  end
-
   private
-
-  def update_status
-    if self.profile
-      new_status = self.profile.status == 'pause' ? 'live' : 'pause'
-      self.profile.update_attribute(:status, new_status)
-    end
-  end
 
   def ensure_authentication_token
     if authentication_token.blank?

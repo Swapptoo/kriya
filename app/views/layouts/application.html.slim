@@ -16,6 +16,13 @@ html
                 - if current_user.client?
                   = link_to "Create Task", new_room_path, class: "item new"
                 = link_to "Sign Out", destroy_user_session_path, method: :delete, class: "ui item"
+        - if freelancer_signed_in?
+          .right.menu
+            div class="ui pointing dropdown link item"
+              = image_tag current_freelancer.picture, size: "45x45", class: "ui"
+              i class="dropdown icon"
+              .menu
+                = link_to "Sign Out", destroy_freelancer_session_path, method: :delete, class: "ui item"
 
       = render "layouts/goomp_header"
 

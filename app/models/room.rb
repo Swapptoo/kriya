@@ -2,17 +2,17 @@
 #
 # Table name: rooms
 #
+#  id              :integer          not null, primary key
+#  user_id         :integer
+#  manager_id      :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  category_name   :string
 #  budget_cents    :integer          default(0), not null
 #  budget_currency :string           default("USD"), not null
-#  category_name   :string
-#  created_at      :datetime         not null
-#  description     :text
-#  id              :integer          not null, primary key
-#  manager_id      :integer
-#  quality         :string
 #  timeline        :string
-#  updated_at      :datetime         not null
-#  user_id         :integer
+#  quality         :string
+#  description     :text
 #
 # Indexes
 #
@@ -31,8 +31,8 @@ class Room < ApplicationRecord
   belongs_to :manager, class_name: "User"
   monetize :budget_cents
 
-  has_many :rooms_users, class_name: 'RoomsUsers'
-  has_and_belongs_to_many :asigned_users, join_table: :rooms_users, class_name: "User", after_add: :send_asigned_room_email_to_user
+  has_many :freelancers_rooms, class_name: 'FreelancersRooms'
+  has_and_belongs_to_many :asigned_freelancers, join_table: :freelancers_rooms, class_name: "Freelancer", after_add: :send_asigned_room_email_to_freelancer
 
   has_many :posts, :through => :messages
 
@@ -41,18 +41,12 @@ class Room < ApplicationRecord
   before_create { self.category_name ||= "Design" }
   after_create :send_notification
 
-  def get_status(user)
-    if user.id == self.manager.id
-      'manager'
-    elsif user.id == self.user_id
-      'owner'
+  def get_status(freelancer)
+    freelancer_room = self.freelancers_rooms.where('freelancer_id = ?', freelancer.id)
+    if freelancer_room.any?
+      freelancer_room[0].status
     else
-      room_user = self.rooms_users.where('user_id = ?', user.id)
-      if room_user.any?
-        room_user[0].status
-      else
-        ''
-      end
+      ''
     end
   end
 
@@ -78,24 +72,25 @@ class Room < ApplicationRecord
     end
   end
 
-  def get_index(user)
-    if user.freelancer?
-      user.asigned_rooms.includes(:user).find_index(self)
-    else
-      user.joined_rooms.includes(:user).find_index(self)
-    end
+  def get_room_name_for_freelancer(freelancer, index = nil)
+    posts.first.title.parameterize
   end
 
-  def send_asigned_room_email_to_user(record)
-    UserNotifierMailer.notify_asigned_room(self, record).deliver_later(queue: :room)
+  def get_index(user)
+    user.joined_rooms.includes(:user).find_index(self)
+  end
+
+  def send_asigned_room_email_to_freelancer(record)
+    # UserNotifierMailer.delay(queue: :room).notify_asigned_room(self, record)
+    UserNotifierMailer.notify_asigned_room(self, record).deliver_now
   end
 
   rails_admin do
-    configure :asigned_users do
+    configure :asigned_freelancers do
       associated_collection_cache_all false
       associated_collection_scope do
         Proc.new { |scope|
-          scope = scope.freelancers.live
+          scope = scope.live
         }
       end
     end

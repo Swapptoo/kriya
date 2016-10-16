@@ -56,6 +56,7 @@ gem 'sendgrid', '~> 1.2.4'
 gem 'griddler', '~> 1.3.1'
 gem 'griddler-sendgrid'
 gem 'whenever', require: false
+gem 'jquery-datatables-rails', '~> 3.4.0'
 
 ## Utils
 gem 'activerecord-import', '~> 0.16.1'
@@ -92,3 +93,5 @@ group :test do
   gem 'capybara'
   gem 'launchy'
 end
+
+gem 'whenever'

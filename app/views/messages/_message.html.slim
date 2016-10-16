@@ -1,6 +1,6 @@
 - within_60_secs_from_previous = message.within_60_secs_from_previous?
 .comment[class=('inline' if within_60_secs_from_previous)]
-  - if message.user.picture
+  - if message.user && message.user.picture
     - unless within_60_secs_from_previous
       .avatar
         - if message.user == message.room.user
@@ -9,18 +9,26 @@
           = image_tag "square-logo.ico"
         - else
           = image_tag message.user.picture
+  - if message.freelancer && message.freelancer.picture
+    - unless within_60_secs_from_previous
+      .avatar
+        = image_tag message.freelancer.picture
   .content
     - unless within_60_secs_from_previous
       a.author
-        - if message.user == message.room.user
-          - if (user || current_user) != message.room.manager
-            = message.user.first_name
+        - if message.user
+          - if message.user == message.room.user
+            - if (user || current_user) != message.room.manager
+              = message.user.first_name
+            - else
+              ' Client
+          - elsif message.user == message.room.manager
+            ' Kriya Bot
           - else
-            ' Client
-        - elsif message.user == message.room.manager
-          ' Kriya Bot
-        - else
-          = message.user.first_name
+            = message.user.first_name
+        - if message.freelancer
+          = message.freelancer.first_name
+        
       .metadata
         .date
           = time_ago_in_words message.created_at
