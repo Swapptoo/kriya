@@ -1,19 +1,22 @@
-- if user_signed_in?
+- if freelancer_signed_in?
   .sidebar.sidebar--left
+    - if current_freelancer.pending_rooms.any?
+      .ui.vertical.inverted.fluid.menu
+        - current_freelancer.pending_rooms.includes(:user).each_with_index do |room, index|
+          = link_to room, class: "item primary #{'active' if @room == room}" do
+            = room.get_room_name_for_user current_freelancer, index
+            .unread_message_number
     #tasks.ui.vertical.inverted.fluid.menu
-      - if current_user.client?
-        = link_to 'New Project', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
-      - else
-        a
-      - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
+      a
+      - current_freelancer.accepted_rooms.includes(:user).each_with_index do |room, index|
         = link_to room, class: "item primary #{'active' if @room == room}" do
-          = room.get_room_name_for_user current_user, index
+          = room.get_room_name_for_user current_freelancer, index
           .unread_message_number
   .main
     .twelve.wide.column
       - if @room
         .ui.segment.narrow
-          #messages data-room-id=@room.id = render @messages, user: current_user
+          #messages data-room-id=@room.id = render @messages, user: current_freelancer
 
           = form_for [@room, Message.new], remote: true, html: { class: "ui form" } do |f|
             .ui.left.action.input

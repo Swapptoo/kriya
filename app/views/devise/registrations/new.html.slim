@@ -67,49 +67,48 @@ css:
               .field
                 = f.label :email, "Primary Email", class: "inline-label"
                 = f.text_field :email, placeholder: "Primary Email (Ex: Joe@AppleSeed.com)"
-            - if @user.role == 'freelancer' || session["new_user_role"] == 'freelancer'
-              = f.fields_for :profile, FreelancerProfile.new do |p|
+            - if @freelancer
+              .field
+                = f.label :category, "Select Type"
+                = f.collection_select :category, ['Engineering', 'Product', 'Design', 'Sales', 'Marketing'], :to_s, :to_s, {prompt: "Select Type"}, {class: "ui selection dropdown", "tabindex" => -1}
+              .field
+                = f.label :availability, "When are you available for taking on projects?"
+                .ui.radio.checkbox
+                  = f.radio_button :availability, Time.now, {:checked => 'checked'}
+                  = f.label :availability, "Now"
+                .ui.radio.checkbox
+                  = f.radio_button :availability, 7.days.from_now
+                  = f.label :availability, "1 Week"
+                .ui.radio.checkbox
+                  = f.radio_button :availability, 14.days.from_now
+                  = f.label :availability, "2 Week"
+                .ui.radio.checkbox
+                  = f.radio_button :availability, 28.days.from_now
+                  = f.label :availability, "4 Week"
+                .ui.radio.checkbox
+                  = f.radio_button :availability, 90.days.from_now
+                  = f.label :availability, "3 Months"
+              .two.fields
                 .field
-                  = p.label :category, "Select Type"
-                  = p.collection_select :category, ['Engineering', 'Product', 'Design', 'Sales', 'Marketing'], :to_s, :to_s, {prompt: "Select Type"}, {class: "ui selection dropdown", "tabindex" => -1}
+                  = f.label :skills, "Your skills"
+                  = select_tag 'skill_ids', options_from_collection_for_select(Skill.all, "id", "skill"), :prompt => 'Your skills', :multiple => true, :size =>10, class: "ui selection multiple dropdown", "tabindex" => -1
                 .field
-                  = p.label :type, "When are you available for taking on projects?"
-                  .ui.radio.checkbox
-                    = p.radio_button :availability, Time.now, {:checked => 'checked'}
-                    = p.label :availability, "Now"
-                  .ui.radio.checkbox
-                    = p.radio_button :availability, 7.days.from_now
-                    = p.label :availability, "1 Week"
-                  .ui.radio.checkbox
-                    = p.radio_button :availability, 14.days.from_now
-                    = p.label :availability, "2 Week"
-                  .ui.radio.checkbox
-                    = p.radio_button :availability, 28.days.from_now
-                    = p.label :availability, "4 Week"
-                  .ui.radio.checkbox
-                    = p.radio_button :availability, 90.days.from_now
-                    = p.label :availability, "3 Months"
-                .two.fields
-                  .field
-                    = f.label :skills, "Your skills"
-                    = select_tag 'skill_ids', options_from_collection_for_select(Skill.all, "id", "skill"), :prompt => 'Your skills', :multiple => true, :size =>10, class: "ui selection multiple dropdown", "tabindex" => -1
-                  .field
-                    = p.label :primary_skill, "Your primary skill"
-                    = p.collection_select :primary_skill, Skill.all, :id, :skill, {prompt: "Select Your primary skill"}, {class: "ui selection dropdown", "tabindex" => -1}
-                .field
-                  = p.label :years_of_experiencesT, "Years of experiences"
-                  = p.text_field :years_of_experiences, placeholder: "Years of experiences"
-                .field
-                  = p.label :project_description, "Describe the most interesting project you did?"
-                  = p.text_area :project_description
-                .field
-                  = p.label :project_url, "Add Project URL"
-                  = p.text_field :project_url, placeholder: 'Project URL'
-                .field
-                  = p.label :professional_profile_link, "Add Professional profile link"
-                  = p.text_field :professional_profile_link1, placeholder: "(LinkedIn, Dribble, Upwork profile etc)"
-                .field  
-                  = p.text_field :professional_profile_link2, placeholder: "(LinkedIn, Dribble, Upwork profile etc)"
+                  = f.label :primary_skill, "Your primary skill"
+                  = f.collection_select :primary_skill, Skill.all, :id, :skill, {prompt: "Select Your primary skill"}, {class: "ui selection dropdown", "tabindex" => -1}
+              .field
+                = f.label :years_of_experiencesT, "Years of experiences"
+                = f.text_field :years_of_experiences, placeholder: "Years of experiences"
+              .field
+                = f.label :project_description, "Describe the most interesting project you did?"
+                = f.text_area :project_description
+              .field
+                = f.label :project_url, "Add Project URL"
+                = f.text_field :project_url, placeholder: 'Project URL'
+              .field
+                = f.label :professional_profile_link, "Add Professional profile link"
+                = f.text_field :professional_profile_link1, placeholder: "(LinkedIn, Dribble, Upwork profile etc)"
+              .field  
+                = f.text_field :professional_profile_link2, placeholder: "(LinkedIn, Dribble, Upwork profile etc)"
             - unless @oauth
               .two.fields
                 .field

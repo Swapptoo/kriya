@@ -17,6 +17,7 @@ class Message < ApplicationRecord
   mount_uploader :image, ImageUploader
   belongs_to :room
   belongs_to :user
+  belongs_to :freelancer
   belongs_to :post
   has_one :attachment, dependent: :destroy
 

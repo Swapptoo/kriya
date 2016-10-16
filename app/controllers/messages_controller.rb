@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
+  before_action :authenticate!
 
   # GET /messages
   # GET /messages.json
@@ -29,8 +29,11 @@ class MessagesController < ApplicationController
     @message = Message.new(message_params)
     room = Room.find params[:room_id]
     @message.room = room
-    @message.user = current_user
-
+    if user_signed_in?
+      @message.user = current_user
+    elsif freelancer_signed_in?
+      @message.freelancer = current_freelancer
+    end
     @message.save
     @message.process_command
     head :ok

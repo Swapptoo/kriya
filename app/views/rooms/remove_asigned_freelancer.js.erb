@@ -1,0 +1,6 @@
+<% if @success %>
+  alert('<%= @freelancer.full_name %> is succssfully removed from <%= @room.title %>.');
+  $('#asigned_freelancer_<%= @freelancer.id %>').remove()
+<% else %>
+  alert('Failed')
+<% end %> 

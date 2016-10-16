@@ -1,0 +1,40 @@
+= content_tag :div, id: dom_id(@room) do
+  .ui.container.new-post
+    .author-box-show
+      .left
+      .right
+        .summary
+        span.date
+      .right[style="float:right"]
+    .filters
+      /.skills
+        label Skills
+        = select_tag "skill", options_from_collection_for_select(Skill.all, "id", "skill")
+    .four.wide.column
+      table#freelancers_list
+        thead
+          th Name
+          th Skills
+          th Availability
+          th Profile Link
+          th 
+        tbody
+          - @freelancers.each do |freelancer|
+            tr
+              td= freelancer.full_name
+              td
+                - freelancer.skills.each do |skill|
+                  div
+                    = skill.skill
+              td= freelancer.availability
+              td
+                = link_to freelancer.professional_profile_link1, freelancer.professional_profile_link1
+              td id="asign_btn_#{freelancer.id}"
+                = link_to 'Asign', asign_freelancer_room_path(@room, freelancer_id: freelancer.id), remote: true, class: 'ui button small primary'
+
+    .cf
+    .ui.divider
+javascript:
+  $(document).ready(function() {
+    $("#freelancers_list").dataTable();
+  })

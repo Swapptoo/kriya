@@ -2,7 +2,7 @@
 
 .main
   .twelve.wide.column
-    - if @room && @room.get_status(current_user) != 'pending'
+    - if @room
       .ui.divided.grid
         .twelve.wide.column
           .ui.stacked.segment
@@ -54,6 +54,13 @@
             h4 Budget
             = number_to_currency(@room.budget)
             .ui.divider
-
+            h4 Asigned Freelancers
+            div#asigned_freelancers
+              - @room.asigned_freelancers.each do |af|
+                div id="asigned_freelancer_#{af.id}"
+                  span = af.full_name
+                  = link_to 'X', remove_asigned_freelancer_room_path(@room, freelancer_id: af.id), data: {remote: true, confirm: "Are you sure?"}, class: 'ui button small negative', style: 'margin-left:20px'
+            .ui.divider
+            = link_to 'Asign Freelancers', freelancers_list_room_path(@room), id: 'assign_freelancers', class: 'ui button small primary', :data => {:modal => true}
     - else
       = render "goomp_bot/new_goomp"

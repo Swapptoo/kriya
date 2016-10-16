@@ -7,9 +7,9 @@
 #  skill_id :integer
 #
 
-class UserSkill < ApplicationRecord
-  belongs_to :user
+class FreelancerSkill < ApplicationRecord
+  belongs_to :freelancer
   belongs_to :skill
 
-  validates_presence_of :skill_id, :user_id
+  validates_presence_of :skill_id, :freelancer_id
 end

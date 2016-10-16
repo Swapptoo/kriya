@@ -19,5 +19,6 @@
  *= require home
  *= require jquery.fileupload
  *= require fluidbox.min
+ *= require dataTables/jquery.dataTables
  *= require_self
  */
