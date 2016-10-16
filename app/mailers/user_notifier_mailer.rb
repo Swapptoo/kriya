@@ -17,14 +17,6 @@ class UserNotifierMailer < ApplicationMailer
     mail(:to => @user.email, :subject => "[Kriya] #{room.title}")
   end
 
-  def notify_room_manager(room)
-    @sendgrid_category = "Room #{room.id}"
-    @user = room.manager
-    @room = room
-
-    mail(:to => @user.email, :subject => "[Kriya] #{room.title}")
-  end
-
   def notify_goomp(room)
     @sendgrid_category = "Room #{room.id}"
     @user = room.user
@@ -41,10 +33,16 @@ class UserNotifierMailer < ApplicationMailer
     full_name = 'Kriya Bot' if other_user == room.manager
     @messages = messages.map { |msg| "#{full_name}: #{msg.body}" }
     messages.update_all(seen: true)
+	if other_user == room.manager then
+	  usertype = "manager"
+	else
+	  usertype = "client"
+	end
 
     mail(
       :to => user.email,
-      :subject => "[Project] #{room.title}"
+      :subject => "[Task] #{room.title}",
+      :from => "Kriya Notification <" + usertype + "-" + room.id.to_s + "@messages.kriya.ai>"
     )
   end
 

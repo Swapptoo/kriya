@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: freelancers_rooms
+#
+#  id            :integer          not null, primary key
+#  freelancer_id :integer
+#  room_id       :integer
+#  status        :string           default("pending")
+#
+# Indexes
+#
+#  index_freelancers_rooms_on_freelancer_id_and_room_id  (freelancer_id,room_id) UNIQUE
+#
+
 class FreelancersRooms < ApplicationRecord
   enum status: {pending: 'pending', accepted: 'accepted', in_progress: 'in_progress', completed: 'completed'}
   

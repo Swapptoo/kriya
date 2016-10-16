@@ -14,6 +14,16 @@
 #  quality         :string
 #  description     :text
 #
+# Indexes
+#
+#  index_rooms_on_manager_id  (manager_id)
+#  index_rooms_on_user_id     (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_676194d148  (manager_id => users.id)
+#  fk_rails_a63cab0c67  (user_id => users.id)
+#
 
 class Room < ApplicationRecord
   has_many :messages, dependent: :destroy

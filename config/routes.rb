@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :follows
   root to: "pages#index"
   get '/network' => 'pages#network', :as => 'network'
+  get '/skills/search' => 'skills#search'
 
   concern :likable do
     post :like, on: :member

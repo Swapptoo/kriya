@@ -1,3 +1,5 @@
 p Hi Krita Managers,
-p= "A client, #{@user.full_name}, has created a new project. Please check the thread here."
+p
+  span = "A client, #{@user.full_name}, has created a new task. "
+  = link_to 'Please check the thread here.', room_url(@room, user_email: @user.email, user_token: @user.authentication_token)
 p Kriya Bot

@@ -30,6 +30,13 @@
 #  role                   :string
 #  last_seen_at           :datetime
 #  stripe_id              :string
+#  authentication_token   :string(30)
+#
+# Indexes
+#
+#  index_users_on_authentication_token  (authentication_token) UNIQUE
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
 class User < ApplicationRecord

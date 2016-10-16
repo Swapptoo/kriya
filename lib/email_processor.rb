@@ -4,29 +4,45 @@ class EmailProcessor
   end
 
   def process
-    # all of your application-specific code here - creating models,
-    # processing reports, etc
-    # @room.messages.create({:seen => true, :body => 'Please choose one your project timeline', :room => @room, :user => @room.manager})
-
-    # @user = User.find_by_email(@email.from[:email])
-    #
-    #
-    #
-    # # here's an example of model creation
-    # user.posts.create!(
-    #   subject: @email.subject,
-    #   body: @email.body
-    # )
-    puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+	puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@"
     puts @email.subject
     puts @email.body
     puts @email.headers
+	puts @email.to
+	puts @email.from
     puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-  end
 
-  private
+	num = @email.to.first[:token].tr('^0-9', '')
+	room = Room.find num
+	body = @email.body
+	if @email.to.first[:token].include? "manager" then
+		sender = room.user
+	else
+		sender = room.manager
+	end
+	lines = body.split("\n")
+	body = ""
+	lines.each do |line|
+		if line.include? "Kriya Notification" then
+			break
+		end
+		body += line + "\n"
+	end
+	room.messages.create({:seen => false, :body => body, :room => room, :user => sender})
+	@email.attachments.each do |attachment|
+		room.messages.create({:seen => false, :body => '', :room => room, :user => sender, :image => attachment})
+	end
+	room.save
 
-  def room
-    # return @user.joined_rooms.first if @user.joined_rooms.count == 1
+	ActionCable.server.broadcast(
+        "rooms:#{room.id}:messages",
+        message: MessagesController.render(
+          partial: 'messages/message',
+          locals: {
+            message: room.messages.last, user: sender
+          }
+        ),
+        room_id: room.id,
+      )
   end
 end

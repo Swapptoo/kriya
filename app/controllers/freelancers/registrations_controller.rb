@@ -27,16 +27,24 @@ class Freelancers::RegistrationsController < Devise::RegistrationsController
         resource.password = authdata["password"] || Devise.friendly_token[0,20]
       end
       resource.save
-      #debugger
-      if resource.persisted? && authdata
-        resource.authorizations.create!(
-          uid: authdata["uid"],
-          provider: authdata["provider"],
-          token: authdata["token"],
-          refresh_token: authdata["refresh_token"]
-          # expires_at: authdata["expires_at"],
-        )
+
+      if resource.persisted?
+
+        params[:skill_ids].each do |skill_id|
+          resource.freelancer_skills.create(skill_id: skill_id)
+        end
+
+        if authdata
+          resource.authorizations.create!(
+            uid: authdata["uid"],
+            provider: authdata["provider"],
+            token: authdata["token"],
+            refresh_token: authdata["refresh_token"]
+            # expires_at: authdata["expires_at"],
+          )
+        end
       end
+
       @oauth = !authdata.nil?
     end
   end

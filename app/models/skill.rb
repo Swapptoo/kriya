@@ -2,9 +2,9 @@
 #
 # Table name: skills
 #
+#  category :string
 #  id       :integer          not null, primary key
 #  skill    :string
-#  category :string
 #
 
 class Skill < ApplicationRecord

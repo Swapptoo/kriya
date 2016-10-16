@@ -29,16 +29,16 @@
       - else
         = render "goomp_bot/new_goomp"
 
-  coffee:
-    setTimeout =>
-      numberOfChannels = $("#tasks>a").length-1
-      $.cookie($("#messages").data('room-id'), "0")
-      for num in [1..numberOfChannels]
-        if ($.cookie("#{num}")=='NaN') || ($.cookie("#{num}") == '') || ($.cookie("#{num}") == '0')
-          $('a[href="/tasks/'+num+'"]').val('')
-          $('a[href="/tasks/'+num+'"] > div.unread_message_number').removeClass("ui teal left pointing label")
-        else
-          $('a[href="/tasks/'+num+'"]').val($.cookie("#{num}"))
-          $('a[href="/tasks/'+num+'"] > div.unread_message_number').removeClass("ui teal left pointing label").addClass("ui teal left pointing label")
-          $('a[href="/tasks/'+num+'"] >  div.unread_message_number').text($('a[href="/tasks/'+num+'"]').val())
-    , 10
+coffee:
+  setTimeout =>
+    numberOfChannels = $("#tasks>a").length-1
+    $.cookie($("#messages").data('room-id'), "0")
+    for num in [1..numberOfChannels]
+      if ($.cookie("#{num}")=='NaN') || ($.cookie("#{num}") == '') || ($.cookie("#{num}") == '0')
+        $('a[href="/tasks/'+num+'"]').val('')
+        $('a[href="/tasks/'+num+'"] > div.unread_message_number').removeClass("ui teal left pointing label")
+      else
+        $('a[href="/tasks/'+num+'"]').val($.cookie("#{num}"))
+        $('a[href="/tasks/'+num+'"] > div.unread_message_number').removeClass("ui teal left pointing label").addClass("ui teal left pointing label")
+        $('a[href="/tasks/'+num+'"] >  div.unread_message_number').text($('a[href="/tasks/'+num+'"]').val())
+  , 10

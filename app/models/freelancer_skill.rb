@@ -1,10 +1,14 @@
 # == Schema Information
 #
-# Table name: user_skills
+# Table name: freelancer_skills
 #
-#  id       :integer          not null, primary key
-#  user_id  :integer
-#  skill_id :integer
+#  id            :integer          not null, primary key
+#  freelancer_id :integer
+#  skill_id      :integer
+#
+# Indexes
+#
+#  index_freelancer_skills_on_freelancer_id_and_skill_id  (freelancer_id,skill_id) UNIQUE
 #
 
 class FreelancerSkill < ApplicationRecord

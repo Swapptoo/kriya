@@ -62,13 +62,14 @@ ActiveRecord::Schema.define(version: 20161016061621) do
     t.integer  "user_id"
     t.string   "category"
     t.datetime "availability"
-    t.integer  "primary_skill"
+    t.integer  "primary_skill_id"
     t.string   "years_of_experiences"
     t.string   "project_description"
     t.string   "project_url"
     t.string   "professional_profile_link1"
     t.string   "professional_profile_link2"
     t.string   "status",                     default: "pause"
+    t.integer  "hourly_rate",                default: 0,       null: false
     t.index ["user_id"], name: "index_freelancer_profiles_on_user_id", using: :btree
   end
 

@@ -1,3 +1,47 @@
+# == Schema Information
+#
+# Table name: freelancers
+#
+#  id                         :integer          not null, primary key
+#  email                      :string           default(""), not null
+#  encrypted_password         :string           default(""), not null
+#  reset_password_token       :string
+#  reset_password_sent_at     :datetime
+#  remember_created_at        :datetime
+#  sign_in_count              :integer          default(0), not null
+#  current_sign_in_at         :datetime
+#  last_sign_in_at            :datetime
+#  current_sign_in_ip         :inet
+#  last_sign_in_ip            :inet
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  username                   :string
+#  bio                        :string
+#  first_name                 :string
+#  last_name                  :string
+#  picture                    :string
+#  headline                   :string
+#  work_experience            :string
+#  gender                     :string
+#  avatar                     :string
+#  category                   :string
+#  availability               :datetime
+#  primary_skill              :integer
+#  years_of_experiences       :string
+#  project_description        :string
+#  project_url                :string
+#  professional_profile_link1 :string
+#  professional_profile_link2 :string
+#  status                     :string           default("pause")
+#  authentication_token       :string(30)
+#
+# Indexes
+#
+#  index_freelancers_on_authentication_token  (authentication_token) UNIQUE
+#  index_freelancers_on_email                 (email) UNIQUE
+#  index_freelancers_on_reset_password_token  (reset_password_token) UNIQUE
+#
+
 class Freelancer < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

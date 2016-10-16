@@ -81,6 +81,7 @@ AppView = {
     @initEditor()
     @initInfinitePage()
     @initStripe()
+    @initSearch()
     @initFileupload()
     @markMessagesSeen()
     ChatWindow.initialize()
@@ -337,8 +338,8 @@ AppView = {
             type   : 'empty',
             prompt : 'Please select skills'
           }]
-        primary_skill:
-          identifier: 'user[profile_attributes][primary_skill]'
+        primary_skill_id:
+          identifier: 'user[profile_attributes][primary_skill_id]'
           rules: [{
             type   : 'empty',
             prompt : 'Please select primary skill'
@@ -348,6 +349,12 @@ AppView = {
           rules: [{
             type   : 'empty',
             prompt : 'Please input years of experiences'
+          }]
+        hourly_rate_in_dollar:
+          identifier: 'user[profile_attributes][hourly_rate_in_dollar]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please input hourly rate'
           }]
         project_description:
           identifier: 'user[profile_attributes][project_description]'
@@ -387,6 +394,11 @@ AppView = {
     if val.length == 0 || val.indexOf("default-male") > -1
       $("#user-avatar").attr("src", url)
       $("#user_picture").val(url)
+
+  initSearch: ->
+    $('.ui.dropdown.search').dropdown
+      minCharacters: 2
+      apiSettings: url: '/skills/search?query={query}'
 
   setMaleAvatar: ->
     url = ""

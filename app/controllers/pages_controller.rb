@@ -1,8 +1,10 @@
 class PagesController < ApplicationController
+  before_action :set_room, if: :user_signed_in?
+
   def index
     if user_signed_in?
-      if current_user.joined_rooms.first
-        redirect_to current_user.joined_rooms.last
+      if @room.present?
+        redirect_to @room
       else
         render "dashboard", layout: "application"
       end
@@ -27,5 +29,11 @@ class PagesController < ApplicationController
     else
       render "network"
     end
+  end
+
+  protected
+
+  def set_room
+    @room = current_user.joined_rooms.first
   end
 end

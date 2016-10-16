@@ -4,25 +4,27 @@
       -if current_freelancer.pending_rooms.any?
         span style="color:white" Pending Tasks
         - current_freelancer.pending_rooms.includes(:user).each_with_index do |room, index|
-          = link_to room, class: "item primary #{'active' if @room == room}" do
+          = link_to room, class: "item primary #{'active' if @room == room}", style: 'text-align: left;line-height: 20px;color: #888;' do
             = room.get_room_name_for_freelancer current_freelancer, index
             .unread_message_number
         hr
       #tasks
         span style="color:white" In-progress Tasks
+        a
         - current_freelancer.accepted_rooms.includes(:user).each_with_index do |room, index|
           = link_to room, class: "item primary #{'active' if @room == room}" do
-            = room.get_room_name_for_user current_freelancer, index
+            = room.get_room_name_for_freelancer current_freelancer, index
             .unread_message_number
     - if user_signed_in?
-      - if current_user.client?
-        = link_to 'New Project', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
-      - else
-        a
-      - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
-        = link_to room, class: "item primary #{'active' if @room == room}" do
-          = room.get_room_name_for_user current_user, index
-          .unread_message_number
+      #tasks
+        - if current_user.client?
+          = link_to 'New Task', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
+        - else
+          a
+        - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
+          = link_to room, class: "item primary #{'active' if @room == room}" do
+            = room.get_room_name_for_user current_user, index
+            .unread_message_number
 
 coffee:
   setTimeout =>

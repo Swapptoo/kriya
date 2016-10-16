@@ -2,13 +2,23 @@
 #
 # Table name: comments
 #
-#  id          :integer          not null, primary key
 #  body        :string
-#  post_id     :integer
-#  user_id     :integer
 #  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id          :integer          not null, primary key
 #  likes_count :integer          default(0)
+#  post_id     :integer
+#  updated_at  :datetime         not null
+#  user_id     :integer
+#
+# Indexes
+#
+#  index_comments_on_post_id  (post_id)
+#  index_comments_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_03de2dc08c  (user_id => users.id)
+#  fk_rails_2fd19c0db7  (post_id => posts.id)
 #
 
 class Comment < ApplicationRecord
