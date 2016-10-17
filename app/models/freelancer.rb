@@ -53,7 +53,8 @@ class Freelancer < ApplicationRecord
   validates :first_name, :last_name, :picture, :headline, :category, :availability, :primary_skill, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, presence: true
   
   before_save :ensure_authentication_token
-
+  
+  has_many :authorizations, dependent: :destroy
 
   has_many :freelancer_skills
   has_many :skills, through: :freelancer_skills, dependent: :destroy
