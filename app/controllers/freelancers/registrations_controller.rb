@@ -43,6 +43,7 @@ class Freelancers::RegistrationsController < Devise::RegistrationsController
             refresh_token: authdata["refresh_token"]
             # expires_at: authdata["expires_at"],
           )
+          session.delete("devise.oauth_data")
         end
       end
 

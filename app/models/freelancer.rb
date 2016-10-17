@@ -134,7 +134,19 @@ class Freelancer < ApplicationRecord
     end
 
     auth = Authorization.find_by uid: authdata[:uid], provider: authdata[:provider]
-
+    if auth.nil? || auth.freelancer.nil?
+      freelancer = Freelancer.find_by email: authdata[:email]
+      if !freelancer.nil? && freelancer.persisted?
+        freelancer.authorizations.create!(
+          uid: authdata[:uid],
+          provider: authdata[:provider],
+          token: authdata[:token],
+          refresh_token: authdata[:refresh_token]
+          # expires_at: authdata["expires_at"],
+        )
+        return freelancer
+      end
+    end
     return auth&.freelancer || authdata
   end
 
