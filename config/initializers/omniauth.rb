@@ -9,4 +9,5 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     scope: "r_basicprofile r_emailaddress",
     fields: ['id', 'email-address', 'first-name', 'last-name', 'headline', 'picture-urls::(original)']
   }
+  on_failure { |env| OmniauthCallbacksController.action(:failure).call(env) }
 end
