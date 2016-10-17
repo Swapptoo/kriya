@@ -72,7 +72,7 @@ css:
                 = f.label :category, "Select Type"
                 = f.collection_select :category, ['Engineering', 'Product', 'Design', 'Sales', 'Marketing'], :to_s, :to_s, {prompt: "Select Type"}, {class: "ui selection dropdown", "tabindex" => -1}
               .field
-                = f.label :availability, "When are you available for taking on projects?"
+                = f.label :availability, "When are you available to start taking tasks?"
                 .ui.radio.checkbox
                   = f.radio_button :availability, Time.now, {:checked => 'checked'}
                   = f.label :availability, "Now"
@@ -90,14 +90,14 @@ css:
                   = f.label :availability, "3 Months"
               .two.fields
                 .field
-                  = f.label :skills, "Your skills"
+                  = f.label :skills, "Your Skills (Max 3 Skills)"
                   = select_tag 'skill_ids', '', :prompt => 'Your skills', :multiple => true, :size =>10, class: "ui selection multiple dropdown search", "tabindex" => -1
                 .field
-                  = f.label :primary_skill, "Your primary skill"
+                  = f.label :primary_skill, "Your Primary Skill"
                   = f.collection_select :primary_skill, [], :id, :skill, {prompt: "Select Your primary skill"}, {class: "ui selection dropdown search", "tabindex" => -1}
               .field
-                = f.label :years_of_experiencesT, "Years of experiences"
-                = f.text_field :years_of_experiences, placeholder: "Years of experiences"
+                = f.label :years_of_experiencesT, "Years of Experiences"
+                = f.text_field :years_of_experiences, placeholder: "4 Years"
               .field
                 = f.label :project_description, "Describe the most interesting project you did?"
                 = f.text_area :project_description
@@ -105,10 +105,10 @@ css:
                 = f.label :project_url, "Add Project URL"
                 = f.text_field :project_url, placeholder: 'Project URL'
               .field
-                = f.label :professional_profile_link, "Add Professional profile link"
-                = f.text_field :professional_profile_link1, placeholder: "(LinkedIn, Dribble, Upwork profile etc)"
+                = f.label :professional_profile_link, "Add Professional Profile"
+                = f.text_field :professional_profile_link1, placeholder: "Add your professional link (LinkedIn, Dribble, Upwork profile etc)"
               .field  
-                = f.text_field :professional_profile_link2, placeholder: "(LinkedIn, Dribble, Upwork profile etc)"
+                = f.text_field :professional_profile_link2, placeholder: "Add your professional link (LinkedIn, Dribble, Upwork profile etc)"
             - unless @oauth
               .two.fields
                 .field
