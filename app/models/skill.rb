@@ -8,5 +8,7 @@
 #
 
 class Skill < ApplicationRecord
-
+  def title
+    self.skill
+  end
 end

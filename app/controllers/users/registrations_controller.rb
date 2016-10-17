@@ -5,7 +5,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     super do |user|
-      user.role = session["new_user_role"]
       authdata = session["devise.oauth_data"]
       if authdata
         user.first_name = authdata["first_name"]
@@ -23,22 +22,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     authdata = session["devise.oauth_data"]
     super do |user|
-      resource.role = session["new_user_role"]
       if authdata
         resource.email ||= authdata["email"]
         resource.password = authdata["password"] || Devise.friendly_token[0,20]
-        resource.role = session["new_user_role"]
       end
 
       resource.save
 
       if resource.persisted?
-
-        # Freelancer
-        skill_ids = params[:skill_ids] || []
-        skill_ids.each do |skill_id|
-          resource.user_skills.create(skill_id: skill_id)
-        end
 
         if authdata
           resource.authorizations.create!(
@@ -48,6 +39,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
             refresh_token: authdata["refresh_token"]
             # expires_at: authdata["expires_at"],
           )
+          session.delete("devise.oauth_data")
         end
       end
 

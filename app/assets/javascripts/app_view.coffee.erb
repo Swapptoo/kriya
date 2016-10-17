@@ -320,56 +320,96 @@ AppView = {
             type   : 'empty',
             prompt : 'Please enter headline'
           }]
+    )
+    $("#new_freelancer").form(
+      on: 'blur'
+      fields:
+        cover:
+          identifier: 'freelancer[picture]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please upload avatar'
+          }]
+        firstName:
+          identifier: 'freelancer[first_name]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please enter first name'
+          }]
+        lastName:
+          identifier: 'freelancer[last_name]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please enter last name'
+          }]
+        gender:
+          identifier: 'freelancer[gender]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please choose gender'
+          }]
+        email:
+          identifier: 'freelancer[email]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please enter email'
+          }]
+        headline:
+          identifier: 'freelancer[headline]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please enter headline'
+          }]
         category:
-          identifier: 'user[profile_attributes][category]'
+          identifier: 'freelancer[category]'
           rules: [{
             type   : 'empty',
             prompt : 'Please select type'
           }]
         availability:
-          identifier: 'user[profile_attributes][availability]'
+          identifier: 'freelancer[availability]'
           rules: [{
             type   : 'empty',
             prompt : 'Please select availability'
           }]
         skills:
-          identifier: 'user[profile_attributes][skills]'
+          identifier: 'freelancer[skills]'
           rules: [{
             type   : 'empty',
             prompt : 'Please select skills'
           }]
-        primary_skill_id:
-          identifier: 'user[profile_attributes][primary_skill_id]'
+        primary_skill:
+          identifier: 'freelancer[primary_skill]'
           rules: [{
             type   : 'empty',
             prompt : 'Please select primary skill'
           }]
         years_of_experiences:
-          identifier: 'user[profile_attributes][years_of_experiences]'
+          identifier: 'freelancer[years_of_experiences]'
           rules: [{
             type   : 'empty',
             prompt : 'Please input years of experiences'
           }]
         hourly_rate_in_dollar:
-          identifier: 'user[profile_attributes][hourly_rate_in_dollar]'
+          identifier: 'freelancer[hourly_rate_in_dollar]'
           rules: [{
             type   : 'empty',
             prompt : 'Please input hourly rate'
           }]
         project_description:
-          identifier: 'user[profile_attributes][project_description]'
+          identifier: 'freelancer[project_description]'
           rules: [{
             type   : 'empty',
             prompt : 'Please input project description'
           }]
         project_url:
-          identifier: 'user[profile_attributes][project_url]'
+          identifier: 'freelancer[project_url]'
           rules: [{
             type   : 'empty',
             prompt : 'Please input project url'
           }]
         professional_profile_link1:
-          identifier: 'user[profile_attributes][professional_profile_link1]'
+          identifier: 'freelancer[professional_profile_link1]'
           rules: [{
             type   : 'empty',
             prompt : 'Please input professional profile_link'

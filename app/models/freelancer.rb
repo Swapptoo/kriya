@@ -54,6 +54,7 @@ class Freelancer < ApplicationRecord
   
   before_save :ensure_authentication_token
 
+  has_many :authorizations, dependent: :destroy
 
   has_many :freelancer_skills
   has_many :skills, through: :freelancer_skills, dependent: :destroy
@@ -133,15 +134,45 @@ class Freelancer < ApplicationRecord
     end
 
     auth = Authorization.find_by uid: authdata[:uid], provider: authdata[:provider]
-
-    return auth&.user || authdata
+    if auth.nil? || auth.freelancer.nil?
+      freelancer = Freelancer.find_by email: authdata[:email]
+      if !freelancer.nil? && freelancer.persisted?
+        freelancer.authorizations.create!(
+          uid: authdata[:uid],
+          provider: authdata[:provider],
+          token: authdata[:token],
+          refresh_token: authdata[:refresh_token]
+          # expires_at: authdata["expires_at"],
+        )
+        return freelancer
+      end
+    end
+    return auth&.freelancer || authdata
   end
 
 
-  def update_status
-    if self.profile
-      new_status = self.profile.status == 'pause' ? 'live' : 'pause'
-      self.profile.update_attribute(:status, new_status)
+
+  rails_admin do
+    list do
+      field :full_name
+      field :email
+      field :created_at
+      field :professional_profile_link1
+      field :status
+      field :skills do
+        formatted_value{ 
+          bindings[:object].skills.each do |skill| 
+            skill.skill 
+          end
+        }
+      end
     end
+
+  end
+
+  private
+  def update_status
+    new_status = self.status == 'pause' ? 'live' : 'pause'
+    self.update_attribute(:status, new_status)
   end
 end

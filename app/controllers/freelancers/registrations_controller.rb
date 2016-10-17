@@ -30,7 +30,8 @@ class Freelancers::RegistrationsController < Devise::RegistrationsController
 
       if resource.persisted?
 
-        params[:skill_ids].each do |skill_id|
+        skill_ids = params[:skill_ids] || []
+        skill_ids.each do |skill_id|
           resource.freelancer_skills.create(skill_id: skill_id)
         end
 
@@ -42,6 +43,7 @@ class Freelancers::RegistrationsController < Devise::RegistrationsController
             refresh_token: authdata["refresh_token"]
             # expires_at: authdata["expires_at"],
           )
+          session.delete("devise.oauth_data")
         end
       end
 

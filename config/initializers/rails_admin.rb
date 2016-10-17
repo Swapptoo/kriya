@@ -12,7 +12,7 @@ RailsAdmin.config do |config|
     redirect_to main_app.root_path unless current_user.email.in? %w(manager@goomp.co)
   end
 
-  ## config.included_models = ["User", "Room", "Goomp"]
+  config.included_models = ["User", "Freelancer", "Room", "FreelancersRooms", "Skill"]
   
   ## == Cancan ==
   # config.authorize_with :cancan
@@ -30,7 +30,7 @@ RailsAdmin.config do |config|
   # config.show_gravatar true
 
   config.actions do
-    update_user_status
+    update_freelancer_status
 
     dashboard                     # mandatory
     index                         # mandatory

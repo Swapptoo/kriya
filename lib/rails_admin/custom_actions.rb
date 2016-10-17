@@ -14,10 +14,10 @@ module RailsAdmin
         end
       end
 
-      class UpdateUserStatus < Customaction
+      class UpdateFreelancerStatus < Customaction
         RailsAdmin::Config::Actions.register(self)
         register_instance_option :only do
-          User
+          Freelancer
         end
         register_instance_option :link_icon do
           'fa fa-paper-plane' # use any of font-awesome icons
