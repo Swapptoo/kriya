@@ -49,7 +49,6 @@ Rails.application.routes.draw do
   resources :memberships
 
   devise_for :users, controllers: {
-    omniauth_callbacks: "users/omniauth_callbacks",
     registrations: 'users/registrations'
   }
   resources :users, only: [:index, :show], concerns: :followable
@@ -58,5 +57,7 @@ Rails.application.routes.draw do
   devise_for :freelancers, controllers: {
     registrations: 'freelancers/registrations'
   }
+
+  get "/auth/:provider/callback" => "omniauth_callbacks#create"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

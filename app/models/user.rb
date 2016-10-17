@@ -45,7 +45,7 @@ class User < ApplicationRecord
 
   enum role: { client: 'client', freelancer: 'freelancer', manager: 'manager' }
 
-  devise :database_authenticatable, :registerable, :omniauthable, :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
   has_many :goomps, dependent: :destroy
   has_many :memberships, dependent: :destroy
