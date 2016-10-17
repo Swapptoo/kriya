@@ -145,6 +145,7 @@ class Freelancer < ApplicationRecord
       field :full_name
       field :email
       field :created_at
+      field :professional_profile_link1
       field :status
       field :skills do
         formatted_value{ 
