@@ -134,7 +134,7 @@ class Freelancer < ApplicationRecord
 
     auth = Authorization.find_by uid: authdata[:uid], provider: authdata[:provider]
 
-    return auth&.user || authdata
+    return auth&.freelancer || authdata
   end
 
 
