@@ -53,7 +53,7 @@ class Freelancer < ApplicationRecord
   validates :first_name, :last_name, :picture, :headline, :category, :availability, :primary_skill, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, presence: true
   
   before_save :ensure_authentication_token
-  
+
   has_many :authorizations, dependent: :destroy
 
   has_many :freelancer_skills
@@ -139,10 +139,27 @@ class Freelancer < ApplicationRecord
   end
 
 
-  def update_status
-    if self.profile
-      new_status = self.profile.status == 'pause' ? 'live' : 'pause'
-      self.profile.update_attribute(:status, new_status)
+
+  rails_admin do
+    list do
+      field :full_name
+      field :email
+      field :created_at
+      field :status
+      field :skills do
+        formatted_value{ 
+          bindings[:object].skills.each do |skill| 
+            skill.skill 
+          end
+        }
+      end
     end
+
+  end
+
+  private
+  def update_status
+    new_status = self.status == 'pause' ? 'live' : 'pause'
+    self.update_attribute(:status, new_status)
   end
 end
