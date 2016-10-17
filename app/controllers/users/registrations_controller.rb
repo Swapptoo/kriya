@@ -34,7 +34,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
       if resource.persisted?
 
-        params[:skill_ids].each do |skill_id|
+        # Freelancer
+        skill_ids = params[:skill_ids] || []
+        skill_ids.each do |skill_id|
           resource.user_skills.create(skill_id: skill_id)
         end
 
