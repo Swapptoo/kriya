@@ -28,6 +28,5 @@
 
 class Authorization < ApplicationRecord
   belongs_to :user
-  belongs_to :freelancer
   validates :uid, :provider, presence: true
 end

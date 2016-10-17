@@ -54,7 +54,7 @@ class Freelancer < ApplicationRecord
   
   before_save :ensure_authentication_token
 
-  has_many :authorizations, dependent: :destroy
+  has_many :freelancer_authorizations, dependent: :destroy
 
   has_many :freelancer_skills
   has_many :skills, through: :freelancer_skills, dependent: :destroy
@@ -133,7 +133,7 @@ class Freelancer < ApplicationRecord
       }
     end
 
-    auth = Authorization.find_by uid: authdata[:uid], provider: authdata[:provider]
+    auth = FreelancerAuthorization.find_by uid: authdata[:uid], provider: authdata[:provider]
     if authdata[:provider] == 'twitter'
       if !auth.nil? && !auth.freelancer.nil? && auth.freelancer.persisted?
         return auth.freelancer
@@ -142,7 +142,7 @@ class Freelancer < ApplicationRecord
       if auth.nil? || auth.freelancer.nil?
         freelancer = Freelancer.find_by email: authdata[:email]
         if !freelancer.nil? && freelancer.persisted?
-          freelancer.authorizations.create!(
+          freelancer.freelancer_authorizations.create!(
             uid: authdata[:uid],
             provider: authdata[:provider],
             token: authdata[:token],

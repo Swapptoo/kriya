@@ -36,7 +36,7 @@ class Freelancers::RegistrationsController < Devise::RegistrationsController
         end
 
         if authdata
-          resource.authorizations.create!(
+          resource.freelancer_authorizations.create!(
             uid: authdata["uid"],
             provider: authdata["provider"],
             token: authdata["token"],
