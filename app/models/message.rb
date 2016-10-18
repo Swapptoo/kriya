@@ -61,25 +61,29 @@ class Message < ApplicationRecord
                 }
               });
             e.preventDefault();
+            location.reload();
 
           });
         </script>
         HTML
         title = "Change card"
+        color = "white"
         update_customer = 1
       else
         title = "Pay with card"
+        color = "green"
         update_customer = 0
       end
       self.attachment.html += <<~HTML.squish
       <script src="https://checkout.stripe.com/checkout.js"></script>
-      <button id="customButton-#{self.id}-2" class="mini ui #{if not update_customer then "green" else "white" end} button custom-padding">#{title}</button>
+      <button id="customButton-#{self.id}-2" class="mini ui #{color} button custom-padding">#{title}</button>
         <script>
           var handler = StripeCheckout.configure({
             key: $("meta[name=stripePublishableKey]").attr("content"),
             image: 'https://www.filestackapi.com/api/file/6hx3CLg3SQGoARFjNBGq',
             locale: 'auto',
             amount: "#{(amount.to_f*100).to_i}",
+            closed: function() { location.reload(); },
             token: function(token) {
               return $.post("/payments.json", {
                 token: token,
@@ -100,7 +104,6 @@ class Message < ApplicationRecord
               amount: "#{(amount.to_f*100).to_i}"
             });
             e.preventDefault();
-
           });
 
           window.addEventListener('popstate', function() {
