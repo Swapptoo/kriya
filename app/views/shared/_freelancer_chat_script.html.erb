@@ -83,8 +83,12 @@
           path: 'notice',
           key: "description",
           answers: [{
-            'text': 'Accept task',
+            'text': 'Confirm',
             'path': '/tasks/<%= @room.id %>/accept' ,
+            'key': 'quality'
+          },{
+            'text': 'Pass',
+            'path': '/tasks/<%= @room.id %>/reject' ,
             'key': 'quality'
           }]
         }

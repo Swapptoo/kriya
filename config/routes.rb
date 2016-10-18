@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
     post :mark_messages_seen, on: :member
     get :accept, on: :member
+    get :reject, on: :member
     get :freelancers_list, on: :member
     get :asign_freelancer, on: :member
     get :remove_asigned_freelancer, on: :member

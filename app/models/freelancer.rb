@@ -50,11 +50,11 @@ class Freelancer < ApplicationRecord
   acts_as_token_authenticatable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable 
 
-  validates :first_name, :last_name, :picture, :headline, :category, :availability, :primary_skill, :years_of_experiences, :project_description, :project_url, :professional_profile_link1, presence: true
+  validates :first_name, :last_name, :picture, :headline, :category, :availability, :primary_skill, :years_of_experiences, :project_description, :professional_profile_link1, presence: true
   
   before_save :ensure_authentication_token
 
-  has_many :authorizations, dependent: :destroy
+  has_many :freelancer_authorizations, dependent: :destroy
 
   has_many :freelancer_skills
   has_many :skills, through: :freelancer_skills, dependent: :destroy
@@ -133,18 +133,24 @@ class Freelancer < ApplicationRecord
       }
     end
 
-    auth = Authorization.find_by uid: authdata[:uid], provider: authdata[:provider]
-    if auth.nil? || auth.freelancer.nil?
-      freelancer = Freelancer.find_by email: authdata[:email]
-      if !freelancer.nil? && freelancer.persisted?
-        freelancer.authorizations.create!(
-          uid: authdata[:uid],
-          provider: authdata[:provider],
-          token: authdata[:token],
-          refresh_token: authdata[:refresh_token]
-          # expires_at: authdata["expires_at"],
-        )
-        return freelancer
+    auth = FreelancerAuthorization.find_by uid: authdata[:uid], provider: authdata[:provider]
+    if authdata[:provider] == 'twitter'
+      if !auth.nil? && !auth.freelancer.nil? && auth.freelancer.persisted?
+        return auth.freelancer
+      end
+    else
+      if auth.nil? || auth.freelancer.nil?
+        freelancer = Freelancer.find_by email: authdata[:email]
+        if !freelancer.nil? && freelancer.persisted?
+          freelancer.freelancer_authorizations.create!(
+            uid: authdata[:uid],
+            provider: authdata[:provider],
+            token: authdata[:token],
+            refresh_token: authdata[:refresh_token]
+            # expires_at: authdata["expires_at"],
+          )
+          return freelancer
+        end
       end
     end
     return auth&.freelancer || authdata

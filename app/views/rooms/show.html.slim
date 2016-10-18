@@ -61,6 +61,8 @@
                   span = af.full_name
                   = link_to 'X', remove_asigned_freelancer_room_path(@room, freelancer_id: af.id), data: {remote: true, confirm: "Are you sure?"}, class: 'ui button small negative', style: 'margin-left:20px'
             .ui.divider
-            = link_to 'Asign Freelancers', freelancers_list_room_path(@room), id: 'assign_freelancers', class: 'ui button small primary', :data => {:modal => true}
+            #assign_freelancers_btn
+              - unless @room.asigned_freelancers.any?
+                = link_to 'Asign Freelancers', freelancers_list_room_path(@room), class: 'ui button small primary', id: 'asign_freelancer_btn', :data => {:modal => true}
     - else
       = render "goomp_bot/new_goomp"
