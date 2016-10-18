@@ -27,8 +27,8 @@
 #  slug                   :string
 #  stipe_customer_id      :string
 #  follows_count          :integer          default(0)
-#  role                   :string
 #  last_seen_at           :datetime
+#  role                   :string           default(NULL)
 #  stripe_id              :string
 #  authentication_token   :string(30)
 #
