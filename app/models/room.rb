@@ -41,6 +41,10 @@ class Room < ApplicationRecord
   before_create { self.category_name ||= "Design" }
   after_create :send_notification
 
+  def accepted_freelancers
+    self.asigned_freelancers.joins(:freelancers_rooms).where("freelancers_rooms.status = 'accepted'")
+  end
+
   def get_status(freelancer)
     freelancer_room = self.freelancers_rooms.where('freelancer_id = ?', freelancer.id)
     if freelancer_room.any?

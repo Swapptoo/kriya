@@ -17,7 +17,7 @@ class RoomsController < ApplicationController
       @room = current_user.joined_rooms.find params[:id]
       @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
     elsif freelancer_signed_in?
-      @room = current_freelancer.asigned_rooms.find params[:id]
+      @room = current_freelancer.available_rooms.find params[:id]
       @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
       render 'freelancer_show'
     else

@@ -69,12 +69,20 @@ class Freelancer < ApplicationRecord
     [first_name, last_name].join(' ')
   end
 
+  def name
+    [first_name, last_name].join(' ')
+  end
+
   def pending_rooms
     self.asigned_rooms.where(freelancers_rooms: { status: 'pending' })
   end
 
   def accepted_rooms
     self.asigned_rooms.where(freelancers_rooms: { status: 'accepted' })
+  end
+
+  def available_rooms
+    self.asigned_rooms.where(freelancers_rooms: { status: ['accepted', 'pending'] })
   end
 
   def send_asigned_room_email_to_freelancer(record)
