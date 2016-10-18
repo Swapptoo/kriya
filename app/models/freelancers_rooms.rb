@@ -13,7 +13,7 @@
 #
 
 class FreelancersRooms < ApplicationRecord
-  enum status: {pending: 'pending', accepted: 'accepted', in_progress: 'in_progress', completed: 'completed'}
+  enum status: {pending: 'pending', accepted: 'accepted', in_progress: 'in_progress', completed: 'completed', rejected: 'rejected'}
   
   belongs_to :room
   belongs_to :freelancer

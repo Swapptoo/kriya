@@ -1,7 +1,7 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:edit, :update, :destroy, :mark_messages_seen]
-  before_action :authenticate_user!, :except => [:create_dummy, :show, :accept]
-  before_action :authenticate_freelancer!, only: :accept
+  before_action :authenticate_user!, :except => [:create_dummy, :show, :accept, :reject]
+  before_action :authenticate_freelancer!, only: [:accept, :reject]
   respond_to :html, :json, :js
   # GET /rooms
   # GET /rooms.json
@@ -85,7 +85,7 @@ class RoomsController < ApplicationController
     end
   end
 
-  # POST /rooms/:id/accept
+  # GET /rooms/:id/accept
   def accept
     @room = current_freelancer.asigned_rooms.find params[:id]
     ru = @room.freelancers_rooms.where('freelancer_id = ?', current_freelancer.id)
@@ -98,6 +98,16 @@ class RoomsController < ApplicationController
         @message.save
     end
     redirect_to @room
+  end
+
+  # GET /rooms/:id/reject
+  def reject
+    @room = current_freelancer.asigned_rooms.find params[:id]
+    ru = @room.freelancers_rooms.where('freelancer_id = ?', current_freelancer.id)
+    if ru.any? && ru[0].status == 'pending'
+      ru[0].update_attribute(:status, 'rejected')
+    end
+    redirect_to root_path
   end
 
   # POST /rooms
