@@ -47,6 +47,9 @@ class Message < ApplicationRecord
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1
+	  if (self.user.role != "freelancer") and (self.user.role != "manager") then
+		return
+	  end
       self.create_attachment html: "<br/>"
       if self.room.user.stripe_id != nil then
         self.attachment.html += <<~HTML.squish
