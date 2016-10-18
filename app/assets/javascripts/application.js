@@ -16,6 +16,10 @@
 //= require turbolinks
 //= require cable
 //= require semantic-ui
+//
+//  Require for option minCharacters in version 2.2
+//= require semantic-ui/dropdown
+//
 //= require jquery.infinite-pages
 //= require chat
 

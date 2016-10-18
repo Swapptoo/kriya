@@ -437,8 +437,12 @@ AppView = {
 
   initSearch: ->
     $('.ui.dropdown.search').dropdown
-      minCharacters: 2
-      apiSettings: url: '/skills/search?query={query}'
+      apiSettings:
+        url: '/skills/search?query={query}'
+      match: 'text'
+      minCharacters: 3
+      maxSelections: 3
+
 
   setMaleAvatar: ->
     url = ""
