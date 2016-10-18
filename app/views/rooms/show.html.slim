@@ -1,3 +1,12 @@
+css:
+  #asigned_freelancers a {
+    float: right;
+    margin-right: 20px;
+  }
+  #asigned_freelancers div {
+    clear: both;
+    margin-top: 5px;
+  }
 = render 'left_sidebar'
 
 .main
@@ -55,8 +64,15 @@
             = number_to_currency(@room.budget)
             .ui.divider
             h4 Asigned Freelancers
+            div#accepted_freelancers
+              - @room.accepted_freelancers.each do |af|
+                div id="asigned_freelancer_#{af.id}"
+                  span = af.full_name
+                  = link_to 'X', remove_asigned_freelancer_room_path(@room, freelancer_id: af.id), data: {remote: true, confirm: "Are you sure?"}, class: 'ui button small negative', style: 'margin-left:20px'
+            .ui.divider
+            h4 Invites Pending
             div#asigned_freelancers
-              - @room.asigned_freelancers.each do |af|
+              - @room.pending_freelancers.each do |af|
                 div id="asigned_freelancer_#{af.id}"
                   span = af.full_name
                   = link_to 'X', remove_asigned_freelancer_room_path(@room, freelancer_id: af.id), data: {remote: true, confirm: "Are you sure?"}, class: 'ui button small negative', style: 'margin-left:20px'
@@ -64,5 +80,7 @@
             #assign_freelancers_btn
               - unless @room.asigned_freelancers.any?
                 = link_to 'Asign Freelancers', freelancers_list_room_path(@room), class: 'ui button small primary', id: 'asign_freelancer_btn', :data => {:modal => true}
+              - else
+                = link_to 'Invite Freelancers', freelancers_list_room_path(@room), class: 'ui button small primary', id: 'asign_freelancer_btn', :data => {:modal => true}
     - else
       = render "goomp_bot/new_goomp"

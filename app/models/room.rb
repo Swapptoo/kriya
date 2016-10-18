@@ -42,7 +42,11 @@ class Room < ApplicationRecord
   after_create :send_notification
 
   def accepted_freelancers
-    self.asigned_freelancers.joins(:freelancers_rooms).where("freelancers_rooms.status = 'accepted'")
+    self.asigned_freelancers.where("freelancers_rooms.status = 'accepted'")
+  end
+
+  def pending_freelancers
+    self.asigned_freelancers.where("freelancers_rooms.status = 'pending'")
   end
 
   def get_status(freelancer)
