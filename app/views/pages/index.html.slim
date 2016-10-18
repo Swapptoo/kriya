@@ -2,6 +2,14 @@ css:
   #example.index .masthead .container {
     padding-bottom: 210px;
   }
+  #network_link {
+    padding: 13px;
+  }
+  #network_link:hover {
+    color: white;
+    background: #3f5c6d;
+    border-radius: 5px;
+  }
 
 #example.index
   .following.bar
@@ -11,6 +19,8 @@ css:
           - if user_signed_in?
             = link_to "Sign Out", destroy_user_session_path, method: :delete, class: "item"
             br
+          - unless user_signed_in? && freelancer_signed_in?
+            = link_to "Join Workforce", '/network', id: 'network_link'
 
   .masthead.segment.bg7
     .ui.container
