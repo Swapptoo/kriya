@@ -46,6 +46,7 @@ class RoomsController < ApplicationController
     else
       @freelancers = Freelancer.live
     end
+    @modal_class = 'freelancers-list'
     respond_modal_with @freelancers and return
   end
 
