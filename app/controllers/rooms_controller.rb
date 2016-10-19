@@ -28,7 +28,7 @@ class RoomsController < ApplicationController
 
   # GET /rooms/new
   def new
-    redirect_to :back unless current_user.client?
+    redirect_to root_path unless current_user.client?
     @room = Room.new
     @room.messages.new
   end

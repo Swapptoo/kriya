@@ -1,10 +1,7 @@
 <% if @success %>
   alert('<%= @freelancer.full_name %> is succssfully removed from <%= @room.title %>.');
-  // $('#asigned_freelancer_<%= @freelancer.id %>').remove();
-  // <% unless @room.asigned_freelancers.any? %>
-  //   $("#assign_freelancers_btn").html('<%= link_to "Asign Freelancers", freelancers_list_room_path(@room), class: "ui button small primary", id: "asign_freelancer_btn", :data => {:modal => true} %>');
-  // <% end %> 
 <% else %>
   alert('Failed');
 <% end %>
-$(".freelancers-list").modal('hide')
+$("#freelancers_section").html('<%= render "freelancers_section", :room => @room %>');
+$(".freelancers-list").modal('hide');

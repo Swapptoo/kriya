@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:edit, :update, :destroy]
   before_action :set_goomp, only: [:new]
-  before_action :authenticate_user!
+  before_action :authenticate!
   respond_to :html, :json
   # GET /posts
   # GET /posts.json
