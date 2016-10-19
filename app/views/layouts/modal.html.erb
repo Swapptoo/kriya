@@ -1,5 +1,5 @@
 <%# app/views/layouts/modal.html.erb %>
-<div class="ui small modal post_new_modal" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="mainModalLabel" aria-hidden="true" >
+<div class="ui small modal post_new_modal <%= @modal_class unless @modal_class.nil? %>" id="mainModal" tabindex="-1" role="dialog" aria-labelledby="mainModalLabel" aria-hidden="true" >
   <div class="modal-dialog">
     <div class="modal-content">
       <%= yield %>

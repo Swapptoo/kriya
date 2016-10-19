@@ -17,7 +17,7 @@ class RoomsController < ApplicationController
       @room = current_user.joined_rooms.find params[:id]
       @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
     elsif freelancer_signed_in?
-      @room = current_freelancer.asigned_rooms.find params[:id]
+      @room = current_freelancer.available_rooms.find params[:id]
       @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
       render 'freelancer_show'
     else
@@ -28,7 +28,7 @@ class RoomsController < ApplicationController
 
   # GET /rooms/new
   def new
-    redirect_to :back unless current_user.client?
+    redirect_to root_path unless current_user.client?
     @room = Room.new
     @room.messages.new
   end
@@ -46,6 +46,7 @@ class RoomsController < ApplicationController
     else
       @freelancers = Freelancer.live
     end
+    @modal_class = 'freelancers-list'
     respond_modal_with @freelancers and return
   end
 

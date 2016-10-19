@@ -1,9 +1,7 @@
 <% if @success %>
-  alert('<%= @freelancer.full_name %> is succssfully asigned to <%= @room.title %>.');
-  $('td#asign_btn_<%= @freelancer.id %>').html('Asigned');
-  $('#asigned_freelancers').append('<div id="asigned_freelancer_<%= @freelancer.id %>"><span><%= @freelancer.full_name %></span><%= link_to "X", remove_asigned_freelancer_room_path(@room, freelancer_id: @freelancer.id), data: {remote: true, confirm: "Are you sure?"}, class: "ui button small negative", style: "margin-left:20px", :confirm => "Are you sure?" %></div>');
-  $('#assign_freelancers_btn').html('');
+  alert('<%= @freelancer.full_name %> is succssfully invited to <%= @room.title %>.');
+  // $('#asigned_freelancers').append('<div id="asigned_freelancer_<%= @freelancer.id %>"><span><%= @freelancer.full_name %></span><%= link_to "X", remove_asigned_freelancer_room_path(@room, freelancer_id: @freelancer.id), data: {remote: true, confirm: "Are you sure?"}, class: "ui button small negative", style: "margin-left:20px", :confirm => "Are you sure?" %></div>');
 <% else %>
   alert('Failed');
 <% end %> 
-$("#mainModal").modal('hide')
+$(".freelancers-list").modal('hide')
