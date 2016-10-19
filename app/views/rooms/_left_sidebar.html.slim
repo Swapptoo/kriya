@@ -6,7 +6,6 @@
         - current_freelancer.pending_rooms.includes(:user).each_with_index do |room, index|
           = link_to room, class: "item primary #{'active' if @room == room}", style: 'text-align: left;line-height: 20px;color: #888;' do
             = room.get_room_name_for_freelancer current_freelancer, index
-            .unread_message_number
         hr
       - if current_freelancer.accepted_rooms.any?
         #tasks
@@ -15,7 +14,6 @@
           - current_freelancer.accepted_rooms.includes(:user).each_with_index do |room, index|
             = link_to room, class: "item primary #{'active' if @room == room}" do
               = room.get_room_name_for_freelancer current_freelancer, index
-              .unread_message_number
     - if user_signed_in?
       #tasks
         - if current_user.client?
@@ -25,7 +23,6 @@
         - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
           = link_to room, class: "item primary #{'active' if @room == room}" do
             = room.get_room_name_for_user current_user, index
-            .unread_message_number
 
 coffee:
   setTimeout =>
