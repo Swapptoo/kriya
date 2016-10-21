@@ -96,7 +96,7 @@
     'What is your budge estimate for this project in USD? ',
     {
       type: 'write',
-      path: "<%= new_user ? 'signup' : 'description' %>",
+      path: "<%= new_user ? 'dummy' : 'description' %>",
       key: "budget"
     }
   ];
@@ -172,6 +172,14 @@
       }]
     }
   ];
+  var dummy = [
+    '',
+    {
+      type: 'submitDummy',
+      path: 'signup',
+      key: 'submit-dummy'
+    }
+  ];
 
   <%- if new_user %>
     var configs = {
@@ -195,6 +203,7 @@
       timeline: timeline,
       expertiseLevel: expetise_level,
       budget: budget,
+      dummy: dummy,
       login: login,
       signup: sign_up
     };
