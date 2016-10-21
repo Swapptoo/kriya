@@ -52,21 +52,25 @@ class RoomsController < ApplicationController
 
   # GET /rooms/:id/asign_freelancer
   def asign_freelancer
-    @room = current_user.joined_rooms.find params[:id]
-    @freelancer = Freelancer.live.find params[:freelancer_id]
-    @success = true
-    respond_to do |format|
-      format.js do
-        begin
-          @room.asigned_freelancers << @freelancer
-        rescue
-          @success = true
-          return
+    if current_user.manager?
+      @room = current_user.joined_rooms.find params[:id]
+      @freelancer = Freelancer.live.find params[:freelancer_id]
+      @success = true
+      respond_to do |format|
+        format.js do
+          begin
+            @room.asigned_freelancers << @freelancer
+          rescue
+            @success = true
+            return
+          end
+        end
+        format.html do
+          redirect_to root_path
         end
       end
-      format.html do
-        redirect_to :back
-      end
+    else
+      redirect_to root_path
     end
   end
 
@@ -151,7 +155,6 @@ class RoomsController < ApplicationController
   # POST /tasks/dummy
   def create_dummy
     session[:sign_up_dummy_room] = Room.new(room_params)
-
     respond_to do |format|
       format.json { head :no_content}
     end
