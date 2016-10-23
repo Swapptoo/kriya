@@ -30,6 +30,7 @@ gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-oauth2', '~> 1.3.1'
+gem 'omniauth-stripe-connect'
 
 gem 'newrelic_rpm'
 gem 'rails_autolink'

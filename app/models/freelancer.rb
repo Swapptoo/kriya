@@ -32,8 +32,11 @@
 #  project_url                :string
 #  professional_profile_link1 :string
 #  professional_profile_link2 :string
-#  status                     :string           default("pause")
+#  status                     :string           default("live")
 #  authentication_token       :string(30)
+#  stripe_publishable_key     :string
+#  stripe_token               :string
+#  stripe_client_id           :string
 #
 # Indexes
 #
