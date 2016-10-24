@@ -58,9 +58,19 @@ class PaymentsController < ApplicationController
     if payment_params[:freelancer_id]
       freelancer = Freelancer.find payment_params[:freelancer_id]
       destination = freelancer.stripe_client_id
+      if destination.blank?
+        message = room.messages.new({:body => 'Freelancer didn\'t connect Stripe yet.', :room => room, :user => room.manager})
+        message.save
+        redirect_to room
+      end
     elsif !msg.freelancer.nil?
       freelancer = msg.freelancer
       destination = freelancer.stripe_client_id
+      if destination.blank?
+        message = room.messages.new({:body => 'Freelancer didn\'t connect Stripe yet.', :room => room, :user => room.manager})
+        message.save
+        redirect_to room
+      end
     end
 
     begin
