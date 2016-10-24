@@ -52,7 +52,17 @@ class Message < ApplicationRecord
 	 #  end
 
       if self.freelancer && self.freelancer.stripe_client_id.blank?
-         self.update body: 'Freelancer didn\'t connect Stripe yet.'
+        self.update body: 'Freelancer didn\'t connect Stripe yet.'
+        self.create_attachment html: "<br/>"
+        self.attachment.html += <<~HTML.squish
+          <button id="customButton-#{self.id}" class="mini ui green button custom-padding">Connect with Stripe</button>
+          <script>
+            document.getElementById("customButton-#{self.id}").addEventListener('click', function(e) {
+              window.location.href = '/auth/stripe_connect'
+            });
+          </script>
+        HTML
+        self.attachment.save
       else
 
         self.create_attachment html: "<br/>"
