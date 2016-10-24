@@ -37,7 +37,7 @@ class Room < ApplicationRecord
   has_many :posts, :through => :messages
 
   has_many :freelancer_rates
-  
+
   validates_presence_of :category_name
 
   before_create { self.category_name ||= "Design" }
@@ -45,6 +45,10 @@ class Room < ApplicationRecord
 
   def accepted_freelancers
     self.asigned_freelancers.where("freelancers_rooms.status = 'accepted'")
+  end
+
+  def in_progress_freelancers
+    self.asigned_freelancers.where("freelancers_rooms.status in (?)", ['accepted', 'not_finished', 'more_work'])
   end
 
   def pending_freelancers

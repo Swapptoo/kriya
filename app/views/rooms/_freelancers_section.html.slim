@@ -1,7 +1,7 @@
-- if @room.accepted_freelancers.any?
+- if @room.in_progress_freelancers.any?
   h4 Asigned Freelancers
   div#accepted_freelancers
-    - @room.accepted_freelancers.each do |af|
+    - @room.in_progress_freelancers.each do |af|
       div id="asigned_freelancer_#{af.id}"
         span = af.full_name
         = link_to 'X', remove_asigned_freelancer_room_path(@room, freelancer_id: af.id), data: {remote: true, confirm: "Are you sure?"}, class: 'ui button small negative', style: 'margin-left:20px'

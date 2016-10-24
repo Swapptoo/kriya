@@ -67,9 +67,9 @@
     };
   <%- else %>
     <%- if current_freelancer.pending_rooms.any? %>
-      <%- unless @room.accepted_freelancers.any? %>  
+      <%- unless @room.in_progress_freelancers.any? %>  
         var description = [
-          'You are now asigned to <%= @room.title %>. Are you available to finish this project within the given timeline? <br> <%= @room.posts.first.content.split.join(' ').html_safe %>',
+          'You are now asigned to <%= @room.title %>. Are you available to finish this project within the given timeline? <br> <%= @room.posts.first.content.gsub("'", %q(\\\')).split.join(' ').html_safe %>',
           {
             type: 'visit',
             path: 'notice',
