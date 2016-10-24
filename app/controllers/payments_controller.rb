@@ -54,14 +54,63 @@ class PaymentsController < ApplicationController
     end
 
     # Create a charge: this will charge the user's card
+    
+    if payment_params[:freelancer_id]
+      freelancer = Freelancer.find payment_params[:freelancer_id]
+      destination = freelancer.stripe_client_id
+    elsif !msg.freelancer.nil?
+      freelancer = msg.freelancer
+      destination = freelancer.stripe_client_id
+    end
+
     begin
-      charge = Stripe::Charge.create(
-        :amount => amount, # Amount in cents
-        :currency => "usd",
-        :customer => user.stripe_id,
-        :description => "Example charge"
-      )
-      room.messages.new({:body => 'The transaction was successful.', :room => room, :user => room.manager})
+      if destination
+        charge = Stripe::Charge.create(
+          :amount => amount, # Amount in cents
+          :currency => "usd",
+          :customer => user.stripe_id,
+          :destination => destination,
+          :description => "Example charge"
+        )
+        freelancer_rooms = room.freelancers_rooms.where('status in (?)', ['accepted', 'more_work', 'not_finished']).where("freelancer_id = ?", freelancer.id)
+        if freelancer_rooms.any?
+          freelancer_room_id = freelancer_rooms[0].id
+        else
+          freelancer_room_id = ''
+        end
+        message = room.messages.new({:body => 'The transaction was successful. What is the rate of this work?', :room => room, :user => room.manager})
+        message.create_attachment html: "<br/>"
+        (1..5).each do |i|
+          message.attachment.html += <<~HTML.squish
+            <button id="customRateButton#{i}-#{message.id}" class="mini ui green button custom-padding">#{i}</button>
+            <script>
+              document.getElementById("customRateButton#{i}-#{message.id}").addEventListener('click', function(e) {
+                $.post("/freelancer_rates.json", {
+                    freelancer_rate: {
+                      rate: #{i},
+                      user_id: #{room.user.id},
+                      room_id: #{room.id},
+                      freelancer_id: #{freelancer.id},
+                      freelancers_room_id: #{freelancer_room_id}
+                    }
+                  });
+                e.preventDefault();
+                location.reload();
+
+              });
+            </script>
+          HTML
+        end
+        message.attachment.save
+      else
+        charge = Stripe::Charge.create(
+          :amount => amount, # Amount in cents
+          :currency => "usd",
+          :customer => user.stripe_id,
+          :description => "Example charge"
+        )
+        message = room.messages.new({:body => 'The transaction was successful.', :room => room, :user => room.manager})
+      end
       room.save
       ActionCable.server.broadcast(
         "rooms:#{room.id}:messages",
@@ -74,7 +123,7 @@ class PaymentsController < ApplicationController
         room_id: room.id,
       )
     # Catches at least CardError and InvalidRequestError
-    rescue #Stripe::CardError => e
+    rescue Exception => e#Stripe::CardError => e
       # The card has been declined
       room.messages.new({:body => 'The transaction was unsuccessful. Please try again', :room => room, :user => room.manager})
       room.save
@@ -139,6 +188,6 @@ class PaymentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def payment_params
-      params.require(:payment).permit(:user_id)
+      params.require(:payment).permit(:user_id, :freelancer_id)
     end
 end

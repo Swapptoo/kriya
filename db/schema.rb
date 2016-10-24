@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161017235035) do
+ActiveRecord::Schema.define(version: 20161023204551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,20 @@ ActiveRecord::Schema.define(version: 20161017235035) do
     t.index ["user_id"], name: "index_freelancer_profiles_on_user_id", using: :btree
   end
 
+  create_table "freelancer_rates", force: :cascade do |t|
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "rate"
+    t.integer  "freelancer_id"
+    t.integer  "user_id"
+    t.integer  "room_id"
+    t.integer  "freelancers_room_id"
+    t.index ["freelancer_id"], name: "index_freelancer_rates_on_freelancer_id", using: :btree
+    t.index ["freelancers_room_id"], name: "index_freelancer_rates_on_freelancers_room_id", using: :btree
+    t.index ["room_id"], name: "index_freelancer_rates_on_room_id", using: :btree
+    t.index ["user_id"], name: "index_freelancer_rates_on_user_id", using: :btree
+  end
+
   create_table "freelancer_skills", force: :cascade do |t|
     t.integer "freelancer_id"
     t.integer "skill_id"
@@ -96,18 +110,18 @@ ActiveRecord::Schema.define(version: 20161017235035) do
   end
 
   create_table "freelancers", force: :cascade do |t|
-    t.string   "email",                                 default: "",      null: false
-    t.string   "encrypted_password",                    default: "",      null: false
+    t.string   "email",                                 default: "",     null: false
+    t.string   "encrypted_password",                    default: "",     null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         default: 0,       null: false
+    t.integer  "sign_in_count",                         default: 0,      null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
     t.string   "username"
     t.string   "bio"
     t.string   "first_name"
@@ -125,8 +139,11 @@ ActiveRecord::Schema.define(version: 20161017235035) do
     t.string   "project_url"
     t.string   "professional_profile_link1"
     t.string   "professional_profile_link2"
-    t.string   "status",                                default: "pause"
+    t.string   "status",                                default: "live"
     t.string   "authentication_token",       limit: 30
+    t.string   "stripe_publishable_key"
+    t.string   "stripe_token"
+    t.string   "stripe_client_id"
     t.index ["authentication_token"], name: "index_freelancers_on_authentication_token", unique: true, using: :btree
     t.index ["email"], name: "index_freelancers_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_freelancers_on_reset_password_token", unique: true, using: :btree
@@ -208,8 +225,10 @@ ActiveRecord::Schema.define(version: 20161017235035) do
 
   create_table "payments", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "freelancer_id"
+    t.index ["freelancer_id"], name: "index_payments_on_freelancer_id", using: :btree
     t.index ["user_id"], name: "index_payments_on_user_id", using: :btree
   end
 
@@ -317,8 +336,8 @@ ActiveRecord::Schema.define(version: 20161017235035) do
     t.string   "slug"
     t.string   "stipe_customer_id"
     t.integer  "follows_count",                     default: 0
+    t.string   "role"
     t.datetime "last_seen_at"
-    t.string   "role",                              default: "0"
     t.string   "stripe_id"
     t.string   "authentication_token",   limit: 30
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
@@ -333,6 +352,10 @@ ActiveRecord::Schema.define(version: 20161017235035) do
   add_foreign_key "comments", "users"
   add_foreign_key "follows", "users"
   add_foreign_key "freelancer_authorizations", "freelancers"
+  add_foreign_key "freelancer_rates", "freelancers"
+  add_foreign_key "freelancer_rates", "freelancers_rooms"
+  add_foreign_key "freelancer_rates", "rooms"
+  add_foreign_key "freelancer_rates", "users"
   add_foreign_key "goomps", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "memberships", "goomps"
@@ -341,6 +364,7 @@ ActiveRecord::Schema.define(version: 20161017235035) do
   add_foreign_key "messages", "posts"
   add_foreign_key "messages", "rooms"
   add_foreign_key "messages", "users"
+  add_foreign_key "payments", "freelancers"
   add_foreign_key "payments", "users"
   add_foreign_key "posts", "goomps"
   add_foreign_key "posts", "subtopics"

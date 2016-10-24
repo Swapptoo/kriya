@@ -47,9 +47,9 @@ class Message < ApplicationRecord
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1
-	  if (self.user.role != "freelancer") and (self.user.role != "manager") then
-		return
-	  end
+	 #  if (self.user.role != "freelancer") and (self.user.role != "manager") then
+		# return
+	 #  end
       self.create_attachment html: "<br/>"
       if self.room.user.stripe_id != nil then
         self.attachment.html += <<~HTML.squish
@@ -60,7 +60,8 @@ class Message < ApplicationRecord
                 amount: #{(amount.to_f*100).to_i},
                 message_id: #{self.id},
                 payment: {
-                  user_id: #{self.room.user.id}
+                  user_id: #{self.room.user.id},
+                  freelancer_id: #{self.freelancer.nil? ? '' : self.freelancer.id}
                 }
               });
             e.preventDefault();
@@ -73,7 +74,11 @@ class Message < ApplicationRecord
         color = "white"
         update_customer = 1
       else
-        title = "Pay with card"
+        if !self.user.nil?
+          title = "Pay with card"
+        elsif !self.freelancer.nil?
+          title = "Yes, Pay with card"
+        end 
         color = "green"
         update_customer = 0
       end
@@ -114,8 +119,35 @@ class Message < ApplicationRecord
           });
         </script>
       HTML
+      if !self.user.nil?
+        self.update body: "The charge for this task is $#{amount}, can you confirm so we can get it started?"
+      elsif !self.freelancer.nil?
+        freelancer_rooms = self.room.freelancers_rooms.where('status in (?)', ['accepted', 'more_work', 'not_finished']).where("freelancer_id = ?", self.freelancer.id)
+        if freelancer_rooms.any?
+          freelancer_room_id = freelancer_rooms[0].id
+        else
+          freelancer_room_id = ''
+        end
+        self.attachment.html += <<~HTML.squish
+          <button id="customButton-#{self.id}-3" class="mini ui white button custom-padding">No</button>
+          <script>
+            document.getElementById("customButton-#{self.id}-3").addEventListener('click', function(e) {
+              $.ajax({url: "/freelancers_rooms/#{freelancer_room_id}.json", type: "PUT", data: {
+                  freelancers_room: {
+                    status: 'not_finished'
+                  }
+                }
+              });
+              e.preventDefault();
+              location.reload();
+            });
+          </script>
+        HTML
+        self.update body: "The charge for this task is $#{amount}, did freelancer finish all the required things?"
+      end
+
       self.attachment.save
-      self.update body: "The charge for this task is $#{amount}, can you confirm so we can get it started?"
+
       logger.debug self.inspect
       logger.debug self.attachment.html.inspect
       logger.debug self.errors.inspect

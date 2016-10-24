@@ -36,6 +36,8 @@ class Room < ApplicationRecord
 
   has_many :posts, :through => :messages
 
+  has_many :freelancer_rates
+  
   validates_presence_of :category_name
 
   before_create { self.category_name ||= "Design" }

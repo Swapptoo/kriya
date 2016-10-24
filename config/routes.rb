@@ -48,6 +48,8 @@ Rails.application.routes.draw do
   resources :scrapes, only: [:create]
   resources :likes
   resources :memberships
+  resources :freelancer_rates
+  resources :freelancers_rooms
 
   devise_for :users, controllers: {
     registrations: 'users/registrations'

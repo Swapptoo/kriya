@@ -9,5 +9,8 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     scope: "r_basicprofile r_emailaddress",
     fields: ['id', 'email-address', 'first-name', 'last-name', 'headline', 'picture-urls::(original)']
   }
+  provider :stripe_connect, Rails.application.secrets.stripe_client_id, Rails.application.secrets.stripe_secret, {
+    scope: "read_write"
+  }
   on_failure { |env| OmniauthCallbacksController.action(:failure).call(env) }
 end

@@ -14,6 +14,13 @@
           - current_freelancer.accepted_rooms.includes(:user).each_with_index do |room, index|
             = link_to room, class: "item primary #{'active' if @room == room}" do
               = room.get_room_name_for_freelancer current_freelancer, index
+      - if current_freelancer.completed_rooms.any?
+        #tasks
+          div style="color:white;text-align:left;padding-left:10px" Completed Tasks
+          a
+          - current_freelancer.completed_rooms.includes(:user).each_with_index do |room, index|
+            = link_to room, class: "item primary #{'active' if @room == room}" do
+              = room.get_room_name_for_freelancer current_freelancer, index
     - if user_signed_in?
       #tasks
         - if current_user.client?
