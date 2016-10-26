@@ -98,11 +98,7 @@ AppView = {
         $("#messages").data("has-new-message", false)
         $.ajax(
           url: "/tasks/#{roomId}/mark_messages_seen.json"
-          type: "POST",
-          success: (message) ->
-            console.log message
-          error: (resp) ->
-            console.log resp
+          type: "POST"
         )
 
 

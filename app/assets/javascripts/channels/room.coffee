@@ -7,7 +7,6 @@ $ ->
       channelArray.push parseInt(val) if parseInt(val)
     )
 
-    console.log channelArray
     for num in channelArray
       App.cable.subscriptions.create channel: "RoomChannel", room:"#{num}",
         collection: -> $("#messages")
