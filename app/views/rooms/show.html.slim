@@ -12,7 +12,7 @@ css:
 .main
   .twelve.wide.column
     - if @room
-      .ui.divided.grid
+      #room.ui.divided.grid
         .twelve.wide.column
           .ui.stacked.segment
             h3 = @room.get_room_name_for_user current_user
@@ -25,7 +25,7 @@ css:
               .bar
                 .progress
 
-            = form_for [@room, Message.new], :remote => true, :html => { :class => "ui form" } do |f|
+            = form_for [@room, Message.new], :remote => true, :html => { :class => "ui form", :id => 'ui_form_room' } do |f|
               .ui.left.action.input.fluid
                 .ui.icon.bottom.left.pointing.dropdown.button.primary
                   i.plus.icon

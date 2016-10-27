@@ -185,6 +185,9 @@
   width: 100px
   height: 100px
 
+#ui_form_room:after
+  display: none
+
 .ui.form
   .field
     > .inline-label
@@ -487,6 +490,7 @@ a.fluidbox
 
 .ui.comments
   max-width: 1081px
+  margin: 0.2em 0em
 
 #comment_body
   border-color: $border-light-color
@@ -500,6 +504,10 @@ hr
 .ui.segments.js-infinite--list
   border: 1px solid $border_color
   box-shadow: none
+
+#room.ui.divided.grid
+  .column:not(.row)
+
 
 .ui.page.grid.with-bg
   padding-bottom: 50px
