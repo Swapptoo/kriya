@@ -85,7 +85,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    if resource.role == 'client'
+    if resource.client?
       task_from_sign_up_path
     else
       root_path

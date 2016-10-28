@@ -76,7 +76,7 @@
     };
   <%- else %>
     <%- if current_freelancer.pending_rooms.any? %>
-      <%- unless @room.accepted_freelancers.any? %>  
+      <%- unless @room.accepted_freelancers.any? %>
         var description = [
           'You are now asigned to <%= @room.title %>. Are you available to finish this project within the given timeline? <br> <%= @room.posts.first.content.split.join(' ').html_safe %>',
           {
@@ -99,10 +99,6 @@
           "Sorry the task has already been assigned to someone else as they claimed it first."
         ];
       <%- end %>
-      var configs = {
-        greeting: description
-      };
-    <%- else %>
       var configs = {
         greeting: description
       };
