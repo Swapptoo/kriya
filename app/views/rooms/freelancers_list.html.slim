@@ -51,11 +51,14 @@
     .ui.divider
 javascript:
   $(document).ready(function() {
-    $("#freelancers_list").dataTable();
+    table = $("#freelancers_list");
+    table.dataTable();
+
     $(".freelancer_status").change(function() {
       if ($(this).is(':checked'))
         $(this).parent().find('a.send-invite').trigger('click');
       else
         $(this).parent().find('a.remove-invite').trigger('click');
     });
-  })
+    table.attr('class', 'ui table');
+  });
