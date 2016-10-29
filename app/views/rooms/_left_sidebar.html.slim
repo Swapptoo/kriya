@@ -5,7 +5,7 @@
         div Pending Tasks
         - current_freelancer.pending_rooms.includes(:user).each_with_index do |room, index|
           = link_to room, class: "item primary #{'active' if @room == room}", style: 'text-align: left;line-height: 20px;color: #888;' do
-            = Sanitize.fragment(truncate(room.get_room_name_for_freelancer current_freelancer, index, index, :length => 18, :escape => false), Sanitize::Config::RELAXED).html_safe
+            = Sanitize.fragment(truncate(room.get_room_name_for_freelancer(current_freelancer, index), :length => 18, :escape => false), Sanitize::Config::RELAXED).html_safe
         hr
       - if current_freelancer.accepted_rooms.any?
         #tasks
@@ -22,7 +22,7 @@
           a
         - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
           = link_to room, class: "item primary #{'active' if @room == room}" do
-            = Sanitize.fragment(truncate(room.get_room_name_for_user current_user, index, :length => 18, :escape => false), Sanitize::Config::RELAXED).html_safe
+            = Sanitize.fragment(truncate(room.get_room_name_for_user(current_user, index), :length => 18, :escape => false), Sanitize::Config::RELAXED).html_safe
 
 coffee:
   setTimeout =>
