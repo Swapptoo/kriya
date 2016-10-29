@@ -49,6 +49,6 @@
           .post-dialog
             .title
               = message.post.title
-            hr
+            .ui.divider
             .content
               = Sanitize.fragment(truncate(message.post.content, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
