@@ -31,11 +31,11 @@ css:
                   i.plus.icon
                   .menu
                     = link_to 'Create Post', new_post_path, :data => {:modal => true}, :class => "item"
-                    - if !current_freelancer.blank? or current_user.manager?
-                      .item data-charge-user=true Charge Task
                     .item.fileinput-button
                       ' Upload File/Photo
                       = f.file_field :image
+                    - if !current_freelancer.blank? or current_user.manager?
+                      .item data-charge-user=true Charge Task
 
                 = f.text_field :body, :autofocus => true, :id => 'ui_form_input', :autocomplete => 'off', :placeholder => "Start typing…"
         .ui.vertical.divider
