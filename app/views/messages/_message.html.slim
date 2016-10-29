@@ -21,7 +21,7 @@
             - if (user || current_user) != message.room.manager
               = message.user.first_name
             - else
-              ' Client
+              ' message.user.first_name
           - elsif message.user == message.room.manager
             ' Kriya Bot
           - else
