@@ -31,7 +31,8 @@ css:
                   i.plus.icon
                   .menu
                     = link_to 'Create Post', new_post_path, :data => {:modal => true}, :class => "item"
-                    .item data-charge-user=true Charge Task
+                    - if !current_freelancer.blank? or current_user.manager?
+                      .item data-charge-user=true Charge Task
                     .item.fileinput-button
                       ' Upload File/Photo
                       = f.file_field :image

@@ -13,7 +13,7 @@
           a
           - current_freelancer.accepted_rooms.includes(:user).each_with_index do |room, index|
             = link_to room, class: "item primary #{'active' if @room == room}" do
-              = room.get_room_name_for_freelancer current_freelancer, index
+              = Sanitize.fragment(truncate(room.get_room_name_for_freelancer current_freelancer, index, :length => 18, :escape => false), Sanitize::Config::RELAXED).html_safe
     - if user_signed_in?
       #tasks
         - if current_user.client?
@@ -22,7 +22,7 @@
           a
         - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
           = link_to room, class: "item primary #{'active' if @room == room}" do
-            = room.get_room_name_for_user current_user, index
+            = Sanitize.fragment(truncate(room.get_room_name_for_user current_user, index, :length => 18, :escape => false), Sanitize::Config::RELAXED).html_safe
 
 coffee:
   setTimeout =>
