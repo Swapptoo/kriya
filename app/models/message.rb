@@ -115,7 +115,7 @@ class Message < ApplicationRecord
         </script>
       HTML
       self.attachment.save
-      self.update body: "The charge for this task is $#{amount}, can you confirm so we can get it started?"
+      self.update body: "The charge for this task is $#{amount}, please pay now so we will put it in escrow and release it when work is finished."
       logger.debug self.inspect
       logger.debug self.attachment.html.inspect
       logger.debug self.errors.inspect

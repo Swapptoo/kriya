@@ -31,8 +31,7 @@ css:
                   i.plus.icon
                   .menu
                     = link_to 'Create Post', new_post_path, :data => {:modal => true}, :class => "item"
-                    - if current_user == @room.manager
-                      .item data-charge-user=true Charge User
+                    .item data-charge-user=true Charge User
                     .item.fileinput-button
                       ' Upload File/Photo
                       = f.file_field :image
