@@ -25,8 +25,7 @@
                     .item.fileinput-button
                       ' Upload File/Photo
                       = f.file_field :image
-                    - unless current_freelancer.blank?
-                      .item data-charge-user=true Charge Task
+                    .item data-charge-user=true Charge Task
 
                 = f.text_field :body, :autofocus => true, :autocomplete => 'off', :placeholder => "Start typing…" 
         - else
