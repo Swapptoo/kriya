@@ -35,7 +35,7 @@
           '  ago
     .text
       - if message.image.file.present? && !(message.image.content_type.include? 'image')
-        = link_to message.image.file.filename, message.image.url
+        = link_to message.image.file.filename, message.image.url, target: "_blank"
 
       - else
         - if message.image.url(:thumb).present?
