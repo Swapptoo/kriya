@@ -1,5 +1,5 @@
 - if @room.accepted_freelancers.any?
-  h4 Asigned Freelancers
+  h4 Assigned Freelancers
   div#accepted_freelancers
     - @room.accepted_freelancers.each do |af|
       div id="asigned_freelancer_#{af.id}"

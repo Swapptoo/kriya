@@ -36,7 +36,7 @@
     .text
       - if message.image.file.present? && !(message.image.content_type.include? 'image')
         = link_to message.image.file.filename, message.image.url
-        = "( " + message.image.size.to_s + "KB )" 
+
       - else
         - if message.image.url(:thumb).present?
           = link_to image_tag(message.image.url(:thumb)), message.image.url(:thumb), class: "fluidbox"
