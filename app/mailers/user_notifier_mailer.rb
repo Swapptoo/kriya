@@ -26,6 +26,9 @@ class UserNotifierMailer < ApplicationMailer
   end
 
   def notify_unseen_messages(room, user, other_user, messages)
+	if messages.size == 0 then
+	  return
+	end
     @sendgrid_category = "Room #{room.id}"
     @user = user
     @room = room
@@ -39,8 +42,7 @@ class UserNotifierMailer < ApplicationMailer
 	    @messages << ["text", full_name, msg.body]
 	  end
 	end
-	print "#######################################"
-	print messages.to_s
+
 	messages.update_all(seen: true)
 	if other_user == room.manager then
 	  usertype = "manager"
