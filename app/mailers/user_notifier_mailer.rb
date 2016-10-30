@@ -31,8 +31,17 @@ class UserNotifierMailer < ApplicationMailer
     @room = room
     full_name = other_user.full_name
     full_name = 'Kriya Bot' if other_user == room.manager
-    @messages = messages.map { |msg| "#{full_name}: #{msg.body}" }
-    messages.update_all(seen: true)
+    @messages = []
+	messages.each do |msg|
+      if msg.image.file.present? then
+	    @messages << ["file", full_name, msg.image]
+	  else
+	    @messages << ["text", full_name, msg.body]
+	  end
+	end
+	print "#######################################"
+	print messages.to_s
+	messages.update_all(seen: true)
 	if other_user == room.manager then
 	  usertype = "manager"
 	else
