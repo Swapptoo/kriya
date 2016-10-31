@@ -70,11 +70,11 @@ class Message < ApplicationRecord
           });
         </script>
         HTML
-        title = "Change card"
+        title = "Change Card"
         color = "white"
         update_customer = 1
       else
-        title = "Pay with card"
+        title = "Pay Now"
         color = "green"
         update_customer = 0
       end
