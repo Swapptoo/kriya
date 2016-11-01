@@ -45,10 +45,9 @@ class Message < ApplicationRecord
   scope :not_by, -> (user) { where.not(user: user) }
 
   def process_command
-
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1
-	  if user.present? && user.manager? then
+	  if user && user.client? then
 		return
 	  end
       self.create_attachment html: "<br/>"
