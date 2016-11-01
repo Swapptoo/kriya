@@ -14,7 +14,7 @@ class UserNotifierMailer < ApplicationMailer
     @user = room.user
     @room = room
 
-    mail(:to => @user.email, :subject => "[Kriya Task] #{room.title}")
+    mail(:to => @user.email, :subject => "[Task] #{room.title}")
   end
 
   def notify_goomp(room)
@@ -22,7 +22,7 @@ class UserNotifierMailer < ApplicationMailer
     @user = room.user
     @room = room
 
-    mail(:to => 'manager@goomp.co', :subject => "[Kriya Task] #{room.title}")
+    mail(:to => 'manager@goomp.co', :subject => "[Task] #{room.title}")
   end
 
   def notify_unseen_messages(room, user, other_user, messages)
@@ -52,7 +52,7 @@ class UserNotifierMailer < ApplicationMailer
 
     mail(
       :to => user.email,
-      :subject => "[Kriya Task] #{room.title}",
+      :subject => "[Task] #{room.title}",
       :from => "Kriya Bot <" + usertype + "-" + room.id.to_s + "@messages.kriya.ai>"
     )
   end
@@ -61,7 +61,7 @@ class UserNotifierMailer < ApplicationMailer
     @sendgrid_category = "Room #{room.id}"
     @user = user
     @room = room
-    mail(:to => @user.email, :subject => "[Kriya Task] #{room.title}")
+    mail(:to => @user.email, :subject => "[Task] #{room.title}")
   end
 
   private
