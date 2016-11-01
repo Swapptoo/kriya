@@ -12,7 +12,7 @@ RailsAdmin.config do |config|
     redirect_to main_app.root_path unless current_user.email.in? %w(manager@goomp.co)
   end
 
-  config.included_models = ["User", "Freelancer", "Room", "FreelancersRooms", "Skill"]
+  config.included_models = ["User", "Freelancer", "Room", "FreelancersRooms","Message", "Skill"]
   
   ## == Cancan ==
   # config.authorize_with :cancan
