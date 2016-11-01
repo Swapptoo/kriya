@@ -1,17 +1,17 @@
 .sidebar.sidebar--left
   .ui.vertical.inverted.fluid.menu
     - if freelancer_signed_in?
-      -if current_freelancer.pending_rooms.any?
-        - current_freelancer.pending_rooms.includes(:user).each_with_index do |room, index|
-          = link_to room, class: "item primary #{'active' if @room == room}", style: 'text-align: left;line-height: 20px;color: #888;' do
-            = Sanitize.fragment(truncate(room.get_room_name_for_freelancer(current_freelancer, index), :length => 23, :escape => false), Sanitize::Config::RELAXED).html_safe
-        ui.divider
-      - if current_freelancer.accepted_rooms.any?
-        #tasks
-          a
-          - current_freelancer.accepted_rooms.includes(:user).each_with_index do |room, index|
-            = link_to room, class: "item primary #{'active' if @room == room}" do
+      #tasks
+        a
+        -if current_freelancer.pending_rooms.any?
+          - current_freelancer.pending_rooms.includes(:user).each_with_index do |room, index|
+            = link_to room, class: "item primary #{'active' if @room == room}", style: 'text-align: left;line-height: 20px;color: #888;' do
               = Sanitize.fragment(truncate(room.get_room_name_for_freelancer(current_freelancer, index), :length => 23, :escape => false), Sanitize::Config::RELAXED).html_safe
+          ui.divider
+        - if current_freelancer.accepted_rooms.any?
+            - current_freelancer.accepted_rooms.includes(:user).each_with_index do |room, index|
+              = link_to room, class: "item primary #{'active' if @room == room}" do
+                = Sanitize.fragment(truncate(room.get_room_name_for_freelancer(current_freelancer, index), :length => 23, :escape => false), Sanitize::Config::RELAXED).html_safe
     - if user_signed_in?
       #tasks
         - if current_user.client?
@@ -34,4 +34,4 @@ coffee:
         $('a[href="/tasks/'+num+'"]').val($.cookie("#{num}"))
         $('a[href="/tasks/'+num+'"] > div.unread_message_number').removeClass("ui teal left pointing label").addClass("ui teal left pointing label")
         $('a[href="/tasks/'+num+'"] >  div.unread_message_number').text($('a[href="/tasks/'+num+'"]').val())
-  , 10    
+  , 10
