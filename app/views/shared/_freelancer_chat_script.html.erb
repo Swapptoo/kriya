@@ -78,7 +78,7 @@
   <%- if current_freelancer.pending_rooms.any? %>
   <%- unless @room.accepted_freelancers.any? %>
   var description = [
-    <% "You are assigned to the following task. Are you available to finish this project given all the details? <br> <h3>#{@room.posts.first.title.split.join(' ').html_safe}</h3><div class=\"ui divider\"></div> #{@room.posts.first.content.split.join(' ').html_safe}" %>,
+    <%= "You are assigned to the following task. Are you available to finish this project given all the details? <br> <h3>#{@room.posts.first.title.split.join(' ').html_safe}</h3><div class=\"ui divider\"></div> #{@room.posts.first.content.split.join(' ').html_safe}" %>,
     {
       type: 'visit',
       path: 'notice',
