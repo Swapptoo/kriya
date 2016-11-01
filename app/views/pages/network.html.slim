@@ -6,7 +6,6 @@ css:
   #home_link {
     padding: 13px;
     color: rgba(255,255,255,.7)!important;
-    font-weight: bold;
   }
 
   #home_link:hover {
@@ -24,7 +23,7 @@ css:
             = link_to "Sign Out", destroy_user_session_path, method: :delete, class: "item"
             br
           - unless user_signed_in? && freelancer_signed_in?
-            = link_to 'Post Work', '/', id: 'home_link'
+            = link_to 'Post Your Work', '/', id: 'home_link'
 
   .masthead.segment.bg7
     .ui.container
