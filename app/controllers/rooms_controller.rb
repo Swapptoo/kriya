@@ -92,7 +92,7 @@ class RoomsController < ApplicationController
     ru = @room.freelancers_rooms.where('freelancer_id = ?', current_freelancer.id)
     if ru.any? && ru[0].status == 'pending'
       ru[0].update_attribute(:status, 'accepted')
-        @message = Message.new({body: "Good news, we assigned our expert, #{current_freelancer.first_name} to this task. He should be pinging you shortly!"})
+        @message = Message.new({body: "Good news, we assigned our expert, #{current_freelancer.first_name} to this task. They should be here shortly. I will let you both take it from here!"})
         @message.room = @room
         @message.user = @room.manager
 

@@ -6,7 +6,7 @@ class UserNotifierMailer < ApplicationMailer
 
   self.default_options = {
     :'X-SMTPAPI' => proc { disable_sendgrid_subscription_header },
-    :from => 'Kriya Bot <bot@kriya.ai>'
+    :from => 'Kriya Task <bot@kriya.ai>'
   }
 
   def notify_room_user(room)
@@ -14,7 +14,7 @@ class UserNotifierMailer < ApplicationMailer
     @user = room.user
     @room = room
 
-    mail(:to => @user.email, :subject => "[Task] #{room.title}")
+    mail(:to => @user.email, :subject => "#{room.title}")
   end
 
   def notify_goomp(room)
@@ -22,7 +22,7 @@ class UserNotifierMailer < ApplicationMailer
     @user = room.user
     @room = room
 
-    mail(:to => 'manager@goomp.co', :subject => "[Task] #{room.title}")
+    mail(:to => 'manager@goomp.co', :subject => "#{room.title}")
   end
 
   def notify_unseen_messages(room, user, other_user, messages)
@@ -33,7 +33,7 @@ class UserNotifierMailer < ApplicationMailer
     @user = user
     @room = room
     full_name = other_user.full_name
-    full_name = 'Kriya Bot' if other_user == room.manager
+    full_name = 'Kriya Task' if other_user == room.manager
     @messages = []
 	messages.each do |msg|
       if msg.image.file.present? then
@@ -52,8 +52,8 @@ class UserNotifierMailer < ApplicationMailer
 
     mail(
       :to => user.email,
-      :subject => "[Task] #{room.title}",
-      :from => "Kriya Bot <" + usertype + "-" + room.id.to_s + "@messages.kriya.ai>"
+      :subject => "#{room.title}",
+      :from => "Kriya Task <" + usertype + "-" + room.id.to_s + "@messages.kriya.ai>"
     )
   end
 
@@ -61,7 +61,7 @@ class UserNotifierMailer < ApplicationMailer
     @sendgrid_category = "Room #{room.id}"
     @user = user
     @room = room
-    mail(:to => @user.email, :subject => "[Task] #{room.title}")
+    mail(:to => @user.email, :subject => "#{room.title}")
   end
 
   private
