@@ -427,8 +427,15 @@ a.fluidbox
 .ui.segment.feed.new
   width: 650px
 
-.ui.active.progress.primary
-  color: $primary-color !important
+.ui.progress
+  margin: 1em 0 1em
+  &.active.primary
+    background-color: $secondary-color
+    .bar
+      background-color: $primary-color
+      background-image: url(https://a.slack-edge.com/64d3/img/progress_bar_pattern.png) // TODO own background image
+      >.progress
+        color: white
 
 .ui.inverted.menu
   .item.primary.active

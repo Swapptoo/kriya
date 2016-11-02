@@ -16,14 +16,13 @@ css:
         .twelve.wide.column
           #ui_form_room.ui.stacked.segment
             h3 = @room.get_room_name_for_user current_user
+            .ui.active.progress.primary style="display: none"
+              .bar
+                .progress
             .ui.divider
             #messages.ui.comments data-room-id=@room.id
               .chat-content
                 = render @messages, :user => current_user
-
-            .ui.active.progress.primary style="display: none"
-              .bar
-                .progress
 
             = form_for [@room, Message.new], :remote => true, :html => { :class => "ui form" } do |f|
               .ui.left.action.input.fluid

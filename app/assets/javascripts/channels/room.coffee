@@ -30,6 +30,7 @@ $ ->
               $('#messages').append(data.message)
               $('#messages').imagesLoaded ->
                 ChatWindow.update()
+                $(document).trigger('message:added')
                 $("#messages").data("has-new-message", true)
                 $(".ui.progress").hide()
             else
