@@ -21,6 +21,7 @@ class UserNotifierMailer < ApplicationMailer
     @sendgrid_category = "Room #{room.id}"
     @user = room.user
     @room = room
+    @manager = room.manager
 
     mail(:to => 'manager@goomp.co', :subject => "#{room.title}")
   end
