@@ -52,13 +52,13 @@ class Message < ApplicationRecord
 	 #  end
 
       if self.freelancer && self.freelancer.stripe_client_id.blank?
-        self.update body: 'Freelancer didn\'t connect Stripe yet.'
+        self.update body: 'Freelancer didn\'t connect Stripe yet.', user: self.room.manager
         self.create_attachment html: "<br/>"
         self.attachment.html += <<~HTML.squish
           <button id="customButton-#{self.id}" class="mini ui green button custom-padding">Connect with Stripe</button>
           <script>
             document.getElementById("customButton-#{self.id}").addEventListener('click', function(e) {
-              window.location.href = '/auth/stripe_connect'
+              window.location.href = '/auth/stripe_connect?room_id=#{self.room_id}'
             });
           </script>
         HTML
@@ -159,7 +159,7 @@ class Message < ApplicationRecord
               });
             </script>
           HTML
-          self.update body: "The charge for this task is $#{amount}, did freelancer finish all the required things?"
+          self.update body: "The charge for this task is $#{amount}, did freelancer finish all the required things?", user: self.room.manager
         end
         self.attachment.save
 

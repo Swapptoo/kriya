@@ -50,7 +50,7 @@ class FreelancerRatesController < ApplicationController
           </script>
           HTML
         message.attachment.save
-
+        message.process_command
         format.html { redirect_to root_path, notice: 'Payment was successfully created.' }
         format.json { head :no_content }
       else

@@ -6,7 +6,14 @@ class OmniauthCallbacksController < ApplicationController
         :stripe_token => request.env["omniauth.auth"]["credentials"]["token"],
         :stripe_client_id => request.env["omniauth.auth"]["uid"]
       )
-      redirect_to root_path
+      if request.env["omniauth.params"]["room_id"]
+        room = Room.find request.env["omniauth.params"]["room_id"]
+        message = room.messages.new({:body => 'Freelancer setup payment.', :room => room, :user => room.manager})
+        message.save
+        redirect_to room
+      else
+        redirect_to root_path
+      end
     else
       if request.env["omniauth.params"]["user"] == "freelancer"
         from_omniauth = Freelancer.from_omniauth(request.env["omniauth.auth"])

@@ -29,11 +29,12 @@ class FreelancersRoomsController < ApplicationController
         if @freelancers_room.status == 'completed'
           message = Message.new({:body => 'This work is completed.', :room => @freelancers_room.room, :user => @freelancers_room.room.manager})
         elsif @freelancers_room.status == 'more_work'
-          message = Message.new({:body => 'You have more work.', :room => @freelancers_room.room, :user => @freelancers_room.room.manager})  
+          message = Message.new({:body => 'Client have more work.', :room => @freelancers_room.room, :user => @freelancers_room.room.manager})  
         elsif @freelancers_room.status == 'not_finished'
           message = Message.new({:body => 'The work is not finished.', :room => @freelancers_room.room, :user => @freelancers_room.room.manager})
         end
         message.save
+        message.process_command
         format.html { redirect_to root_path, notice: 'FreelancerRoom was successfully updated.' }
         format.json { head :no_content }
       else
