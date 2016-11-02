@@ -2,7 +2,7 @@
 <script>
 
   var category = [
-    "<%= new_user ? 'Please choose one of the fields below:' : 'Please choose one of the following -' %>",
+    "Please specify the department you need help with?",
     {
       type: 'choose',
       answers: [{
@@ -34,7 +34,7 @@
     }
   ];
   var timeline = [
-    'Please choose one your project timeline',
+    'What\'s the length of this project?',
     {
       type: 'choose',
       answers: [{
@@ -70,7 +70,7 @@
       ]
     }
   ];
-  var expetise_level = [
+  var expertise_level = [
     'Please choose the expertise level',
     {
       type: 'choose',
@@ -184,12 +184,12 @@
   <%- if new_user %>
     var configs = {
       greeting: [
-        'Hi, I am Kriya Bot. Welcome! I am here to help you getting work done by on demand workforce across the world.',
+        'Hi, I am Kriya Bot. Welcome! I am here to help in getting work done by on demand workforce across the world.',
         {
           type: 'choose',
           answers: [
             {
-              'text': 'Create Task',
+              'text': 'Get Started',
               'path': 'options'
             },
             {
@@ -201,7 +201,7 @@
       ],
       options: category,
       timeline: timeline,
-      expertiseLevel: expetise_level,
+      expertiseLevel: expertise_level,
       budget: budget,
       dummy: dummy,
       login: login,
@@ -211,7 +211,7 @@
     var configs = {
       greeting: category,
       timeline: timeline,
-      expertiseLevel: expetise_level,
+      expertiseLevel: expertise_level,
       budget: budget,
       description: description
     };

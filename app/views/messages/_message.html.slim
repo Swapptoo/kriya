@@ -21,7 +21,7 @@
             - if (user || current_user) != message.room.manager
               = message.user.first_name
             - else
-              ' Client
+              = message.user.first_name
           - elsif message.user == message.room.manager
             ' Kriya Bot
           - else
@@ -35,8 +35,8 @@
           '  ago
     .text
       - if message.image.file.present? && !(message.image.content_type.include? 'image')
-        = link_to message.image.file.filename, message.image.url
-        = "( " + message.image.size.to_s + "KB )" 
+        = link_to message.image.file.filename, message.image.url, target: "_blank"
+
       - else
         - if message.image.url(:thumb).present?
           = link_to image_tag(message.image.url(:thumb)), message.image.url(:thumb), class: "fluidbox"
@@ -48,7 +48,7 @@
         = link_to post_path(message.post), :data => {:modal => true} do
           .post-dialog
             .title
-              = message.post.title
-            hr
+              = Sanitize.fragment(truncate(message.post.title, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
+            .ui.divider
             .content
               = Sanitize.fragment(truncate(message.post.content, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe

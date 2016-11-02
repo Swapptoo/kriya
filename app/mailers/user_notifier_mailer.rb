@@ -6,7 +6,7 @@ class UserNotifierMailer < ApplicationMailer
 
   self.default_options = {
     :'X-SMTPAPI' => proc { disable_sendgrid_subscription_header },
-    :from => 'Kriya Bot <bot@kriya.ai>'
+    :from => 'Kriya Task <bot@kriya.ai>'
   }
 
   def notify_room_user(room)
@@ -14,25 +14,37 @@ class UserNotifierMailer < ApplicationMailer
     @user = room.user
     @room = room
 
-    mail(:to => @user.email, :subject => "[Kriya] #{room.title}")
+    mail(:to => @user.email, :subject => "#{room.title}")
   end
 
   def notify_goomp(room)
     @sendgrid_category = "Room #{room.id}"
     @user = room.user
     @room = room
+    @manager = room.manager
 
-    mail(:to => 'manager@goomp.co', :subject => "[Kriya] #{room.title}")
+    mail(:to => 'manager@goomp.co', :subject => "#{room.title}")
   end
 
   def notify_unseen_messages(room, user, other_user, messages)
+	if messages.size == 0 then
+	  return
+	end
     @sendgrid_category = "Room #{room.id}"
     @user = user
     @room = room
     full_name = other_user.full_name
-    full_name = 'Kriya Bot' if other_user == room.manager
-    @messages = messages.map { |msg| "#{full_name}: #{msg.body}" }
-    messages.update_all(seen: true)
+    full_name = 'Kriya Task' if other_user == room.manager
+    @messages = []
+	messages.each do |msg|
+      if msg.image.file.present? then
+	    @messages << ["file", full_name, msg.image]
+	  else
+	    @messages << ["text", full_name, msg.body]
+	  end
+	end
+
+	messages.update_all(seen: true)
 	if other_user == room.manager then
 	  usertype = "manager"
 	else
@@ -41,8 +53,8 @@ class UserNotifierMailer < ApplicationMailer
 
     mail(
       :to => user.email,
-      :subject => "[Task] #{room.title}",
-      :from => "Kriya Notification <" + usertype + "-" + room.id.to_s + "@messages.kriya.ai>"
+      :subject => "#{room.title}",
+      :from => "Kriya Task <" + usertype + "-" + room.id.to_s + "@messages.kriya.ai>"
     )
   end
 
@@ -50,7 +62,7 @@ class UserNotifierMailer < ApplicationMailer
     @sendgrid_category = "Room #{room.id}"
     @user = user
     @room = room
-    mail(:to => @user.email, :subject => "[Kriya] #{room.title}")
+    mail(:to => @user.email, :subject => "#{room.title}")
   end
 
   private

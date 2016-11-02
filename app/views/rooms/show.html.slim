@@ -12,9 +12,9 @@ css:
 .main
   .twelve.wide.column
     - if @room
-      .ui.divided.grid
+      #room.ui.divided.grid
         .twelve.wide.column
-          .ui.stacked.segment
+          #ui_form_room.ui.stacked.segment
             h3 = @room.get_room_name_for_user current_user
             .ui.divider
             #messages.ui.comments data-room-id=@room.id
@@ -31,11 +31,11 @@ css:
                   i.plus.icon
                   .menu
                     = link_to 'Create Post', new_post_path, :data => {:modal => true}, :class => "item"
-                    - if current_user == @room.manager
-                      .item data-charge-user=true Charge User
                     .item.fileinput-button
                       ' Upload File/Photo
                       = f.file_field :image
+                    - if current_user.manager?
+                      .item data-charge-user=true Charge Task
 
                 = f.text_field :body, :autofocus => true, :autocomplete => 'off', :placeholder => "Start typing…"
         .ui.vertical.divider
@@ -46,7 +46,7 @@ css:
             - if @room.posts.first
               = link_to post_path(@room.posts.first), :data => {:modal => true}, :style => 'color: rgba(0, 0, 0, 0.87);' do
                 .post-dialog[style="width:100%"]
-                  .title = @room.posts.first.title
+                  .title = Sanitize.fragment(truncate(@room.posts.first.title, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
                   .ui.divider
                   .content
                     = Sanitize.fragment(truncate(@room.posts.first.content, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
@@ -62,8 +62,8 @@ css:
             .ui.divider
             h4 Budget
             = number_to_currency(@room.budget)
-            .ui.divider
             - if current_user.manager?
+              .ui.divider
               #freelancers_section
                 = render "freelancers_section", :room => @room
     - else

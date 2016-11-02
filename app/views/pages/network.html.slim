@@ -3,6 +3,18 @@ css:
     padding-bottom: 210px;
   }
 
+  #home_link {
+    padding: 13px;
+    color: rgba(255,255,255,.7)!important;
+    font-weight: bold;
+  }
+
+  #home_link:hover {
+      color: white;
+      background: rgba(255,255,255,.08);
+      border-radius: .28571429rem;
+  }
+
 #example.index
   .following.bar
     .ui.container
@@ -11,13 +23,16 @@ css:
           - if freelancer_signed_in?
             = link_to "Sign Out", destroy_user_session_path, method: :delete, class: "item"
             br
+          - unless user_signed_in? && freelancer_signed_in?
+            = link_to 'Clients', '/', id: 'home_link'
 
   .masthead.segment.bg7
     .ui.container
       .introduction
         span.library = image_tag "logo-invert.png", style: "height: 55px", alt: "Goomp Logo"
         div.ui.inverted.header
-          span.tagline The on demand workforce to get your work done
-          br cheaper, faster and better!
+          span.tagline Join our workforce network to work
+          br
+          span.tagline  on the tasks you love and get paid for it!
         = render "goomp_bot/new_freelancer"
         .ui.hidden.divider

@@ -1,2 +1,6 @@
 - @messages.each do |msg|
-  p= msg
+  - if msg[0] == "text"
+    p= msg[1] + ": " + msg[2]
+  - else
+    p= msg[1] + ": "
+    = link_to msg[2].file.filename, msg[2].url, target: "_blank"

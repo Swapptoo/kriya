@@ -47,9 +47,9 @@ class Message < ApplicationRecord
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1
-	 #  if (self.user.role != "freelancer") and (self.user.role != "manager") then
-		# return
-	 #  end
+	  if user && user.client? then
+		return
+	  end
 
       if self.freelancer && self.freelancer.stripe_client_id.blank?
         self.update body: 'Freelancer didn\'t connect Stripe yet.', user: self.room.manager

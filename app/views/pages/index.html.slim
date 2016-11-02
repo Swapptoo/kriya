@@ -19,10 +19,10 @@ css:
       .ui.large.secondary.network.menu.inverted
         .right.menu.inverted
           - if user_signed_in?
-            = link_to "Sign Out", destroy_user_session_path, method: :delete, class: "item"
+            = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: "item"
             br
           - unless user_signed_in? && freelancer_signed_in?
-            = link_to "Join Workforce", '/network', id: 'network_link'
+            = link_to 'Workers', '/network', id: 'network_link'
 
   .masthead.segment.bg7
     .ui.container

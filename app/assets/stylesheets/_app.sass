@@ -51,7 +51,7 @@
       border: none
 
       #messages
-        height: calc( 100vh - 204px)
+        height: calc( 100vh - 175px)
         overflow-y: scroll
 
   &.small
@@ -184,6 +184,19 @@
 #user-avatar
   width: 100px
   height: 100px
+
+#ui_form_room:after
+  display: none
+
+#ui_form_room
+  h3
+    margin-bottom: 0
+  .ui.divider
+    margin-bottom: 0
+
+
+#message_body
+  border: 2px solid $border-color
 
 .ui.form
   .field
@@ -331,13 +344,14 @@ a.fluidbox
   top: -2px
 
 .ui.container.new-post
-  width: 700px
+  width: 1000px
   margin-top: 70px
   background-color: white
-  padding: 40px
-  min-height: 100vh!important
+  padding: 14px
+  min-height: 100vh !important
   box-shadow: 0px 1px 2px 0 $box-shadow-color
   border: 1px solid $box-shadow-color
+  word-wrap: break-word
   .author-box
     margin-bottom: 20px
 
@@ -448,7 +462,7 @@ a.fluidbox
 
   .extra.text
     font-size: 1.1em
-    line-height: 1.3em
+    line-height: 1.4em
     padding-top: 0.5rem
 
 .author-box-show
@@ -487,6 +501,9 @@ a.fluidbox
 
 .ui.comments
   max-width: 1081px
+  margin: 0.3em 0em
+  .comment.text
+    line-height: 1.4
 
 #comment_body
   border-color: $border-light-color
@@ -500,6 +517,10 @@ hr
 .ui.segments.js-infinite--list
   border: 1px solid $border_color
   box-shadow: none
+
+#room.ui.divided.grid
+  .column:not(.row)
+    padding-bottom: 0rem
 
 .ui.page.grid.with-bg
   padding-bottom: 50px

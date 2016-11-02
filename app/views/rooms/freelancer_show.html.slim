@@ -26,8 +26,9 @@
                     .item.fileinput-button
                       ' Upload File/Photo
                       = f.file_field :image
+                    .item data-charge-user=true Charge Task
 
-                = f.text_field :body, :autofocus => true, :autocomplete => 'off', :placeholder => "Start typing…" 
+                = f.text_field :body, :autofocus => true, :autocomplete => 'off', :placeholder => "Start typing…"
         - else
           = render "goomp_bot/new_goomp"
       .ui.vertical.divider
@@ -38,7 +39,7 @@
           - if @room.posts.first
             = link_to post_path(@room.posts.first), :data => {:modal => true}, :style => 'color: rgba(0, 0, 0, 0.87);' do
               .post-dialog[style="width:100%"]
-                .title = @room.posts.first.title
+                .title = Sanitize.fragment(truncate(@room.posts.first.title, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
                 .ui.divider
                 .content
                   = Sanitize.fragment(truncate(@room.posts.first.content, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe

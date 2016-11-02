@@ -355,10 +355,14 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
               case "change-cover":
                 return t.changeCover(e)
             }
-            var n = t.createSpeechBubble({
-              text: e
-            });
-            t.addSpeechBubble(n);
+
+            if (e !== "") {
+              var n = t.createSpeechBubble({
+                text: e
+              });
+
+              t.addSpeechBubble(n);
+            }
           }, t.config.chatDelay * n + n * n * 70)
         })
       }

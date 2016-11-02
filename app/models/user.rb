@@ -79,9 +79,9 @@ class User < ApplicationRecord
   def manager?
     self.role == 'manager' || self.email == 'manager@goomp.co'
   end
-  
+
   def client?
-    self.role == 'client' || self.role.blank?
+    !manager? && (self.role == 'client' || self.role.blank?)
   end
 
   def online?

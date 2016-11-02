@@ -23,7 +23,7 @@ class EmailProcessor
 	lines = body.split("\n")
 	body = ""
 	lines.each do |line|
-		if line.include? "Kriya Notification" then
+		if line.include? "Kriya Task" then
 			break
 		end
 		body += line + "\n"
