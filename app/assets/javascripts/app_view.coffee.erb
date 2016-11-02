@@ -75,8 +75,8 @@ AppView = {
 
     $(document).off("turbolinks:before-cache").on("turbolinks:before-cache", @preparePageForTurbolinks)
 
-    $(".ui.comments a").fluidbox()
 
+    @initFluidBox()
     @initSemanticUI()
     @initEditor()
     @initInfinitePage()
@@ -526,7 +526,12 @@ AppView = {
         # embeds:
           # label: '<span class="typcn typcn-media-play"></span>'
     )
+
+  initFluidBox: ->
+    $(".ui.comments a").fluidbox()
 }
 
 document.addEventListener "turbolinks:load", ->
   AppView.initialize()
+
+$(document).on('message:added', (e) -> AppView.initFluidBox())
