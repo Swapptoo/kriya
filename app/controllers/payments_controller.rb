@@ -59,7 +59,7 @@ class PaymentsController < ApplicationController
       freelancer = Freelancer.find payment_params[:freelancer_id]
       destination = freelancer.stripe_client_id
       if destination.blank?
-        message = room.messages.new({:body => 'Freelancer didn\'t connect Stripe yet.', :room => room, :user => room.manager})
+        message = room.messages.new({:body => 'Freelancer didn\'t connect Stripe yet.', :room => room, :user => room.manager, :msg_type => 'bot-not-connect-stripe'})
         message.save
         redirect_to room
       end
@@ -67,7 +67,7 @@ class PaymentsController < ApplicationController
       freelancer = msg.freelancer
       destination = freelancer.stripe_client_id
       if destination.blank?
-        message = room.messages.new({:body => 'Freelancer didn\'t connect Stripe yet.', :room => room, :user => room.manager})
+        mmessage = room.messages.new({:body => 'Freelancer didn\'t connect Stripe yet.', :room => room, :user => room.manager, :msg_type => 'bot-not-connect-stripe'})
         message.save
         redirect_to room
       end
@@ -88,7 +88,7 @@ class PaymentsController < ApplicationController
         else
           freelancer_room_id = ''
         end
-        message = room.messages.new({:body => 'The transaction was successful. What is the rate of this work?', :room => room, :user => room.manager})
+        message = room.messages.new({:body => 'The transaction was successful. What is the rate of this work?', :room => room, :user => room.manager, :msg_type => 'bot-ask-rate'})
         message.create_attachment html: "<br/>"
         (1..5).each do |i|
           message.attachment.html += <<~HTML.squish
@@ -131,11 +131,12 @@ class PaymentsController < ApplicationController
           }
         ),
         room_id: room.id,
+        is_user: 'user'
       )
     # Catches at least CardError and InvalidRequestError
     rescue Exception => e#Stripe::CardError => e
       # The card has been declined
-      room.messages.new({:body => 'The transaction was unsuccessful. Please try again', :room => room, :user => room.manager})
+      room.messages.new({:body => 'The transaction was unsuccessful. Please try again', :room => room, :user => room.manager, :msg_type => 'bot-failed-payment'})
       room.save
       ActionCable.server.broadcast(
         "rooms:#{room.id}:messages",
@@ -146,6 +147,7 @@ class PaymentsController < ApplicationController
           }
         ),
         room_id: room.id,
+        is_user: 'user'
       )
       room.messages.new({:body => '/charge $' + (amount.to_i / 100).to_s, :room => room, :user => room.manager})
       room.messages.last.process_command

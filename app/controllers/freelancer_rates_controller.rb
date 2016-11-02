@@ -21,7 +21,11 @@ class FreelancerRatesController < ApplicationController
     @freelancer_rate = FreelancerRate.new(freelancer_rate_params)
     respond_to do |format|
       if @freelancer_rate.save
-        message = Message.new({:body => 'The rate is ' + @freelancer_rate.rate.to_s + '.' + 'Do you have more work?', :room => @freelancer_rate.room, :user => @freelancer_rate.room.manager})
+        message = Message.new({:body => 'The rate of this work is ' + @freelancer_rate.rate.to_s + '.', :room => @freelancer_rate.room, :user => @freelancer_rate.room.manager, :msg_type => 'client-marked-rate'})
+        message.save
+        message.process_command
+
+        message = Message.new({:body => 'Do you have more work for workforce?', :room => @freelancer_rate.room, :user => @freelancer_rate.room.manager, :msg_type => 'bot-ask-continue-work'})
         message.create_attachment html: "<br/>"
         message.attachment.html += <<~HTML.squish
           <button id="customContinueYesButton-#{message.id}" class="mini ui green button custom-padding">Yes</button>
@@ -51,7 +55,7 @@ class FreelancerRatesController < ApplicationController
           HTML
         message.attachment.save
         message.process_command
-        format.html { redirect_to root_path, notice: 'Payment was successfully created.' }
+        format.html { redirect_to root_path, notice: 'Rate was successfully created.' }
         format.json { head :no_content }
       else
         format.html { render :new }

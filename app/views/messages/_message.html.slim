@@ -1,54 +1,145 @@
-- within_60_secs_from_previous = message.within_60_secs_from_previous?
-.comment[class=('inline' if within_60_secs_from_previous)]
-  - if message.user && message.user.picture
-    - unless within_60_secs_from_previous
-      .avatar
-        - if message.user == message.room.user
-          = image_tag message.user.picture
-        - elsif message.user == message.room.manager
-          = image_tag "square-logo.ico"
-        - else
-          = image_tag message.user.picture
-  - elsif message.freelancer && message.freelancer.picture
-    - unless within_60_secs_from_previous
-      .avatar
-        = image_tag message.freelancer.picture
-  .content
-    - unless within_60_secs_from_previous
-      a.author
-        - if message.user
-          - if message.user == message.room.user
-            - if (user || current_user) != message.room.manager
-              = message.user.first_name
+- if user.class.name == 'Freelancer'
+  - if message.msg_type != 'bot-ask-continue-work' && message.msg_type != 'bot-falied-payment' && message.msg_type != 'bot-charge-task'
+    - within_60_secs_from_previous = message.within_60_secs_from_previous?
+    .comment[class=('inline' if within_60_secs_from_previous)]
+      - if message.user && message.user.picture
+        - unless within_60_secs_from_previous
+          .avatar
+            - if message.user == message.room.user
+              = image_tag message.user.picture
+            - elsif message.user == message.room.manager
+              = image_tag "square-logo.ico"
             - else
-              = message.user.first_name
-          - elsif message.user == message.room.manager
-            ' Kriya Bot
-          - else
-            = message.user.first_name
-        - elsif message.freelancer
-          = message.freelancer.first_name
-        
-      .metadata
-        .date
-          = time_ago_in_words message.created_at
-          '  ago
-    .text
-      - if message.image.file.present? && !(message.image.content_type.include? 'image')
-        = link_to message.image.file.filename, message.image.url, target: "_blank"
+              = image_tag message.user.picture
+      - elsif message.freelancer && message.freelancer.picture
+        - unless within_60_secs_from_previous
+          .avatar
+            = image_tag message.freelancer.picture
+      .content
+        - unless within_60_secs_from_previous
+          a.author
+            - if message.user
+              - if message.user == message.room.user
+                - if (user || current_user) != message.room.manager
+                  ' Client
+                - else
+                  ' Client
+              - elsif message.user == message.room.manager
+                ' Kriya Bot
+              - else
+                ' Client
+            - elsif message.freelancer
+              ' Workforce
+            
+          .metadata
+            .date
+              = time_ago_in_words message.created_at
+              '  ago
+        .text
+          - if message.image.file.present? && !(message.image.content_type.include? 'image')
+            = link_to message.image.file.filename, message.image.url, target: "_blank"
 
-      - else
-        - if message.image.url(:thumb).present?
-          = link_to image_tag(message.image.url(:thumb)), message.image.url(:thumb), class: "fluidbox"
-        - else
-          = auto_link message.body, html: { target: '_blank', rel: "nofollow" }
-      - if message.attachment
-        = message.attachment.html.html_safe
-      - unless message.post.nil?
-        = link_to post_path(message.post), :data => {:modal => true} do
-          .post-dialog
-            .title
-              = Sanitize.fragment(truncate(message.post.title, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
-            .ui.divider
-            .content
-              = Sanitize.fragment(truncate(message.post.content, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
+          - else
+            - if message.image.url(:thumb).present?
+              = link_to image_tag(message.image.url(:thumb)), message.image.url(:thumb), class: "fluidbox"
+            - else
+              - if message.msg_type == 'bot-task-start'
+                - unless user.stripe_client_id
+                  button id="customBankButton-#{message..id}" class="mini ui green button custom-padding" Connect Bank
+                  javascript:
+                    document.getElementById("customBankButton-#{message.id}").addEventListener('click', function(e) {
+                      window.location.href = '/auth/stripe_connect?room_id=#{message.room_id}'
+                    });
+                - else
+                  ' We notified the client that you started the task
+              - elsif message.msg_type == 'bot-task-finish'
+                ' We notified the client that you finished the task, waiting for their approval
+              - elsif message.msg_type == 'bot-ask-rate'
+                ' Client paid
+              - elsif message.msg_type == 'bot-continue-work'
+                ' Client has more work for you, details will be given shortly
+              - else
+                = auto_link message.body, html: { target: '_blank', rel: "nofollow" }
+                - if message.attachment
+                  = message.attachment.html.html_safe
+          - unless message.post.nil?
+            = link_to post_path(message.post), :data => {:modal => true} do
+              .post-dialog
+                .title
+                  = Sanitize.fragment(truncate(message.post.title, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
+                .ui.divider
+                .content
+                  = Sanitize.fragment(truncate(message.post.content, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
+
+- if user.class.name == 'User'
+  - if message.msg_type != 'bot-not-connect-stripe'
+    - within_60_secs_from_previous = message.within_60_secs_from_previous?
+    .comment[class=('inline' if within_60_secs_from_previous)]
+      - if message.user && message.user.picture
+        - unless within_60_secs_from_previous
+          .avatar
+            - if message.user == message.room.user
+              = image_tag message.user.picture
+            - elsif message.user == message.room.manager
+              = image_tag "square-logo.ico"
+            - else
+              = image_tag message.user.picture
+      - elsif message.freelancer && message.freelancer.picture
+        - unless within_60_secs_from_previous
+          .avatar
+            = image_tag message.freelancer.picture
+      .content
+        - unless within_60_secs_from_previous
+          a.author
+            - if message.user
+              - if message.user == message.room.user
+                - if (user || current_user) != message.room.manager
+                  ' Client
+                - else
+                  ' Client
+              - elsif message.user == message.room.manager
+                ' Kriya Bot
+              - else
+                ' Client
+            - elsif message.freelancer
+              ' Workforce
+            
+          .metadata
+            .date
+              = time_ago_in_words message.created_at
+              '  ago
+        .text
+          - if message.image.file.present? && !(message.image.content_type.include? 'image')
+            = link_to message.image.file.filename, message.image.url, target: "_blank"
+
+          - else
+            - if message.image.url(:thumb).present?
+              = link_to image_tag(message.image.url(:thumb)), message.image.url(:thumb), class: "fluidbox"
+            - else
+              - if message.msg_type == 'bot-task-start'
+                - unless user.stripe_client_id
+                  button id="customBankButton-#{message..id}" class="mini ui green button custom-padding" Connect Bank
+                  javascript:
+                    document.getElementById("customBankButton-#{message.id}").addEventListener('click', function(e) {
+                      window.location.href = '/auth/stripe_connect?room_id=#{message.room_id}'
+                    });
+                - else
+                  ' We notified the client that you started the task
+              - elsif message.msg_type == 'bot-task-finish'
+                'Workforce has mentioned that they finished this task. Do you approve?
+                - if message.attachment
+                  = message.attachment.html.html_safe
+              - elsif message.msg_type == 'bot-continue-work'
+                ' The channel continues
+              - else
+                = auto_link message.body, html: { target: '_blank', rel: "nofollow" }
+                - if message.attachment
+                  = message.attachment.html.html_safe
+          - unless message.post.nil?
+            = link_to post_path(message.post), :data => {:modal => true} do
+              .post-dialog
+                .title
+                  = Sanitize.fragment(truncate(message.post.title, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
+                .ui.divider
+                .content
+                  = Sanitize.fragment(truncate(message.post.content, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe

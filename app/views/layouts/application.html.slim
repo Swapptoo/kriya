@@ -2,7 +2,10 @@ doctype html
 html
   head = render "layouts/head"
   body
-
+    - if user_signed_in?
+      input type="hidden" value="user" id="is_user"
+    - if freelancer_signed_in?
+      input type="hidden" value="freelancer" id="is_user"
     - unless no_header?
       .ui.borderless.fixed.menu
         a.header.item href="/"

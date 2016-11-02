@@ -27,9 +27,9 @@ class FreelancersRoomsController < ApplicationController
     respond_to do |format|
       if @freelancers_room.update(freelancers_room_params)
         if @freelancers_room.status == 'completed'
-          message = Message.new({:body => 'This work is completed.', :room => @freelancers_room.room, :user => @freelancers_room.room.manager})
+          message = Message.new({:body => 'Task is finished.', :room => @freelancers_room.room, :user => @freelancers_room.room.manager})
         elsif @freelancers_room.status == 'more_work'
-          message = Message.new({:body => 'Client have more work.', :room => @freelancers_room.room, :user => @freelancers_room.room.manager})  
+          message = Message.new({:body => 'Client has more work for you, details will be given shortly', :room => @freelancers_room.room, :user => @freelancers_room.room.manager, :msg_type => 'bot-continue-work'})  
         elsif @freelancers_room.status == 'not_finished'
           message = Message.new({:body => 'The work is not finished.', :room => @freelancers_room.room, :user => @freelancers_room.room.manager})
         end

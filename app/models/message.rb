@@ -12,6 +12,7 @@
 #  post_id       :integer
 #  seen          :boolean          default(FALSE)
 #  freelancer_id :integer
+#  msg_type      :string
 #
 # Indexes
 #
@@ -47,9 +48,9 @@ class Message < ApplicationRecord
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1
-	  if user && user.client? then
-		return
-	  end
+  	  if user && user.client? then
+  		  return
+  	  end
 
       if self.freelancer && self.freelancer.stripe_client_id.blank?
         self.update body: 'Freelancer didn\'t connect Stripe yet.', user: self.room.manager
@@ -77,7 +78,7 @@ class Message < ApplicationRecord
                   message_id: #{self.id},
                   payment: {
                     user_id: #{self.room.user.id},
-                    freelancer_id: #{self.freelancer.nil? ? '' : self.freelancer.id}
+                    freelancer_id: #{self.freelancer.nil? ? 'undefined' : self.freelancer.id}
                   }
                 });
               e.preventDefault();
@@ -136,7 +137,7 @@ class Message < ApplicationRecord
           </script>
         HTML
         if !self.user.nil?
-          self.update body: "The charge for this task is $#{amount}, can you confirm so we can get it started?"
+          self.update body: "The charge for this task is $#{amount}, can you confirm so we can get it started?", :msg_type => 'bot-charge-task'
         elsif !self.freelancer.nil?
           freelancer_rooms = self.room.freelancers_rooms.where('status in (?)', ['accepted', 'more_work', 'not_finished']).where("freelancer_id = ?", self.freelancer.id)
           if freelancer_rooms.any?
@@ -159,7 +160,7 @@ class Message < ApplicationRecord
               });
             </script>
           HTML
-          self.update body: "The charge for this task is $#{amount}, did freelancer finish all the required things?", user: self.room.manager
+          self.update body: "The charge for this task is $#{amount}, Workforce has mentioned that they finished this task. Do you approve?", user: self.room.manager, msg_type: 'bot-task-finish'
         end
         self.attachment.save
 
@@ -179,7 +180,21 @@ class Message < ApplicationRecord
         }
       ),
       room_id: room.id,
+      is_user: 'user'
     )
+    self.room.in_progress_freelancers.each do |freelancer|
+      ActionCable.server.broadcast(
+        "rooms:#{room.id}:messages",
+        message: MessagesController.render(
+          partial: 'messages/message',
+          locals: {
+            message: self, user: freelancer
+          }
+        ),
+        room_id: room.id,
+        is_user: 'freelancer'
+      )
+    end
   end
 
   def body_or_image_present
