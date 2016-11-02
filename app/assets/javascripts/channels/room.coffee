@@ -24,7 +24,7 @@ $ ->
           identifier = JSON.parse this.identifier
           room_id = identifier.room
           if (@collection().data('room-id') == data.room_id) && (@collection().data('room-id') == parseInt room_id)
-            $("#new_message #ui_form_input").val ''
+            $("#message_body").val ''
             $('#messages').append(data.message)
             $('#messages').imagesLoaded ->
               ChatWindow.update()

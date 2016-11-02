@@ -106,8 +106,8 @@ AppView = {
 
 
   chargeUser: ->
-    $("#new_message #ui_form_input").val("/charge $100")
-    $("#new_message #ui_form_input").focus()
+    $("#message_body").val("/charge $100")
+    $("#message_body").focus()
 
   initFileupload: ->
     $("#new_message").form
