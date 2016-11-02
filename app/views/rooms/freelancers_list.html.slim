@@ -15,7 +15,6 @@
         thead
           th Name
           th Skills
-          th Availability
           th Profile Link
           th 
         tbody
@@ -26,7 +25,6 @@
                 - freelancer.skills.each do |skill|
                   div
                     = skill.skill
-              td= freelancer.availability
               td
                 = link_to freelancer.professional_profile_link1, freelancer.professional_profile_link1
               td
@@ -40,7 +38,6 @@
                 - freelancer.skills.each do |skill|
                   div
                     = skill.skill
-              td= freelancer.availability
               td
                 = link_to freelancer.professional_profile_link1, freelancer.professional_profile_link1
               td id="asign_btn_#{freelancer.id}"
