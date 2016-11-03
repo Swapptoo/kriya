@@ -7,7 +7,6 @@ $ ->
         channelArray.push parseInt(val)
     )
 
-    console.log channelArray
     for num in channelArray
       App.cable.subscriptions.create channel: "RoomChannel", room:"#{num}",
         collection: -> $("#messages")
@@ -24,7 +23,6 @@ $ ->
           identifier = JSON.parse this.identifier
           room_id = identifier.room
           if (@collection().data('room-id') == data.room_id) && (@collection().data('room-id') == parseInt room_id)
-            $("#message_body").val ''
             $('#messages').append(data.message)
             $('#messages').imagesLoaded ->
               ChatWindow.update()
