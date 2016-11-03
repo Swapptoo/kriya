@@ -46,12 +46,12 @@ class Freelancer < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   enum status: {pause: 'pause', live: 'live'}
-  
+
   acts_as_token_authenticatable
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable 
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
   validates :first_name, :last_name, :picture, :headline, :category, :availability, :primary_skill, :years_of_experiences, :project_description, :professional_profile_link1, presence: true
-  
+
   before_save :ensure_authentication_token
 
   has_many :freelancer_authorizations, dependent: :destroy
@@ -62,7 +62,7 @@ class Freelancer < ApplicationRecord
   has_many :freelancers_rooms, class_name: 'FreelancersRooms'
   has_and_belongs_to_many :asigned_rooms, join_table: :freelancers_rooms, class_name: "Room", after_add: :send_asigned_room_email_to_freelancer
   has_many :messages, dependent: :destroy
-  
+
   scope :live, -> { where(status: 'live') }
 
   def full_name
@@ -86,8 +86,7 @@ class Freelancer < ApplicationRecord
   end
 
   def send_asigned_room_email_to_freelancer(record)
-    # UserNotifierMailer.delay(queue: :room).notify_asigned_room(record, self)
-    UserNotifierMailer.notify_asigned_room(record, self).deliver_now
+    UserNotifierMailer.delay(queue: :room).notify_asigned_room(record, self)
   end
 
   def ensure_authentication_token
@@ -174,9 +173,9 @@ class Freelancer < ApplicationRecord
       field :professional_profile_link1
       field :status
       field :skills do
-        formatted_value{ 
-          bindings[:object].skills.each do |skill| 
-            skill.skill 
+        formatted_value{
+          bindings[:object].skills.each do |skill|
+            skill.skill
           end
         }
       end

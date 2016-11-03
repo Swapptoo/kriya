@@ -89,8 +89,7 @@ class Room < ApplicationRecord
   end
 
   def send_asigned_room_email_to_freelancer(record)
-    # UserNotifierMailer.delay(queue: :room).notify_asigned_room(self, record)
-    UserNotifierMailer.notify_asigned_room(self, record).deliver_now
+    UserNotifierMailer.delay(queue: :room).notify_asigned_room(self, record)
   end
 
   rails_admin do

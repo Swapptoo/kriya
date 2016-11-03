@@ -39,15 +39,15 @@ class UserNotifierMailer < ApplicationMailer
       usertype = 'manager'
     end
 
-  	messages.each do |msg|
+    messages.each do |msg|
       if msg.image.file.present?
-  	    @messages << ["file", full_name, msg.image]
-  	  else
-  	    @messages << ["text", full_name, msg.body]
-  	  end
-  	end
+        @messages << ["file", full_name, msg.image]
+      else
+        @messages << ["text", full_name, msg.body]
+      end
+    end
 
-  	messages.update_all(seen: true)
+    messages.update_all(seen: true)
 
     mail(
       :to => user.email,
