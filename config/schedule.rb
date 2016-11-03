@@ -19,6 +19,6 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 10.minutes do
+every 5.minutes do
   rake 'message:unseen_alert', output: 'log/message_unseen_alert.log'
 end

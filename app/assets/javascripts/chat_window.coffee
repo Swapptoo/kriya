@@ -1,14 +1,11 @@
 window.ChatWindow =
   onLoadMore: ->
-    console.log 'load more'
 
   onScroll: ->
     if @el.scrollTop < 100
       @onLoadMore()
 
   handleResize: ->
-    console.log('height', @el.scrollHeight)
-    console.log('top', @el.scrollTop)
 
   initialize: ->
     @el = document.getElementById "messages"
