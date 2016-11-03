@@ -53,7 +53,7 @@ class Message < ApplicationRecord
   	  end
 
       if self.freelancer && self.freelancer.stripe_client_id.blank?
-        self.update body: 'We sent a note to the client for your charge, meanwhile please connect your stripe', user: self.room.manager
+        self.update body: 'We sent a note to the client for your charge, meanwhile please connect your stripe', user: self.room.manager, msg_type: 'bot-not-connect-stripe'
         self.create_attachment html: "<br/>"
         self.attachment.html += <<~HTML.squish
           <button id="customButton-#{self.id}" class="mini ui green button custom-padding">Connect with Stripe</button>
