@@ -45,10 +45,10 @@ css:
             - if @room.posts.first
               = link_to post_path(@room.posts.first), :data => {:modal => true}, :style => 'color: rgba(0, 0, 0, 0.87);' do
                 .post-dialog[style="width:100%"]
-                  .title = Sanitize.fragment(truncate(@room.posts.first.title, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
+                  .title = Sanitize.fragment(truncate(@room.posts.first.title.strip, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
                   .ui.divider
                   .content
-                    = Sanitize.fragment(truncate(@room.posts.first.content, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
+                    = Sanitize.fragment(truncate(@room.posts.first.content.strip, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
               /= link_to post_path(@room.posts.first), :data => {:modal => true}, :style => 'color: rgba(0, 0, 0, 0.87);' do
                 h4 Description
                 p = @room.posts.first.content.html_safe
