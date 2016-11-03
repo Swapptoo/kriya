@@ -48,7 +48,7 @@
         = link_to post_path(message.post), :data => {:modal => true} do
           .post-dialog
             .title
-              = Sanitize.fragment(truncate(message.post.title, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
+              = Sanitize.fragment(truncate(message.post.title.strip, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
             .ui.divider
             .content
-              = Sanitize.fragment(truncate(message.post.content, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
+              = Sanitize.fragment(truncate(message.post.content.strip, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
