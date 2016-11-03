@@ -9,9 +9,8 @@ class UnseenMessageAlertWorker
     another_user = room.manager
     another_user = room.user if room.manager == user
     messages = room.messages.not_by(user).un_seen.order(:created_at)
-    if messages.size == 0 then
-      return
-    end
+
+    return if messages.size.zero?
     
     UserNotifierMailer.notify_unseen_messages(room, user, another_user, messages).deliver_now
   end
