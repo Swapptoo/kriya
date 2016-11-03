@@ -1,7 +1,7 @@
 <% if @success %>
   alert('<%= @freelancer.full_name %> is succssfully removed from <%= @room.title %>.');
+  $('#freelancer_invite_<%= @freelancer.id %>').html('Send Invite');
 <% else %>
   alert('Failed');
 <% end %>
 $("#freelancers_section").html('<%= render "freelancers_section", :room => @room %>');
-$(".freelancers-list").modal('hide');
