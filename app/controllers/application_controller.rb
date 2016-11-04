@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   acts_as_token_authentication_handler_for User, fallback: :none
+  acts_as_token_authentication_handler_for Freelancer, fallback: :none
 
   before_action do
     if current_user && current_user.email == "cqpanxu@gmail.com"

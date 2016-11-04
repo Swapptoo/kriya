@@ -27,29 +27,27 @@ class UserNotifierMailer < ApplicationMailer
   end
 
   def notify_unseen_messages(room, user, other_user, messages)
-	if messages.size == 0 then
-	  return
-	end
     @sendgrid_category = "Room #{room.id}"
     @user = user
     @room = room
-    full_name = other_user.full_name
-    full_name = 'Kriya Task' if other_user == room.manager
     @messages = []
-	messages.each do |msg|
-      if msg.image.file.present? then
-	    @messages << ["file", full_name, msg.image]
-	  else
-	    @messages << ["text", full_name, msg.body]
-	  end
-	end
+    full_name = other_user.full_name
+    usertype = 'client'
 
-	messages.update_all(seen: true)
-	if other_user == room.manager then
-	  usertype = "manager"
-	else
-	  usertype = "client"
-	end
+    if other_user == room.manager
+      full_name = 'Kriya Task'
+      usertype = 'manager'
+    end
+
+    messages.each do |msg|
+      if msg.image.file.present?
+        @messages << ["file", full_name, msg.image]
+      else
+        @messages << ["text", full_name, msg.body]
+      end
+    end
+
+    messages.update_all(seen: true)
 
     mail(
       :to => user.email,

@@ -13,7 +13,7 @@
 #
 
 class FreelancersRooms < ApplicationRecord
-  enum status: {pending: 'pending', accepted: 'accepted', not_finished: 'not_finished', more_work: 'more_work', completed: 'completed', rejected: 'rejected'}
+  enum status: {pending: 'pending', accepted: 'accepted', in_progress: 'in_progress', completed: 'completed', rejected: 'rejected'}
   
   belongs_to :room
   belongs_to :freelancer
@@ -26,12 +26,12 @@ class FreelancersRooms < ApplicationRecord
 
   scope :pending, -> { where(status: 'pending') }
   scope :accepted, -> { where(status: 'accepted') }
+  scope :in_progress, -> { where(status: 'in_progress') }
   scope :more_work, -> { where(status: 'more_work') }
   scope :completed, -> { where(status: 'completed') }
 
   def send_asigned_room_email_to_freelancer
-    # UserNotifierMailer.delay(queue: :room).notify_asigned_room(self.room, self.user)
-    UserNotifierMailer.notify_asigned_room(self.room, self.freelancer).deliver_now
+    UserNotifierMailer.delay(queue: :room).notify_asigned_room(self.room, self.freelancer)
   end
 
   rails_admin do
