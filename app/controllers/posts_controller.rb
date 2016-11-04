@@ -47,7 +47,7 @@ class PostsController < ApplicationController
       @message.user = current_user
 
       @message.save
-
+      @message.process_command
       respond_modal_with @post, location: request.referer and return
     end
     # respond_to do |format|

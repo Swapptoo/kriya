@@ -26,11 +26,10 @@
                   div
                     = skill.skill
               td
-                = link_to freelancer.professional_profile_link1, freelancer.professional_profile_link1
+                = link_to truncate(freelancer.professional_profile_link1, :length => 30), freelancer.professional_profile_link1
               td
-                = link_to 'Invite', asign_freelancer_room_path(@room, freelancer_id: freelancer.id), remote: true, class: 'ui button mini primary send-invite'
-                = link_to 'X', remove_asigned_freelancer_room_path(@room, freelancer_id: freelancer.id), data: {remote: true, confirm: "Are you sure?"}, class: 'ui button mini negative remove-invite'
-                input type='checkbox' checked="checked" class="freelancer_status"
+                = link_to 'Invited', asign_freelancer_room_path(@room, freelancer_id: freelancer.id), remote: true, class: 'ui button mini primary send-invite', id: "freelancer_invite_#{freelancer.id}"
+                = link_to 'X', remove_asigned_freelancer_room_path(@room, freelancer_id: freelancer.id), data: {remote: true, confirm: "Are you sure?"}, class: 'ui button mini negative remove-invite', id: "freelancer_remove_#{freelancer.id}"
           - @freelancers.each do |freelancer|
             tr
               td= freelancer.full_name
@@ -39,11 +38,10 @@
                   div
                     = skill.skill
               td
-                = link_to freelancer.professional_profile_link1, freelancer.professional_profile_link1
+                = link_to truncate(freelancer.professional_profile_link1, :length => 30), freelancer.professional_profile_link1
               td id="asign_btn_#{freelancer.id}"
-                = link_to 'Send Invite', asign_freelancer_room_path(@room, freelancer_id: freelancer.id), remote: true, class: 'ui button mini primary send-invite'
-                = link_to 'X', remove_asigned_freelancer_room_path(@room, freelancer_id: freelancer.id), data: {remote: true, confirm: "Are you sure?"}, class: 'ui button mini negative remove-invite'
-                input type='checkbox' class="freelancer_status"
+                = link_to 'Send Invite', asign_freelancer_room_path(@room, freelancer_id: freelancer.id), remote: true, class: 'ui button mini primary send-invite', id: "freelancer_invite_#{freelancer.id}"
+                = link_to 'X', remove_asigned_freelancer_room_path(@room, freelancer_id: freelancer.id), data: {remote: true, confirm: "Are you sure?"}, class: 'ui button mini negative remove-invite', id: "freelancer_remove_#{freelancer.id}"
     .cf
     .ui.divider
 javascript:
@@ -51,11 +49,5 @@ javascript:
     table = $("#freelancers_list");
     table.dataTable();
 
-    $(".freelancer_status").change(function() {
-      if ($(this).is(':checked'))
-        $(this).parent().find('a.send-invite').trigger('click');
-      else
-        $(this).parent().find('a.remove-invite').trigger('click');
-    });
     table.attr('class', 'ui table');
   });

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161104143143) do
+ActiveRecord::Schema.define(version: 20161102144102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,8 +125,11 @@ ActiveRecord::Schema.define(version: 20161104143143) do
     t.string   "project_url"
     t.string   "professional_profile_link1"
     t.string   "professional_profile_link2"
-    t.string   "status",                                default: "pause"
+    t.string   "status",                                default: "live"
     t.string   "authentication_token",       limit: 30
+    t.string   "stripe_publishable_key"
+    t.string   "stripe_token"
+    t.string   "stripe_client_id"
     t.index ["authentication_token"], name: "index_freelancers_on_authentication_token", unique: true, using: :btree
     t.index ["email"], name: "index_freelancers_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_freelancers_on_reset_password_token", unique: true, using: :btree
@@ -346,6 +349,10 @@ ActiveRecord::Schema.define(version: 20161104143143) do
   add_foreign_key "comments", "users"
   add_foreign_key "follows", "users"
   add_foreign_key "freelancer_authorizations", "freelancers"
+  add_foreign_key "freelancer_rates", "freelancers"
+  add_foreign_key "freelancer_rates", "freelancers_rooms"
+  add_foreign_key "freelancer_rates", "rooms"
+  add_foreign_key "freelancer_rates", "users"
   add_foreign_key "goomps", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "memberships", "goomps"
@@ -354,6 +361,7 @@ ActiveRecord::Schema.define(version: 20161104143143) do
   add_foreign_key "messages", "posts"
   add_foreign_key "messages", "rooms"
   add_foreign_key "messages", "users"
+  add_foreign_key "payments", "freelancers"
   add_foreign_key "payments", "users"
   add_foreign_key "posts", "goomps"
   add_foreign_key "posts", "subtopics"

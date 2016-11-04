@@ -61,7 +61,7 @@ css:
             .ui.divider
             h4 Budget
             = number_to_currency(@room.budget)
-            - if current_user == @room.manager
+            - if current_user.manager?
               .ui.divider
               #freelancers_section
                 = render "freelancers_section", :room => @room

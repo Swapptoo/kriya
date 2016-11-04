@@ -32,8 +32,11 @@
 #  project_url                :string
 #  professional_profile_link1 :string
 #  professional_profile_link2 :string
-#  status                     :string           default("pause")
+#  status                     :string           default("live")
 #  authentication_token       :string(30)
+#  stripe_publishable_key     :string
+#  stripe_token               :string
+#  stripe_client_id           :string
 #
 # Indexes
 #
@@ -79,11 +82,15 @@ class Freelancer < ApplicationRecord
   end
 
   def accepted_rooms
-    self.asigned_rooms.where(freelancers_rooms: { status: 'accepted' })
+    self.asigned_rooms.where(freelancers_rooms: { status: ['accepted', 'not_finished', 'more_work'] })
+  end
+
+  def completed_rooms
+    self.asigned_rooms.where(freelancers_rooms: { status: 'completed' })
   end
 
   def available_rooms
-    self.asigned_rooms.where(freelancers_rooms: { status: ['accepted', 'pending'] })
+    self.asigned_rooms.where(freelancers_rooms: { status: ['accepted', 'pending', 'not_finished', 'more_work'] })
   end
 
   def send_asigned_room_email_to_freelancer(record)

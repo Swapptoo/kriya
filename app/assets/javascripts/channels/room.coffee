@@ -1,4 +1,5 @@
 $ ->
+  isUser = $("#is_user").val();
   setTimeout =>
     channelArray = []
     $( "#tasks > a" ).each((index) ->
@@ -7,6 +8,7 @@ $ ->
         channelArray.push parseInt(val)
     )
 
+    console.log channelArray
     for num in channelArray
       App.cable.subscriptions.create channel: "RoomChannel", room:"#{num}",
         collection: -> $("#messages")
@@ -20,24 +22,25 @@ $ ->
 
         received: (data) ->
           # Called when there's incoming data on the websocket for this channel
-          identifier = JSON.parse this.identifier
-          room_id = identifier.room
-          if (@collection().data('room-id') == data.room_id) && (@collection().data('room-id') == parseInt room_id)
-            $('#messages').append(data.message)
-            $('#messages').imagesLoaded ->
-              ChatWindow.update()
-              $(document).trigger('message:added')
-              $("#messages").data("has-new-message", true)
-              $(".ui.progress").hide()
-          else
-            count = $('a[href="/tasks/'+room_id+'"]').val()
-            if count == ''
-               $('a[href="/tasks/'+room_id+'"]').val(1)
-             else
-               $('a[href="/tasks/'+room_id+'"]').val(parseInt(count)+1)
-            $('a[href="/tasks/'+room_id+'"] > div.unread_message_number').removeClass("ui teal left pointing label").addClass("ui teal left pointing label")
-            $('a[href="/tasks/'+room_id+'"] > div.unread_message_number').text($('a[href="/tasks/'+room_id+'"]').val())
-            $.cookie(room_id, $('a[href="/tasks/'+room_id+'"]').val());
+          if isUser == data.is_user
+            identifier = JSON.parse this.identifier
+            room_id = identifier.room
+            if (@collection().data('room-id') == data.room_id) && (@collection().data('room-id') == parseInt room_id)
+              $('#messages').append(data.message)
+              $('#messages').imagesLoaded ->
+                ChatWindow.update()
+                $(document).trigger('message:added')
+                $("#messages").data("has-new-message", true)
+                $(".ui.progress").hide()
+            else
+              count = $('a[href="/tasks/'+room_id+'"]').val()
+              if count == ''
+                 $('a[href="/tasks/'+room_id+'"]').val(1)
+               else
+                 $('a[href="/tasks/'+room_id+'"]').val(parseInt(count)+1)
+              $('a[href="/tasks/'+room_id+'"] > div.unread_message_number').removeClass("ui teal left pointing label").addClass("ui teal left pointing label")
+              $('a[href="/tasks/'+room_id+'"] > div.unread_message_number').text($('a[href="/tasks/'+room_id+'"]').val())
+              $.cookie(room_id, $('a[href="/tasks/'+room_id+'"]').val());
         followCurrentMessage: ->
           identifier = JSON.parse this.identifier
           room_id = identifier.room

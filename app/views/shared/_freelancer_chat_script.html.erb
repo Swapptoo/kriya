@@ -39,80 +39,71 @@
       }]
     }
   ];
-  var dummy = [
-    '',
-    {
-      type: 'submitDummy',
-      path: 'signup',
-      key: 'submit-dummy'
-    }
-  ];
 
   var description = [
     'Welcome to Kriya. We are glad you are here. We will notify you as soon as there\'s a gig matching your profile. Keep watching this space'
   ];
 
   <%- if new_user %>
-  var configs = {
-    greeting: [
-      'Hi, I am Kriya Bot. Welcome! We provide on demand workforce for people to work done by high quality, cost effective freelancers across the world. Get started to join our network',
-      {
-        type: 'choose',
-        answers: [
+    var configs = {
+      greeting: [
+        'Hi, I am Kriya Bot. Welcome! We provide on demand workforce for people to work done by high quality, cost effective freelancers across the world. Get started to join our network',
+        {
+          type: 'choose',
+          answers: [
+            {
+              'text': 'Get Started',
+              'path': 'signup'
+            },
+            {
+              'text': 'Sign In',
+              'path': 'login'
+            }
+          ]
+        }
+      ],
+      login: login,
+      signup: sign_up
+    };
+  <%- else %>
+    <%- if current_freelancer.pending_rooms.any? %>
+      <%- unless @room.in_progress_freelancers.any? %>  
+        var description = [
+          'You are now asigned to <%= @room.title %>. Are you available to finish this project within the given timeline? <br> <%= @room.posts.first.content.gsub("'", %q(\\\')).split.join(' ').html_safe %>',
           {
-            'text': 'Get Started',
-            'path': 'signup'
-          },
-          {
-            'text': 'Sign In',
-            'path': 'login'
+            type: 'visit',
+            path: 'notice',
+            key: "description",
+            answers: [{
+              'text': 'Accept',
+              'path': '/tasks/<%= @room.id %>/accept' ,
+              'key': 'quality'
+            },{
+              'text': 'Pass',
+              'path': '/tasks/<%= @room.id %>/reject' ,
+              'key': 'quality'
+            }]
           }
-        ]
-      }
-    ],
-    dummy: dummy,
-    login: login,
-    signup: sign_up
-  };
-  <%- else %>
-  <%- if current_freelancer.pending_rooms.any? %>
-  <%- unless @room.accepted_freelancers.any? %>
-  var description = [
-    'You are assigned to the following task. Are you available to finish this project given all the details? <br> <h3><%=  @room.posts.first.title.split.join(' ').gsub("'", %q(\\\')).html_safe %></h3><div class="ui divider"></div> <%= @room.posts.first.content.split.join(' ').gsub("'", %q(\\\')).html_safe %>',
-    {
-      type: 'visit',
-      path: 'notice',
-      key: "description",
-      answers: [{
-        'text': 'Accept',
-        'path': '/tasks/<%= @room.id %>/accept' ,
-        'key': 'quality'
-      },{
-        'text': 'Pass',
-        'path': '/tasks/<%= @room.id %>/reject' ,
-        'key': 'quality'
-      }]
-    }
-  ];
-  <%- else %>
-  var description = [
-    "Sorry the task has already been assigned to someone else as they claimed it first."
-  ];
-  <%- end %>
-  var configs = {
-    greeting: description
-  };
-  <%- else %>
-  var configs = {
-    greeting: description
-  };
-  <%- end %>
+        ];
+      <%- else %>
+        var description = [
+          "Sorry the task has already been assigned to someone else as they claimed it first."
+        ];
+      <%- end %>
+      var configs = {
+        greeting: description
+      };
+    <%- else %>
+      var configs = {
+        greeting: description
+      };
+    <%- end %>
   <%- end %>
 
   new Chat(
-      configs,
-      {
-        targetNode: '#chat'
-      }
+    configs,
+    {
+      targetNode: '#chat'
+    }
   );
 </script>

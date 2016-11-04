@@ -27,7 +27,6 @@
 
 class Room < ApplicationRecord
   has_many :messages, dependent: :destroy
-  has_many :unseen_messages, dependent: :destroy
   belongs_to :user
   belongs_to :manager, class_name: "User"
   monetize :budget_cents
@@ -36,6 +35,8 @@ class Room < ApplicationRecord
   has_and_belongs_to_many :asigned_freelancers, join_table: :freelancers_rooms, class_name: "Freelancer", after_add: :send_asigned_room_email_to_freelancer
 
   has_many :posts, :through => :messages
+
+  has_many :freelancer_rates
 
   validates_presence_of :category_name
 
@@ -46,8 +47,16 @@ class Room < ApplicationRecord
     self.asigned_freelancers.where("freelancers_rooms.status = 'accepted'")
   end
 
+  def in_progress_freelancers
+    self.asigned_freelancers.where("freelancers_rooms.status in (?)", ['accepted', 'not_finished', 'more_work'])
+  end
+
   def pending_freelancers
     self.asigned_freelancers.where("freelancers_rooms.status = 'pending'")
+  end
+
+  def completed_freelancers
+    self.asigned_freelancers.where("freelancers_rooms.status = 'completed'")
   end
 
   def create_unseen_messages(message, message_owner)

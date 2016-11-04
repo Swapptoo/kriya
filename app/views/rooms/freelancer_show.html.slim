@@ -2,10 +2,10 @@
 
 .main
   .twelve.wide.column
-    .ui.divided.grid
+    #room.ui.divided.grid
       .twelve.wide.column
-        - if @room && @room.get_status(current_freelancer) == 'accepted'
-          .ui.stacked.segment
+        - if @room && (['accepted', 'not_finished', 'completed', 'more_work'].include? @room.get_status(current_freelancer))
+          #ui_form_room.ui.stacked.segment
             h3 = @room.get_room_name_for_freelancer current_freelancer
             .ui.divider
             #messages.ui.comments data-room-id=@room.id
@@ -22,6 +22,7 @@
                   i.plus.icon
                   .menu
                     = link_to 'Create Post', new_post_path, :data => {:modal => true}, :class => "item"
+                    .item data-charge-user=true Finish Task
                     .item.fileinput-button
                       ' Upload File/Photo
                       = f.file_field :image
