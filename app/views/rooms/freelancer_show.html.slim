@@ -2,7 +2,7 @@
 
 .main
   .twelve.wide.column
-    .ui.divided.grid
+    #room.ui.divided.grid
       .twelve.wide.column
         - if @room && (['accepted', 'not_finished', 'completed', 'more_work'].include? @room.get_status(current_freelancer))
           #ui_form_room.ui.stacked.segment

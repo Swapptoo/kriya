@@ -25,7 +25,7 @@ class FreelancerRatesController < ApplicationController
         message.save
         message.process_command
 
-        message = Message.new({:body => 'Do you have more work for workforce?', :room => @freelancer_rate.room, :user => @freelancer_rate.room.manager, :msg_type => 'bot-ask-continue-work'})
+        message = Message.new({:body => 'Do you have more work for this freelancer?', :room => @freelancer_rate.room, :user => @freelancer_rate.room.manager, :msg_type => 'bot-ask-continue-work'})
         message.create_attachment html: "<br/>"
         message.attachment.html += <<~HTML.squish
           <button id="customContinueYesButton-#{message.id}" class="mini ui green button custom-padding">Yes</button>
