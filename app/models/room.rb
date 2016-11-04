@@ -103,19 +103,7 @@ class Room < ApplicationRecord
     end
   end
 
-  def notify_user?
-    notify?(user)
-  end
-
-  def notify_manager?
-    notify?(manager)
-  end
-
   private
-
-  def notify?(user)
-    user.offline? && messages.not_by(user).un_seen.any?
-  end
 
   def send_notification
     RoomWorker.perform_async(id)

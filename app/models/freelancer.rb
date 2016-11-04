@@ -183,7 +183,16 @@ class Freelancer < ApplicationRecord
 
   end
 
+  def offline?
+    true
+  end
+
+  def online?
+    !offline?
+  end
+
   private
+
   def update_status
     new_status = self.status == 'pause' ? 'live' : 'pause'
     self.update_attribute(:status, new_status)

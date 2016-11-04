@@ -42,7 +42,11 @@ class Message < ApplicationRecord
   # after_create :process_command
 
   scope :un_seen, -> { where(seen: false) }
-  scope :not_by, -> (user) { where.not(user: user) }
+  scope :not_by,  -> (user) { where.not(user: user) }
+  scope :by,      -> (user) { where(user: user) }
+
+  scope :not_by_freelancer, -> (freelancer) { where.not(freelancer: freelancer) }
+  scope :by_freelancer,     -> (freelancer) { where(freelancer: freelancer) }
 
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
