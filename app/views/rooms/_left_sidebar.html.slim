@@ -18,7 +18,7 @@
           - current_freelancer.completed_rooms.includes(:user).each_with_index do |room, index|
             = link_to room, class: "item primary #{'active' if @room == room}" do
               = Sanitize.fragment(truncate(room.get_room_name_for_freelancer(current_freelancer, index), :length => 23, :escape => false), Sanitize::Config::RELAXED).html_safe
-    - if user_signed_in?
+    - elsif user_signed_in?
       #tasks
         - if current_user.client?
           = link_to 'New Task', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
