@@ -20,14 +20,18 @@ class PagesController < ApplicationController
   end
 
   def network
-    if freelancer_signed_in?
-      if current_freelancer.rooms.first
-        redirect_to current_user.rooms.last
-      else
-        render "dashboard", layout: "application"
-      end
+    if user_signed_in?
+      redirect_to root_path
     else
-      render "network"
+      if freelancer_signed_in?
+        if current_freelancer.rooms.first
+          redirect_to current_user.rooms.last
+        else
+          render "dashboard", layout: "application"
+        end
+      else
+        render "network"
+      end
     end
   end
 
