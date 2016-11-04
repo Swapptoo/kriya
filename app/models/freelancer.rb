@@ -55,6 +55,7 @@ class Freelancer < ApplicationRecord
   before_save :ensure_authentication_token
 
   has_many :freelancer_authorizations, dependent: :destroy
+  has_many :unseen_messages, dependent: :destroy
 
   has_many :freelancer_skills
   has_many :skills, through: :freelancer_skills, dependent: :destroy

@@ -55,6 +55,7 @@ class User < ApplicationRecord
   has_many :posts_from_joined_goomps, through: :joined_goomps, source: :posts
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :unseen_messages, dependent: :destroy
 
   has_many :rooms, dependent: :destroy
   has_many :managed_rooms, dependent: :destroy, class_name: "Room", foreign_key: :manager_id

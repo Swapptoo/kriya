@@ -5,43 +5,30 @@ class UnseenMessageAlertWorker
   # Alert user if there're new unseen messages
   def perform(room_id, user_id, user_type = :user)
     @room = Room.find(room_id)
-    messages = []
-
-    if user_type == :user
-      @sender = User.find(user_id)
-      messages = @room.messages.by(@sender).un_seen.order(:created_at)
+    @recipient = if user_type == :user
+      User.find(user_id)
     else
-      @sender = Freelancer.find(user_id)
-      messages = @room.messages.by_freelancer(@sender).un_seen.order(:created_at)
+      Freelancer.find(user_id)
     end
 
-    return if messages.size.zero?
+    unseen_message_ids = @recipient.unseen_messages.where(room: @room).pluck(:message_id)
+    return if unseen_message_ids.size.zero?
 
-    recipients.each do |recipient|
-      UserNotifierMailer.notify_unseen_messages(@room, @sender, recipient, messages).deliver_now
+    messages = @room.messages.includes(:user, :freelancer).where(id: unseen_message_ids).order(:created_at)
+
+    users = messages.map(&:user).compact.uniq
+    freelancers = messages.map(&:freelancer).compact.uniq
+
+    users.each do |sender|
+      msgs = messages.select{ |msg| msg.user == sender }
+      UserNotifierMailer.notify_unseen_messages(@room, sender, @recipient, messages).deliver_now
     end
 
-    messages.update_all(seen: true)
-  end
-
-  private
-
-  def recipients
-    users = []
-
-    if @room.user == @sender
-      users = @room.accepted_freelancers.to_a
-      users << @room.manager
-    elsif @room.manager == @sender
-      users = @room.accepted_freelancers.to_a
-      users << @room.user
-    elsif @room.accepted_freelancers.include?(@sender)
-      users = @room.accepted_freelancers.to_a
-      users -= [@sender]
-      users << @room.user
-      users << @room.manager
+    freelancers.each do |sender|
+      msgs = messages.select{ |msg| msg.freelancer == sender }
+      UserNotifierMailer.notify_unseen_messages(@room, sender, @recipient, messages).deliver_now
     end
 
-    users.select(&:offline?)
+    @recipient.unseen_messages.destroy_all
   end
 end

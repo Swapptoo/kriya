@@ -200,10 +200,14 @@ class RoomsController < ApplicationController
   end
 
   def mark_messages_seen
-    messages = @room.messages.not_by(current_user).un_seen
+    messages = if current_user.present?
+      @room.unseen_messages.by_user(current_user)
+    else
+      @room.unseen_messages.by_free(current_freelancer)
+    end
 
     respond_to do |format|
-      if messages.update_all(seen: true)
+      if messages.destroy_all
         format.json { render json: '', status: :ok }
       else
         format.json { render json: '', status: :unprocessable_entity }

@@ -27,6 +27,7 @@
 
 class Room < ApplicationRecord
   has_many :messages, dependent: :destroy
+  has_many :unseen_messages, dependent: :destroy
   belongs_to :user
   belongs_to :manager, class_name: "User"
   monetize :budget_cents
@@ -47,6 +48,27 @@ class Room < ApplicationRecord
 
   def pending_freelancers
     self.asigned_freelancers.where("freelancers_rooms.status = 'pending'")
+  end
+
+  def create_unseen_messages(message, message_owner)
+    users = []
+
+    if user == message_owner
+      users = accepted_freelancers.to_a
+      users << manager
+    elsif manager == message_owner
+      users = accepted_freelancers.to_a
+      users << user
+    elsif accepted_freelancers.include?(message_owner)
+      users << user
+      users << manager
+      users += accepted_freelancers.to_a
+      users -= [message_owner]
+    end
+
+    users.each do |user|
+      user.unseen_messages.create(message: message, room: message.room)
+    end
   end
 
   def get_status(freelancer)
@@ -81,7 +103,9 @@ class Room < ApplicationRecord
   end
 
   def get_room_name_for_freelancer(freelancer, index = nil)
-    posts.first.title.parameterize
+    post = posts.first
+    return '' if post.nil?
+    post.title.parameterize
   end
 
   def get_index(user)
