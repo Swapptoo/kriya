@@ -89,20 +89,6 @@ ActiveRecord::Schema.define(version: 20161102144102) do
     t.index ["user_id"], name: "index_freelancer_profiles_on_user_id", using: :btree
   end
 
-  create_table "freelancer_rates", force: :cascade do |t|
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.integer  "rate"
-    t.integer  "freelancer_id"
-    t.integer  "user_id"
-    t.integer  "room_id"
-    t.integer  "freelancers_room_id"
-    t.index ["freelancer_id"], name: "index_freelancer_rates_on_freelancer_id", using: :btree
-    t.index ["freelancers_room_id"], name: "index_freelancer_rates_on_freelancers_room_id", using: :btree
-    t.index ["room_id"], name: "index_freelancer_rates_on_room_id", using: :btree
-    t.index ["user_id"], name: "index_freelancer_rates_on_user_id", using: :btree
-  end
-
   create_table "freelancer_skills", force: :cascade do |t|
     t.integer "freelancer_id"
     t.integer "skill_id"
@@ -110,18 +96,18 @@ ActiveRecord::Schema.define(version: 20161102144102) do
   end
 
   create_table "freelancers", force: :cascade do |t|
-    t.string   "email",                                 default: "",     null: false
-    t.string   "encrypted_password",                    default: "",     null: false
+    t.string   "email",                                 default: "",      null: false
+    t.string   "encrypted_password",                    default: "",      null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         default: 0,      null: false
+    t.integer  "sign_in_count",                         default: 0,       null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.string   "username"
     t.string   "bio"
     t.string   "first_name"
@@ -217,7 +203,6 @@ ActiveRecord::Schema.define(version: 20161102144102) do
     t.integer  "post_id"
     t.boolean  "seen",          default: false
     t.integer  "freelancer_id"
-    t.string   "msg_type"
     t.index ["freelancer_id"], name: "index_messages_on_freelancer_id", using: :btree
     t.index ["post_id"], name: "index_messages_on_post_id", using: :btree
     t.index ["room_id"], name: "index_messages_on_room_id", using: :btree
@@ -226,10 +211,8 @@ ActiveRecord::Schema.define(version: 20161102144102) do
 
   create_table "payments", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.integer  "freelancer_id"
-    t.index ["freelancer_id"], name: "index_payments_on_freelancer_id", using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_payments_on_user_id", using: :btree
   end
 
@@ -306,6 +289,19 @@ ActiveRecord::Schema.define(version: 20161102144102) do
     t.index ["goomp_id"], name: "index_subtopics_on_goomp_id", using: :btree
   end
 
+  create_table "unseen_messages", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "freelancer_id"
+    t.integer  "message_id"
+    t.integer  "room_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["freelancer_id"], name: "index_unseen_messages_on_freelancer_id", using: :btree
+    t.index ["message_id"], name: "index_unseen_messages_on_message_id", using: :btree
+    t.index ["room_id"], name: "index_unseen_messages_on_room_id", using: :btree
+    t.index ["user_id"], name: "index_unseen_messages_on_user_id", using: :btree
+  end
+
   create_table "user_skills", force: :cascade do |t|
     t.integer "user_id"
     t.integer "skill_id"
@@ -337,8 +333,8 @@ ActiveRecord::Schema.define(version: 20161102144102) do
     t.string   "slug"
     t.string   "stipe_customer_id"
     t.integer  "follows_count",                     default: 0
-    t.string   "role"
     t.datetime "last_seen_at"
+    t.string   "role",                              default: "0"
     t.string   "stripe_id"
     t.string   "authentication_token",   limit: 30
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree

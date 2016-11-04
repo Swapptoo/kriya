@@ -26,34 +26,32 @@ class UserNotifierMailer < ApplicationMailer
     mail(:to => 'manager@goomp.co', :subject => "#{room.title}")
   end
 
-  def notify_unseen_messages(room, user, other_user, messages)
+  def notify_unseen_messages(room, sender, recipient, messages)
     @sendgrid_category = "Room #{room.id}"
-    @user = user
     @room = room
+    @user = recipient
     @messages = []
-    full_name = other_user.full_name
-    usertype = 'client'
 
-    if other_user == room.manager
+    full_name = sender.full_name
+    user_type = 'client'
+    user_type = 'freelancer' if room.accepted_freelancers.include?(sender)
+
+    if sender == room.manager
       full_name = 'Kriya Task'
-      usertype = 'manager'
+      user_type = 'manager'
     end
+
+    from = "Kriya Task <#{user_type}-#{room.id}@messages.kriya.ai>"
 
     messages.each do |msg|
       if msg.image.file.present?
-        @messages << ["file", full_name, msg.image]
-      else
-        @messages << ["text", full_name, msg.body]
+        @messages << ['file', full_name, msg.image]
+      elsif msg.body.present?
+        @messages << ['text', full_name, msg.body]
       end
     end
 
-    messages.update_all(seen: true)
-
-    mail(
-      :to => user.email,
-      :subject => "#{room.title}",
-      :from => "Kriya Task <" + usertype + "-" + room.id.to_s + "@messages.kriya.ai>"
-    )
+    mail(to: @user.email, subject: room.title, from: from)
   end
 
   def notify_asigned_room(room, user)

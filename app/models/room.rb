@@ -59,6 +59,27 @@ class Room < ApplicationRecord
     self.asigned_freelancers.where("freelancers_rooms.status = 'completed'")
   end
 
+  def create_unseen_messages(message, message_owner)
+    users = []
+
+    if user == message_owner
+      users = accepted_freelancers.to_a
+      users << manager
+    elsif manager == message_owner
+      users = accepted_freelancers.to_a
+      users << user
+    elsif accepted_freelancers.include?(message_owner)
+      users << user
+      users << manager
+      users += accepted_freelancers.to_a
+      users -= [message_owner]
+    end
+
+    users.each do |user|
+      user.unseen_messages.create(message: message, room: message.room)
+    end
+  end
+
   def get_status(freelancer)
     freelancer_room = self.freelancers_rooms.where('freelancer_id = ?', freelancer.id)
     if freelancer_room.any?
@@ -91,7 +112,9 @@ class Room < ApplicationRecord
   end
 
   def get_room_name_for_freelancer(freelancer, index = nil)
-    posts.first.title.parameterize
+    post = posts.first
+    return '' if post.nil?
+    post.title.parameterize
   end
 
   def get_index(user)
@@ -113,19 +136,7 @@ class Room < ApplicationRecord
     end
   end
 
-  def notify_user?
-    notify?(user)
-  end
-
-  def notify_manager?
-    notify?(manager)
-  end
-
   private
-
-  def notify?(user)
-    user.offline? && messages.not_by(user).un_seen.any?
-  end
 
   def send_notification
     RoomWorker.perform_async(id)

@@ -58,6 +58,7 @@ class Freelancer < ApplicationRecord
   before_save :ensure_authentication_token
 
   has_many :freelancer_authorizations, dependent: :destroy
+  has_many :unseen_messages, dependent: :destroy
 
   has_many :freelancer_skills
   has_many :skills, through: :freelancer_skills, dependent: :destroy
@@ -190,7 +191,16 @@ class Freelancer < ApplicationRecord
 
   end
 
+  def offline?
+    true
+  end
+
+  def online?
+    !offline?
+  end
+
   private
+
   def update_status
     new_status = self.status == 'pause' ? 'live' : 'pause'
     self.update_attribute(:status, new_status)

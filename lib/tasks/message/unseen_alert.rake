@@ -2,8 +2,12 @@ namespace :message do
   desc 'Send email alert user with unseen message.'
   task unseen_alert: :environment do
     Room.find_each do |room|
-      UnseenMessageAlertWorker.perform_async(room.id, room.manager_id) if room.notify_manager?
-      UnseenMessageAlertWorker.perform_async(room.id, room.user_id) if room.notify_user?
+      UnseenMessageAlertWorker.new.perform(room.id, room.manager_id)
+      UnseenMessageAlertWorker.new.perform(room.id, room.user_id)
+
+      room.accepted_freelancers.each do |freelancer|
+        UnseenMessageAlertWorker.new.perform(room.id, freelancer.id, :freelancer)
+      end
     end
   end
 end
