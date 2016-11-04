@@ -105,7 +105,6 @@ class PaymentsController < ApplicationController
                     }
                   });
                 e.preventDefault();
-                location.reload();
 
               });
             </script>
@@ -122,33 +121,12 @@ class PaymentsController < ApplicationController
         message = room.messages.new({:body => 'The transaction was successful.', :room => room, :user => room.manager})
       end
       room.save
-      ActionCable.server.broadcast(
-        "rooms:#{room.id}:messages",
-        message: MessagesController.render(
-          partial: 'messages/message',
-          locals: {
-            message: room.messages.last, user: room.manager
-          }
-        ),
-        room_id: room.id,
-        is_user: 'user'
-      )
+      room.messages.last.process_command
     # Catches at least CardError and InvalidRequestError
     rescue Exception => e#Stripe::CardError => e
       # The card has been declined
       room.messages.new({:body => 'The transaction was unsuccessful. Please try again', :room => room, :user => room.manager, :msg_type => 'bot-failed-payment'})
       room.save
-      ActionCable.server.broadcast(
-        "rooms:#{room.id}:messages",
-        message: MessagesController.render(
-          partial: 'messages/message',
-          locals: {
-            message: room.messages.last, user: room.manager
-          }
-        ),
-        room_id: room.id,
-        is_user: 'user'
-      )
       room.messages.new({:body => '/charge $' + (amount.to_i / 100).to_s, :room => room, :user => room.manager})
       room.messages.last.process_command
       room.save

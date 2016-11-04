@@ -21,7 +21,7 @@ class FreelancerRatesController < ApplicationController
     @freelancer_rate = FreelancerRate.new(freelancer_rate_params)
     respond_to do |format|
       if @freelancer_rate.save
-        message = Message.new({:body => 'The rate of this work is ' + @freelancer_rate.rate.to_s + '.', :room => @freelancer_rate.room, :user => @freelancer_rate.room.manager, :msg_type => 'client-marked-rate'})
+        message = Message.new({:body => 'The rating for this work is ' + @freelancer_rate.rate.to_s + '.', :room => @freelancer_rate.room, :user => @freelancer_rate.room.manager, :msg_type => 'client-marked-rate'})
         message.save
         message.process_command
 
@@ -39,7 +39,6 @@ class FreelancerRatesController < ApplicationController
                 }
               });
               e.preventDefault();
-              location.reload();
             });
             document.getElementById("customContinueNoButton-#{message.id}").addEventListener('click', function(e) {
               $.ajax({url: "/freelancers_rooms/#{@freelancer_rate.freelancers_room_id}.json", type: "PUT", data: {
@@ -49,7 +48,6 @@ class FreelancerRatesController < ApplicationController
                 }
               });
               e.preventDefault();
-              location.reload();
             });
           </script>
           HTML

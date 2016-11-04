@@ -17,9 +17,13 @@ class RoomsController < ApplicationController
       @room = current_user.joined_rooms.find params[:id]
       @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
     elsif freelancer_signed_in?
-      @room = current_freelancer.available_rooms.find params[:id]
-      @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
-      render 'freelancer_show'
+      begin
+        @room = current_freelancer.available_rooms.find params[:id]
+        @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
+        render 'freelancer_show'
+      rescue
+        redirect_to root_path
+      end
     else
       redirect_to root_path
     end

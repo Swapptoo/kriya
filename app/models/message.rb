@@ -82,8 +82,6 @@ class Message < ApplicationRecord
                   }
                 });
               e.preventDefault();
-              location.reload();
-
             });
           </script>
           HTML
@@ -156,7 +154,6 @@ class Message < ApplicationRecord
                   }
                 });
                 e.preventDefault();
-                location.reload();
               });
             </script>
           HTML
@@ -183,6 +180,19 @@ class Message < ApplicationRecord
       is_user: 'user'
     )
     self.room.in_progress_freelancers.each do |freelancer|
+      ActionCable.server.broadcast(
+        "rooms:#{room.id}:messages",
+        message: MessagesController.render(
+          partial: 'messages/message',
+          locals: {
+            message: self, user: freelancer
+          }
+        ),
+        room_id: room.id,
+        is_user: 'freelancer'
+      )
+    end
+    self.room.completed_freelancers.each do |freelancer|
       ActionCable.server.broadcast(
         "rooms:#{room.id}:messages",
         message: MessagesController.render(

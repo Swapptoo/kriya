@@ -55,7 +55,7 @@
               - elsif message.msg_type == 'bot-task-finish'
                 ' We notified the client that you finished the task, waiting for their approval
               - elsif message.msg_type == 'bot-ask-rate'
-                ' Client paid
+                ' Client has paid this work.
               - elsif message.msg_type == 'bot-continue-work'
                 ' Client has more work for you, details will be given shortly
               - else
@@ -130,7 +130,9 @@
                 - if message.attachment
                   = message.attachment.html.html_safe
               - elsif message.msg_type == 'bot-continue-work'
-                ' The channel continues
+                ' Please give detailed description of what needs to be done by creating a post, meanwhile I'll get this started with our workforce
+                br
+                = link_to 'Add Description', new_post_path, :data => {:modal => true}, :class => "mini ui green button custom-padding"
               - else
                 = auto_link message.body, html: { target: '_blank', rel: "nofollow" }
                 - if message.attachment

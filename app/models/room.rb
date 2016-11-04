@@ -55,6 +55,10 @@ class Room < ApplicationRecord
     self.asigned_freelancers.where("freelancers_rooms.status = 'pending'")
   end
 
+  def completed_freelancers
+    self.asigned_freelancers.where("freelancers_rooms.status = 'completed'")
+  end
+
   def get_status(freelancer)
     freelancer_room = self.freelancers_rooms.where('freelancer_id = ?', freelancer.id)
     if freelancer_room.any?
