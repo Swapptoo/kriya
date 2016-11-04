@@ -35,6 +35,10 @@ class MessagesController < ApplicationController
       @message.freelancer = current_freelancer
     end
     @message.save
+
+    message_owner = @message.user || @message.freelancer
+    room.create_unseen_messages(@message, message_owner)
+
     @message.process_command
     head :ok
   end
