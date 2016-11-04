@@ -51,7 +51,7 @@ class UserNotifierMailer < ApplicationMailer
       end
     end
 
-    mail(to: 'vibolteav@gmail.com', subject: room.title, from: from)
+    mail(to: @user.email, subject: room.title, from: from)
   end
 
   def notify_asigned_room(room, user)
