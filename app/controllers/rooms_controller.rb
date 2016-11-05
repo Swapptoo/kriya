@@ -211,7 +211,7 @@ class RoomsController < ApplicationController
     messages = if current_user.present?
       @room.unseen_messages.by_user(current_user)
     else
-      @room.unseen_messages.by_free(current_freelancer)
+      @room.unseen_messages.by_freelancer(current_freelancer)
     end
 
     respond_to do |format|
