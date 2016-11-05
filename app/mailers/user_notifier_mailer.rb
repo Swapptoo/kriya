@@ -34,14 +34,8 @@ class UserNotifierMailer < ApplicationMailer
 
     full_name = sender.full_name
     user_type = 'client'
-    user_type = 'freelancer' if room.accepted_freelancers.include?(sender)
-
-    if sender == room.manager
-      full_name = 'Kriya Task'
-      user_type = 'manager'
-    end
-
-    from = "Kriya Task <#{user_type}-#{room.id}@messages.kriya.ai>"
+    full_name = 'Kriya Task' if sender == room.manager
+    from = "Kriya Task <task-#{room.id}@messages.kriya.ai>"
 
     messages.each do |msg|
       if msg.image.file.present?
