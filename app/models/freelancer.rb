@@ -37,6 +37,7 @@
 #  stripe_publishable_key     :string
 #  stripe_token               :string
 #  stripe_client_id           :string
+#  last_seen_at               :datetime
 #
 # Indexes
 #
@@ -192,11 +193,12 @@ class Freelancer < ApplicationRecord
   end
 
   def offline?
-    true
+    !online?
   end
 
   def online?
-    !offline?
+    return false if last_seen_at.nil?
+    last_seen_at > 10.minutes.ago
   end
 
   private
