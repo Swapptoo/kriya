@@ -90,10 +90,10 @@ css:
                   = f.label :availability, "3 Months"
               .two.fields
                 .field
-                  = f.label :skills, "Your Skills (Max 3 Skills)"
+                  = f.label :skills, "Start typing up to three skills"
                   = select_tag 'skill_ids', '', :prompt => 'Your skills', :multiple => true, :size =>10, class: "ui selection multiple dropdown search", "tabindex" => -1
                 .field
-                  = f.label :primary_skill, "Your Primary Skill"
+                  = f.label :primary_skill, "Type your primary skill  "
                   = f.collection_select :primary_skill, [], :id, :skill, {prompt: "Select Your primary skill"}, {class: "ui selection dropdown search", "tabindex" => -1}
               .field
                 = f.label :years_of_experiencesT, "Years of Experiences"
