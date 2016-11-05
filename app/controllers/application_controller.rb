@@ -10,14 +10,14 @@ class ApplicationController < ActionController::Base
       Rack::MiniProfiler.authorize_request
     end
 
-    if session[:last_seen_at] == nil || session[:last_seen_at] < 15.minutes.ago
+    if freelancer_signed_in? && (session[:last_seen_at] == nil || session[:last_seen_at] < 15.minutes.ago)
       session[:last_seen_at] = Time.now
+      current_freelancer.update_attribute(:last_seen_at, Time.now)
+    end
 
-      if freelancer_signed_in?
-        current_freelancer.update_attribute(:last_seen_at, Time.now)
-      elsif user_signed_in?
-        current_user.update_attribute(:last_seen_at, Time.now)
-      end
+    if user_signed_in? && (session[:last_seen_at] == nil || session[:last_seen_at] < 15.minutes.ago)
+      session[:last_seen_at] = Time.now
+      current_user.update_attribute(:last_seen_at, Time.now)
     end
   end
 
