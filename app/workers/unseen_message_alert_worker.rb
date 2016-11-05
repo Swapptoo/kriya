@@ -21,14 +21,14 @@ class UnseenMessageAlertWorker
 
     users.each do |sender|
       msgs = messages.select{ |msg| msg.user == sender }
-      UserNotifierMailer.notify_unseen_messages(@room, sender, @recipient, messages).deliver_now
+      UserNotifierMailer.notify_unseen_messages(@room, sender, @recipient, msgs).deliver_now
     end
 
     freelancers.each do |sender|
       msgs = messages.select{ |msg| msg.freelancer == sender }
-      UserNotifierMailer.notify_unseen_messages(@room, sender, @recipient, messages).deliver_now
+      UserNotifierMailer.notify_unseen_messages(@room, sender, @recipient, msgs).deliver_now
     end
 
-    @recipient.unseen_messages.destroy_all
+    @recipient.unseen_messages.where(room: @room).destroy_all
   end
 end
