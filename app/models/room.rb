@@ -41,7 +41,6 @@ class Room < ApplicationRecord
   validates_presence_of :category_name
 
   before_create { self.category_name ||= "Design" }
-  after_create :send_notification
 
   def accepted_freelancers
     self.asigned_freelancers.where("freelancers_rooms.status = 'accepted'")
@@ -105,6 +104,10 @@ class Room < ApplicationRecord
     messages.unscoped.last.bot_description?
   end
 
+  def finished?
+    !unfinish
+  end
+
   def get_room_name_for_user(user, index = nil)
     if user == self.user && !posts.first.nil?
       posts.first.title.parameterize
@@ -138,11 +141,5 @@ class Room < ApplicationRecord
         }
       end
     end
-  end
-
-  private
-
-  def send_notification
-    RoomWorker.perform_async(id)
   end
 end
