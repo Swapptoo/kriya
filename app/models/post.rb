@@ -38,7 +38,10 @@ class Post < ApplicationRecord
   belongs_to :subtopic, optional: true, touch: true
   has_many :comments, dependent: :destroy
   has_one :message, dependent: :destroy
-  
+  has_one :room, through: :message
+
+  after_commit :trigger_room_notification, on: :create
+
   include Likable
 
   def generate_link_for_story!
@@ -50,5 +53,11 @@ class Post < ApplicationRecord
       link_url: Rails.application.routes.url_helpers.post_path(self),
       link_title: self.title
     )
+  end
+
+  private
+
+  def trigger_room_notification
+    RoomWorker.perform_async(room.id) if room.present? && room.posts.count == 1
   end
 end

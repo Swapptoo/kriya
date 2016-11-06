@@ -41,8 +41,6 @@ class Message < ApplicationRecord
   # validate :body_or_image_present
 
   # after_create :process_command
-  after_commit :tigger_room_notification, on: :create, if: Proc.new { |msg| msg.room.finished? }
-
   scope :un_seen, -> { where(seen: false) }
   scope :not_by,  -> (user) { where.not(user: user) }
   scope :by,      -> (user) { where(user: user) }
@@ -237,11 +235,5 @@ class Message < ApplicationRecord
 
   def bot_description?
     msg_type == 'bot-description'
-  end
-
-  private
-
-  def tigger_room_notification
-    RoomWorker.perform_async(room_id)
   end
 end
