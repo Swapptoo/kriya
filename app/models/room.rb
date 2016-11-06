@@ -105,7 +105,7 @@ class Room < ApplicationRecord
   end
 
   def finished?
-    !unfinish
+    !unfinish?
   end
 
   def get_room_name_for_user(user, index = nil)
