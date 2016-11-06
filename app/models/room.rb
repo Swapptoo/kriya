@@ -101,7 +101,7 @@ class Room < ApplicationRecord
   end
 
   def unfinish?
-    messages.unscoped.last.bot_description?
+    messages.last.bot_description?
   end
 
   def finished?
