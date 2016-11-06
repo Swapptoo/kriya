@@ -3,7 +3,7 @@
     = image_tag current_user.picture, :class => 'ui avatar image'
     span = current_user.full_name
 
-  = form_for Post.new, :html => { :class => "ui form", :autocomplete => "off" } do |f|
+  = form_for Post.new, :html => { :class => "ui form new-post", :autocomplete => "off" } do |f|
     = f.hidden_field :goomp_id
 
     = f.hidden_field :link_title
@@ -17,6 +17,7 @@
 
     .ui.divider
     .field#submit_field = f.submit 'Save', :class => "ui button basic blue"
+    .ui.error.message
 css:
   #submit_field {
     text-align: center;

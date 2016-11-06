@@ -8,6 +8,31 @@ $(function() {
     $.get(location, function(data) {
       $(modal_holder_selector).html(data).find(modal_selector).modal('show');
 
+      $("form.new-post").form({
+        on: 'blur',
+        fields: {
+          title: {
+            identifier: 'post[title]',
+            rules: [
+              {
+                type: 'empty',
+                prompt: 'Please enter title'
+              }
+            ]
+          },
+          content: {
+            identifier: 'post[content]',
+            rules: [
+              {
+                type: 'empty',
+                prompt: 'Please enter content'
+              }
+            ]
+          }
+        }
+      });
+
+
       this.editor = new MediumEditor('.editable', {
         placeholder: {
           text: 'Describe your project in as much detailing as possible..',
@@ -47,4 +72,3 @@ $(function() {
     return false;
   });
 });
-

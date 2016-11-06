@@ -97,7 +97,7 @@ class Message < ApplicationRecord
             title = "Pay with card"
           elsif !self.freelancer.nil?
             title = "Yes, Pay with card"
-          end 
+          end
           color = "green"
           update_customer = 0
         end
@@ -232,5 +232,9 @@ class Message < ApplicationRecord
 
   def next_message
     room.messages.where('id > ?', self.id).first
+  end
+
+  def bot_description?
+    msg_type == 'bot-description'
   end
 end

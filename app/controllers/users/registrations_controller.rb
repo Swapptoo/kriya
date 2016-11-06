@@ -84,6 +84,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # The path used after sign up.
+  # rooms#create_room_from_sign_up
   def after_sign_up_path_for(resource)
     task_from_sign_up_path
   end

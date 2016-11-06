@@ -254,9 +254,23 @@ AppView = {
     $('[data-unratable]').rating('disable')
     $('.ui.dropdown').dropdown(on: 'click')
     $("#new_post").form(
+      on: 'blur'
       fields:
+        title:
+          identifier: 'post[title]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please enter title'
+          }]
         body:
           identifier: 'post[body]'
+          rules: [{
+            type   : 'empty',
+            prompt : 'Please enter content'
+          }]
+
+        content:
+          identifier: 'post[content]'
           rules: [{
             type   : 'empty',
             prompt : 'Please enter content'

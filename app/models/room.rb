@@ -101,6 +101,10 @@ class Room < ApplicationRecord
     posts.first.try(:title)
   end
 
+  def unfinish?
+    messages.unscoped.last.bot_description?
+  end
+
   def get_room_name_for_user(user, index = nil)
     if user == self.user && !posts.first.nil?
       posts.first.title.parameterize

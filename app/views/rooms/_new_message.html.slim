@@ -1,0 +1,13 @@
+= form_for [@room, Message.new], :remote => true, :html => { :class => "ui form" } do |f|
+  .ui.left.action.input.fluid
+    .ui.icon.bottom.left.pointing.dropdown.button.primary
+      i.plus.icon
+      .menu
+        = link_to 'Create Post', new_post_path, :data => {:modal => true}, :class => "item"
+        .item.fileinput-button
+          ' Upload File/Photo
+          = f.file_field :image
+        - if current_user.manager?
+          .item data-charge-user=true Charge Task
+
+    = f.text_field :body, :autofocus => true, :autocomplete => 'off', :placeholder => "Start typing…"
