@@ -4,8 +4,7 @@ $ ->
     channelArray = []
     $( "#tasks > a" ).each((index) ->
       val = this.href.split('/').pop()
-      if index > 0
-        channelArray.push parseInt(val)
+      channelArray.push parseInt(val) if parseInt(val)
     )
 
     console.log channelArray
