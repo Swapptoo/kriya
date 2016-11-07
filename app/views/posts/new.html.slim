@@ -24,3 +24,8 @@ css:
   #submit_field {
     text-align: center;
   }
+coffee:
+  $("form.new-post").submit ->
+    content = $($('#post_content').val()).text().trim()
+    $('#post_content').val('') unless content.match(/[a-zA-Z0-9]/i)
+    return

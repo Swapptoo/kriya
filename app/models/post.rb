@@ -40,6 +40,9 @@ class Post < ApplicationRecord
   has_one :message, dependent: :destroy
   has_one :room, through: :message
 
+  validates :title, presence: true
+  validate  :validate_content_from_editor
+
   after_commit :trigger_room_notification, on: :create
 
   include Likable
@@ -59,5 +62,9 @@ class Post < ApplicationRecord
 
   def trigger_room_notification
     RoomWorker.perform_async(room.id) if room.present? && room.posts.count == 1
+  end
+
+  def validate_content_from_editor
+    errors.add(:content, :blank) if content.blank? || ActionView::Base.full_sanitizer.sanitize(content).match(/\A[a-zA-Z0-9]/).nil?
   end
 end
