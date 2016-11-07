@@ -12,13 +12,19 @@ Rails.application.routes.draw do
   resources :rooms, shallow: true, path: 'tasks' do
     resources :messages
 
-    post :mark_messages_seen, on: :member
-    get :accept, on: :member
-    get :reject, on: :member
-    get :freelancers_list, on: :member
-    get :asign_freelancer, on: :member
-    get :remove_asigned_freelancer, on: :member
+    member do
+      post :mark_messages_seen
+      get :accept
+      get :reject
+      get :freelancers_list
+      get :asign_freelancer
+      get :remove_asigned_freelancer
+      get :reject_slack_integration, as: :reject_slack_integration
+    end
   end
+
+  get 'task/public/:token', to: 'posts#public' , as: :public_post
+
   resources :photos
   resources :follows
   root to: "pages#index"

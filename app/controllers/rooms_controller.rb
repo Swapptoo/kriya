@@ -1,5 +1,5 @@
 class RoomsController < ApplicationController
-  before_action :set_room, only: [:edit, :update, :destroy, :mark_messages_seen]
+  before_action :set_room, only: [:edit, :update, :destroy, :mark_messages_seen, :reject_slack_integration]
   before_action :authenticate_user!, :except => [:create_dummy, :show, :accept, :reject]
   before_action :authenticate_freelancer!, only: [:accept, :reject]
   respond_to :html, :json, :js
@@ -27,7 +27,8 @@ class RoomsController < ApplicationController
     else
       redirect_to root_path
     end
-    #@messages = @room.messages.includes(:user, :attachment, :post).order(:created_at).page(params[:page])
+
+    session[:room_id] = @room.id if @room.present?
   end
 
   # GET /rooms/new
@@ -217,6 +218,13 @@ class RoomsController < ApplicationController
         format.json { render json: '', status: :unprocessable_entity }
       end
     end
+  end
+
+  def reject_slack_integration
+    message = @room.messages.find_by(msg_type: 'slack-integration')
+    message.update(msg_type: '')
+
+    redirect_to rooms_path(@room)
   end
 
   # DELETE /rooms/1

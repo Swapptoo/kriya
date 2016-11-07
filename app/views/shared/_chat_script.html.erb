@@ -140,6 +140,20 @@
     }
   ];
 
+  var slack = [
+    'Thanks for your detailed write up. We are assigning someone who can get this done faster. To stay upto date, feel free to add this task as Slack channel',
+    {
+      type: 'visit',
+      answers: [{
+        text: 'Add to Slack',
+        path: 'https://slack.com/oauth/authorize?scope=incoming-webhook,channels:write,chat:write:bot&client_id=67906736769.96991300567'
+      },{
+        text: 'No, Thanks',
+        path: '/'
+      }]
+    }
+  ];
+
   var sign_up = [
     'Sounds good, please sign up to help us understand more about your project',
     {
@@ -219,7 +233,8 @@
       timeline: timeline,
       expertiseLevel: expertise_level,
       budget: budget,
-      description: description
+      description: description,
+      slack: slack,
     };
   <%- end %>
 

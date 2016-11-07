@@ -1,0 +1,109 @@
+<%- new_user ||= false %>
+<script>
+
+  var sign_up = [
+    'Please choose your sign up mode',
+    {
+      type: 'visit',
+      answers: [{
+        'text': 'Twitter',
+        'path': '/auth/twitter?user=freelancer'
+      },{
+        'text': 'Facebook',
+        'path': '/auth/facebook?user=freelancer'
+      },{
+        'text': 'LinkedIn',
+        'path': '/auth/linkedin?user=freelancer'
+      },{
+        'text': 'Email',
+        'path': '/freelancers/sign_up'
+      }]
+    }
+  ];
+  var login = [
+    'Cool, please login to get to your projects',
+    {
+      type: 'visit',
+      answers: [{
+        'text': 'Twitter',
+        'path': '/auth/twitter?user=freelancer'
+      },{
+        'text': 'Facebook',
+        'path': '/auth/facebook?user=freelancer'
+      },{
+        'text': 'LinkedIn',
+        'path': '/auth/linkedin?user=freelancer'
+      },{
+        'text': 'Email',
+        'path': '/freelancers/sign_in'
+      }]
+    }
+  ];
+
+  var description = [
+    'Welcome to Kriya. We are glad you are here. We will notify you as soon as there\'s a gig matching your profile. Keep watching this space'
+  ];
+
+  <%- if new_user %>
+    var configs = {
+      greeting: [
+        '<%== escape_javascript ["Hi, I am Kriya Bot. One of our clients need the following task to be done. If you or anyone you know can do this, please share it or sign up.", @post.content_escaped].join("</br></br>").html_safe %>',
+        {
+          type: 'choose',
+          answers: [
+            {
+              'text': 'Get Started',
+              'path': 'signup'
+            },
+            {
+              'text': 'Sign In',
+              'path': 'login'
+            }
+          ]
+        }
+      ],
+      login: login,
+      signup: sign_up
+    };
+  <%- else %>
+    <%- if current_freelancer.pending_rooms.any? %>
+      <%- unless @room.in_progress_freelancers.any? %>
+        var description = [
+          'You are now assigned to <%= @room.title %>. Are you available to finish this project within the given timeline? <br> <%= @room.posts.first.content.gsub("'", %q(\\\')).split.join(' ').html_safe %>',
+          {
+            type: 'visit',
+            path: 'notice',
+            key: "description",
+            answers: [{
+              'text': 'Accept',
+              'path': '/tasks/<%= @room.id %>/accept' ,
+              'key': 'quality'
+            },{
+              'text': 'Pass',
+              'path': '/tasks/<%= @room.id %>/reject' ,
+              'key': 'quality'
+            }]
+          }
+        ];
+      <%- else %>
+        var description = [
+          "Sorry the task has already been assigned to someone else as they claimed it first."
+        ];
+      <%- end %>
+      var configs = {
+        greeting: description
+      };
+    <%- else %>
+      var configs = {
+        greeting: description
+      };
+    <%- end %>
+  <%- end %>
+
+  new Chat(
+    configs,
+    {
+      targetNode: '#chat'
+    }
+  );
+</script>

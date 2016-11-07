@@ -67,6 +67,7 @@ class Freelancer < ApplicationRecord
   has_many :freelancers_rooms, class_name: 'FreelancersRooms'
   has_and_belongs_to_many :asigned_rooms, join_table: :freelancers_rooms, class_name: "Room", after_add: :send_asigned_room_email_to_freelancer
   has_many :messages, dependent: :destroy
+  has_many :slack_channels, dependent: :destroy
 
   scope :live, -> { where(status: 'live') }
 

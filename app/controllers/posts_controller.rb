@@ -1,8 +1,10 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:edit, :update, :destroy]
   before_action :set_goomp, only: [:new]
-  before_action :authenticate!
+  before_action :authenticate!, except: [:public]
   respond_to :html, :json
+
+  layout 'pages', if: -> { action_name == 'public' }
   # GET /posts
   # GET /posts.json
   def index
@@ -39,15 +41,25 @@ class PostsController < ApplicationController
     @post = current_user.posts.new(post_params)
     @post.goomp = Goomp.friendly.find params[:goomp_id] if params[:goomp_id].present?
     if @post.save
-      #debugger
       @message = Message.new
       @message.post = @post
-      room = Room.find request.referer.split('/').last
-      @message.room = room
+      @room = Room.find request.referer.split('/').last
+      last_message = @room.messages.last
+
+      @message.room = @room
       @message.user = current_user
 
       @message.save
       @message.process_command
+
+      if last_message.bot_description?
+        message = @room.messages.create(seen: true, body: 'Thanks for your detailed write up. We are assigning someone who can get this done faster. To stay upto date, feel free to add this task as Slack channel', room: @room, user: @room.manager, msg_type: 'slack-integration')
+        message.create_attachment(
+          message: @message,
+          html: slack_integration_html
+        )
+      end
+
       respond_modal_with @post, location: request.referer and return
     end
     # respond_to do |format|
@@ -99,6 +111,12 @@ class PostsController < ApplicationController
     end
   end
 
+  def public
+    @post = Post.find_by(token: params[:token])
+
+    redirect_to room_path(@post.room) and return if current_freelancer.present?
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
@@ -123,5 +141,13 @@ class PostsController < ApplicationController
         :link_video,
         :link_url,
       )
+    end
+
+    def slack_integration_html
+      "</br>#{view_context.link_to 'Add to Slack', slack_integration_url, class: 'mini ui green button custom-padding' } #{view_context.link_to 'No, Thanks', reject_slack_integration_room_path(@room), class: 'mini ui green button custom-padding' }"
+    end
+
+    def slack_integration_url
+      "https://slack.com/oauth/authorize?scope=incoming-webhook,channels:write,chat:write:bot&client_id=#{Rails.application.secrets.slack_app_id}"
     end
 end

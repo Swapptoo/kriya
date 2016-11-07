@@ -27,6 +27,7 @@
 
 class Room < ApplicationRecord
   has_many :messages, dependent: :destroy
+  has_many :slack_channels, dependent: :destroy
   belongs_to :user
   belongs_to :manager, class_name: "User"
   monetize :budget_cents
@@ -101,11 +102,15 @@ class Room < ApplicationRecord
   end
 
   def unfinish?
-    messages.last.bot_description?
+    messages.last.bot_description? || messages.last.slack_integration?
   end
 
   def finished?
     !unfinish?
+  end
+
+  def channel_name
+    "kriya-#{title}"
   end
 
   def get_room_name_for_user(user, index = nil)
