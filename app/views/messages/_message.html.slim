@@ -48,7 +48,7 @@
                   button id="customBankButton-#{message..id}" class="mini ui green button custom-padding" Connect Bank
                   javascript:
                     document.getElementById("customBankButton-#{message.id}").addEventListener('click', function(e) {
-                      window.location.href = '/auth/stripe_connect?room_id=#{message.room_id}'
+                      window.location.href = '/auth/stripe_connect?room_id=#{message.room_id}&message_id=#{message.id}'
                     });
                 - else
                   ' We notified the client that you started the task
@@ -56,8 +56,6 @@
                 ' We notified the client that you finished the task, waiting for their approval
               - elsif message.msg_type == 'bot-ask-rate'
                 ' Client has paid this work.
-              - elsif message.msg_type == 'bot-continue-work'
-                ' Client has more work for you, details will be given shortly
               - else
                 = auto_link message.body, html: { target: '_blank', rel: "nofollow" }
                 - if message.attachment
@@ -132,7 +130,12 @@
               - elsif message.msg_type == 'bot-continue-work'
                 ' Please give detailed description of what needs to be done by creating a post, meanwhile I'll get this started with our workforce
                 br
-                = link_to 'Add Description', new_post_path, :data => {:modal => true}, :class => "mini ui green button custom-padding"
+                = link_to 'Add Description', new_post_path(:message_id => message.id), :data => {:modal => true}, :class => "mini ui green button custom-padding"
+              - elsif message.msg_type == 'bot-continued-work'
+                ' Please give detailed description of what needs to be done by creating a post, meanwhile I'll get this started with our workforce
+                br
+                p
+                  button class="mini ui green button custom-padding" style="float:right" Add Description
               - else
                 = auto_link message.body, html: { target: '_blank', rel: "nofollow" }
                 - if message.attachment

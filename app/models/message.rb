@@ -62,7 +62,7 @@ class Message < ApplicationRecord
           <button id="customButton-#{self.id}" class="mini ui green button custom-padding">Connect with Stripe</button>
           <script>
             document.getElementById("customButton-#{self.id}").addEventListener('click', function(e) {
-              window.location.href = '/auth/stripe_connect?room_id=#{self.room_id}'
+              window.location.href = '/auth/stripe_connect?room_id=#{self.room_id}&message_id=#{self.id}'
             });
           </script>
         HTML
@@ -81,8 +81,13 @@ class Message < ApplicationRecord
                   message_id: #{self.id},
                   payment: {
                     user_id: #{self.room.user.id},
-                    freelancer_id: #{self.freelancer.nil? ? 'undefined' : self.freelancer.id}
                   }
+                }).done(function() {
+                  $("#customButton-#{self.id}").css("float", "right");
+                  $("<br>").insertAfter("#customButton-#{self.id}");
+                  $("#customButton-#{self.id}").attr('id', '');
+                  $("#customButton-#{self.id}-2").remove();
+                  $("#customButton-#{self.id}-3").remove();
                 });
               e.preventDefault();
             });
@@ -91,6 +96,7 @@ class Message < ApplicationRecord
           title = "Change card"
           color = "white"
           update_customer = 1
+          # freelancer_id: #{self.freelancer.nil? ? 'undefined' : self.freelancer.id}
         else
           if !self.user.nil?
             title = "Pay with card"
@@ -117,7 +123,7 @@ class Message < ApplicationRecord
                   update_customer: #{update_customer},
                   message_id: #{self.id},
                   payment: {
-                    user_id: #{self.room.user.id}
+                    user_id: #{self.room.user.id},
                   }
                 });
               }
@@ -153,10 +159,17 @@ class Message < ApplicationRecord
                 $.ajax({url: "/freelancers_rooms/#{freelancer_room_id}.json", type: "PUT", data: {
                     freelancers_room: {
                       status: 'not_finished'
-                    }
+                    },
+                    message_id: #{self.id}
                   }
+                }).done(function() {
+                  $("#customButton-#{self.id}").remove();
+                  $("#customButton-#{self.id}-2").remove();
+                  $("#customButton-#{self.id}-3").css("float", "right");
+                  $("<br>").insertAfter("#customButton-#{self.id}-3");
+                  $("#customButton-#{self.id}-3").attr('id', '');
+                  e.preventDefault();
                 });
-                e.preventDefault();
               });
             </script>
           HTML

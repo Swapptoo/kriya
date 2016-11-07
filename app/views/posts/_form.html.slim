@@ -19,7 +19,7 @@
     = f.hidden_field :link_description
     = f.hidden_field :link_image
     = f.hidden_field :link_url
-
+    = f.hidden_field :message_id, @message_id
     = current_user.avatar
     = f.text_field :title, placeholder: "Title", autofocus: true
     = f.text_area :content, class: "editable"

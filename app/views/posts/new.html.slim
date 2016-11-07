@@ -10,6 +10,8 @@
     = f.hidden_field :link_description
     = f.hidden_field :link_image
     = f.hidden_field :link_url
+    - if @message_id
+      = f.hidden_field :message_id, value: @message_id
 
     = current_user.avatar
     = f.text_field :title, :placeholder => "Project Title", :autofocus => true

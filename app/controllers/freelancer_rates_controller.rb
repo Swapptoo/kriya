@@ -18,6 +18,12 @@ class FreelancerRatesController < ApplicationController
   # POST /freelancer_rates
   # POST /freelancer_rates.json
   def create
+    message = Message.find(params[:message_id])
+    message.attachment.html =  <<~HTML.squish
+      <p><button id="customRateButton-#{params[:message_id]}" class="mini ui green button custom-padding" style="float:right">#{freelancer_rate_params[:rate]}</button><p><br>
+    HTML
+    message.attachment.save
+
     @freelancer_rate = FreelancerRate.new(freelancer_rate_params)
     respond_to do |format|
       if @freelancer_rate.save
@@ -35,8 +41,14 @@ class FreelancerRatesController < ApplicationController
               $.ajax({url: "/freelancers_rooms/#{@freelancer_rate.freelancers_room_id}.json", type: "PUT", data: {
                   freelancers_room: {
                     status: 'more_work'
-                  }
+                  },
+                  message_id: #{message.id}
                 }
+              }).done(function() {
+                $("#customContinueYesButton-#{message.id}").css("float", "right");
+                $("<br><br>").insertAfter("#customContinueYesButton-#{message.id}");
+                $("#customContinueYesButton-#{message.id}").attr('id', '');
+                $("#customContinueNoButton-#{message.id}").remove();
               });
               e.preventDefault();
             });
@@ -44,8 +56,15 @@ class FreelancerRatesController < ApplicationController
               $.ajax({url: "/freelancers_rooms/#{@freelancer_rate.freelancers_room_id}.json", type: "PUT", data: {
                   freelancers_room: {
                     status: 'completed'
-                  }
+                  },
+                  message_id: #{message.id}
                 }
+              }).done(function() {
+                $("#customContinueNoButton-#{message.id}").css("float", "right");
+                $("<br><br>").insertAfter("#customContinueNoButton-#{message.id}");
+                $("#customContinueNoButton-#{message.id}").attr('id', '');
+                $("#customContinueYesButton-#{message.id}").remove();
+                e.preventDefault();
               });
               e.preventDefault();
             });

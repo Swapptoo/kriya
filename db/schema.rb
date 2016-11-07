@@ -351,8 +351,8 @@ ActiveRecord::Schema.define(version: 20161105071107) do
     t.string   "slug"
     t.string   "stipe_customer_id"
     t.integer  "follows_count",                     default: 0
+    t.string   "role"
     t.datetime "last_seen_at"
-    t.string   "role",                              default: "0"
     t.string   "stripe_id"
     t.string   "authentication_token",   limit: 30
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree

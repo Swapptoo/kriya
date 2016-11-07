@@ -12,6 +12,7 @@
     = f.fields_for :messages do |ff|
       = ff.fields_for :post do |pf|
         = pf.text_field :title, :placeholder => 'Project Title', autofocus: true
+        = pf.hidden_field :message_id, @message_id
         = pf.text_area :content, :class => 'editable'
     .ui.divider
     .field#submit_field = f.submit 'Save', class: "ui button basic blue"

@@ -6,6 +6,13 @@ class OmniauthCallbacksController < ApplicationController
         :stripe_token => request.env["omniauth.auth"]["credentials"]["token"],
         :stripe_client_id => request.env["omniauth.auth"]["uid"]
       )
+      if request.env["omniauth.params"]["message_id"]
+        message = Message.find(request.env["omniauth.params"]["message_id"])
+        message.attachment.html =  <<~HTML.squish
+          <p><button id="customStripeButton-#{request.env["omniauth.params"]["message_id"]}" class="mini ui green button custom-padding" style="float:right">Connect with Stripe</button><p><br>
+        HTML
+        message.attachment.save
+      end
       if request.env["omniauth.params"]["room_id"]
         room = Room.find request.env["omniauth.params"]["room_id"]
         message = room.messages.new({:body => 'Freelancer setup payment.', :room => room, :user => room.manager})

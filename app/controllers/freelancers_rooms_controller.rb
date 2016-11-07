@@ -23,6 +23,23 @@ class FreelancersRoomsController < ApplicationController
   # PUT /freelancers_rooms/1
   # PUT /freelancers_rooms/1.json
   def update
+    message = Message.find(params[:message_id])
+    if freelancers_room_params[:status] == 'completed'
+      message.attachment.html =  <<~HTML.squish
+        <p><button id="customContinueNoButton-#{params[:message_id]}" class="mini ui green button custom-padding" style="float:right">No</button><p><br>
+      HTML
+    elsif freelancers_room_params[:status] == 'more_work'
+      message.attachment.html =  <<~HTML.squish
+        <p><button id="customContinueYesButton-#{params[:message_id]}" class="mini ui green button custom-padding" style="float:right">Yes</button><p><br>
+      HTML
+    elsif freelancers_room_params[:status] == 'not_finished'
+      message.attachment.html =  <<~HTML.squish
+        <p><button id="customPayButton-#{params[:message_id]}" class="mini ui green button custom-padding" style="float:right">No</button><p><br>
+      HTML
+    end
+
+    message.attachment.save
+
     @freelancers_room = FreelancersRooms.find(params[:id])
     respond_to do |format|
       if @freelancers_room.update(freelancers_room_params)

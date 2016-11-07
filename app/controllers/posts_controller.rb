@@ -24,6 +24,9 @@ class PostsController < ApplicationController
   def new
     @post = Post.new
     # render layout: "pages"
+
+    @message_id = params[:message_id] if params[:message_id]
+    
     respond_modal_with @post and return
   end
 
@@ -36,6 +39,10 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
+    if params[:post][:message_id] 
+      message = Message.find(params[:post][:message_id] )
+      message.update msg_type: 'bot-continued-work'
+    end
     @post = current_user.posts.new(post_params)
     @post.goomp = Goomp.friendly.find params[:goomp_id] if params[:goomp_id].present?
     if @post.save

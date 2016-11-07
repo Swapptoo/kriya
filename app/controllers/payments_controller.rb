@@ -90,6 +90,9 @@ class PaymentsController < ApplicationController
         end
         message = room.messages.new({:body => 'The transaction was successful. What is the rate of this work?', :room => room, :user => room.manager, :msg_type => 'bot-ask-rate'})
         message.create_attachment html: "<br/>"
+        message.attachment.html += <<~HTML.squish
+          <div id="rateButtons-#{message.id}">
+        HTML
         (1..5).each do |i|
           message.attachment.html += <<~HTML.squish
             <button id="customRateButton#{i}-#{message.id}" class="mini ui green button custom-padding">#{i}</button>
@@ -102,14 +105,19 @@ class PaymentsController < ApplicationController
                       room_id: #{room.id},
                       freelancer_id: #{freelancer.id},
                       freelancers_room_id: #{freelancer_room_id}
-                    }
+                    },
+                    message_id: #{message.id}
+                  }).done(function() {
+                    $("#rateButtons-#{message.id}").html('<p><button style="float:right" class="mini ui green button custom-padding">#{i}</button></p>')
                   });
-                e.preventDefault();
-
+                  e.preventDefault();
               });
             </script>
           HTML
         end
+        message.attachment.html += <<~HTML.squish
+          </div><br>
+        HTML
         message.attachment.save
       else
         charge = Stripe::Charge.create(
