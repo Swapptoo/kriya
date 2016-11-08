@@ -138,7 +138,7 @@ class Message < ApplicationRecord
           </script>
         HTML
         if !self.user.nil?
-          self.update body: "The charge for this task is $#{amount}, can you confirm so we can get it started?", :msg_type => 'bot-charge-task'
+          self.update body: "The charge for this task is $#{amount}, please finish this transaction so the workforce gets paid?", :msg_type => 'bot-charge-task'
         elsif !self.freelancer.nil?
           freelancer_rooms = self.room.freelancers_rooms.where('status in (?)', ['accepted', 'more_work', 'not_finished']).where("freelancer_id = ?", self.freelancer.id)
           if freelancer_rooms.any?
@@ -160,7 +160,7 @@ class Message < ApplicationRecord
               });
             </script>
           HTML
-          self.update body: "The charge for this task is $#{amount}, Workforce has mentioned that they finished this task. Do you approve?", user: self.room.manager, msg_type: 'bot-task-finish'
+          self.update body: "The charge for this task is $#{amount}, , please finish this transaction so the workforce gets paid?", user: self.room.manager, msg_type: 'bot-task-finish'
         end
         self.attachment.save
 
