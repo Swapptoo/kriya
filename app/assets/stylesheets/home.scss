@@ -26,6 +26,14 @@
     Masthead
 ---------------*/
 
+.full-bg, .full-bg .masthead.segment {
+  height: 100%;
+}
+
+.full-bg {
+  max-height: 100%;
+}
+
 #example.index .masthead.segment.zoomed h1 {
   text-shadow: 0px 0px 4px rgba(0, 0, 0, 0);
   color: rgba(255, 255, 255, 1);

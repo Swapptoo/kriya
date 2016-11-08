@@ -18,7 +18,7 @@ css:
     text-align: center;
   }
 
-#example.index
+#example.index.full-bg
   .masthead.segment.bg7
     .ui.container
       .main
@@ -107,7 +107,7 @@ css:
               .field
                 = f.label :professional_profile_link, "Add Professional Profile"
                 = f.text_field :professional_profile_link1, placeholder: "Add your professional link (LinkedIn, Dribble, Upwork profile etc)"
-              .field  
+              .field
                 = f.text_field :professional_profile_link2, placeholder: "Add your professional link (LinkedIn, Dribble, Upwork profile etc)"
             - unless @oauth
               .two.fields
