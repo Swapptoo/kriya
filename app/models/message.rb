@@ -160,7 +160,7 @@ class Message < ApplicationRecord
               });
             </script>
           HTML
-          self.update body: "The charge for this task is $#{amount}, , please finish this transaction so the workforce gets paid?", user: self.room.manager, msg_type: 'bot-task-finish'
+          self.update body: "The charge for this task is $#{amount}, please finish this transaction so the workforce gets paid?", user: self.room.manager, msg_type: 'bot-task-finish'
         end
         self.attachment.save
 
