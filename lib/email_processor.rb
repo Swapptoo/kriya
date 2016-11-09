@@ -4,45 +4,50 @@ class EmailProcessor
   end
 
   def process
-	puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+  	puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@"
     puts @email.subject
     puts @email.body
     puts @email.headers
-	puts @email.to
-	puts @email.from
+  	puts @email.to
+  	puts @email.from
     puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 
-	num = @email.to.first[:token].tr('^0-9', '')
-	room = Room.find num
-	body = @email.body
-	if @email.to.first[:token].include? "manager" then
-		sender = room.user
-	else
-		sender = room.manager
-	end
-	lines = body.split("\n")
-	body = ""
-	lines.each do |line|
-		if line.include? "Kriya Task" then
-			break
-		end
-		body += line + "\n"
-	end
-	room.messages.create({:seen => false, :body => body, :room => room, :user => sender})
-	@email.attachments.each do |attachment|
-		room.messages.create({:seen => false, :body => '', :room => room, :user => sender, :image => attachment})
-	end
-	room.save
+  	num = @email.to.first[:token].tr('^0-9', '')
 
-	ActionCable.server.broadcast(
-        "rooms:#{room.id}:messages",
-        message: MessagesController.render(
-          partial: 'messages/message',
-          locals: {
-            message: room.messages.last, user: sender
-          }
-        ),
-        room_id: room.id,
-      )
+  	room = Room.find(num)
+    email = @email.from[:email]
+    body = @email.body
+
+    user = User.find_by(email: email)
+    user = Freelancer.find_by(email: email) if user.nil?
+
+    message_params = { body: body }
+
+    if room.accepted_freelancers.include?(user)
+      message_params[:freelancer] = user
+    else
+      message_params[:user] = user
+    end
+
+  	room.messages.create(message_params)
+
+  	@email.attachments.each do |attachment|
+      message_params[:image] = attachment
+      message_params[:body]  = ''
+  		room.messages.create(message_params)
+  	end
+
+  	room.save
+
+  	ActionCable.server.broadcast(
+      'rooms:#{room.id}:messages',
+      message: MessagesController.render(
+        partial: 'messages/message',
+        locals: {
+          message: room.messages.last, user: sender
+        }
+      ),
+      room_id: room.id
+    )
   end
 end
