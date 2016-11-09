@@ -44,7 +44,7 @@ class EmailProcessor
       message: MessagesController.render(
         partial: 'messages/message',
         locals: {
-          message: room.messages.last, user: sender
+          message: room.messages.last, user: user
         }
       ),
       room_id: room.id
