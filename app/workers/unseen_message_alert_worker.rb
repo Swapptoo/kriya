@@ -14,7 +14,7 @@ class UnseenMessageAlertWorker
     unseen_message_ids = @recipient.unseen_messages.where(room: @room).pluck(:message_id)
     return if unseen_message_ids.size.zero?
 
-    messages = @room.messages.includes(:user, :freelancer).where(id: unseen_message_ids).order(created_at: :desc)
+    messages = @room.messages.includes(:user, :freelancer).where(id: unseen_message_ids).order(:created_at)
 
     users = messages.map(&:user).compact.uniq
     freelancers = messages.map(&:freelancer).compact.uniq
