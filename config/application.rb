@@ -10,6 +10,9 @@ ENV['RAILS_ADMIN_THEME'] = 'rollincode'
 
 module Dantos
   class Application < Rails::Application
+    config.filter_parameters << :password
+
+
     config.generators do |g|
       # g.assets false
       g.javascripts true

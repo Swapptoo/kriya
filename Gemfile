@@ -23,6 +23,7 @@ gem 'rack-mini-profiler'
 gem 'cocoon'
 gem 'friendly_id', '~> 5.1.0'
 gem 'semantic-ui-sass'
+gem 'sentry-raven'
 
 gem 'devise'
 gem 'simple_token_authentication', '~> 1.14.0'

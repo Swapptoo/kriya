@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :configure_permitted_parameters,:set_raven_context, if: :devise_controller?
 
   acts_as_token_authentication_handler_for User, fallback: :none
   acts_as_token_authentication_handler_for Freelancer, fallback: :none
@@ -19,6 +19,14 @@ class ApplicationController < ActionController::Base
       session[:last_seen_at] = Time.now
       current_user.update_attribute(:last_seen_at, Time.now)
     end
+  end
+
+
+  private
+
+  def set_raven_context
+    Raven.user_context(id: session[:current_user_id]) # or anything else in session
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 
   def authenticate!
@@ -94,5 +102,11 @@ class ApplicationController < ActionController::Base
   # The path used after sign in.
   def after_sign_in_path_for(resource)
     root_path
+  end
+  private
+
+  def set_raven_context
+    Raven.user_context(id: session[:current_user_id]) # or anything else in session
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 end
