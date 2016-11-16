@@ -207,11 +207,8 @@ class RoomsController < ApplicationController
   end
 
   def mark_messages_seen
-    messages = if current_user.present?
-      @room.unseen_messages.by_user(current_user)
-    else
-      @room.unseen_messages.by_freelancer(current_freelancer)
-    end
+    user = current_user.presence || current_freelancer
+    messages = user.unseen_messages.where(room: @room)
 
     respond_to do |format|
       if messages.destroy_all
