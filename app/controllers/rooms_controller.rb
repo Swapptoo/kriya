@@ -167,9 +167,8 @@ class RoomsController < ApplicationController
 
   #GET /tasks/from_sign_up
   def create_room_from_sign_up
-    session_dummy = session.delete(session[:sign_up_dummy_room])
-    if session_dummy
-      @room = Room.new(session_dummy)
+    @room = session.delete(:sign_up_dummy_room)
+    if @room
       @room.user = current_user
       @room.manager = User.where(:email => 'manager@goomp.co').first || User.where.not(id: current_user.id).all.sample
 
