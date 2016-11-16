@@ -167,7 +167,7 @@ class RoomsController < ApplicationController
 
   #GET /tasks/from_sign_up
   def create_room_from_sign_up
-    session_dummy = session.delete(:sign_up_dummy_room)
+    session_dummy = session.delete(session[:sign_up_dummy_room])
     if session_dummy
       @room = Room.new(session_dummy)
       @room.user = current_user
