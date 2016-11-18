@@ -10,7 +10,7 @@ class SlackWorker
     room  = message.room
 
     recipients = []
-    recipients += room.completed_freelancers if room.completed_freelancers.exclude?(owner)
+    recipients += room.accepted_freelancers if room.accepted_freelancers.exclude?(owner)
     recipients << room.user if room.user != owner
     recipients << room.manager if room.manager != owner
 
@@ -21,5 +21,13 @@ class SlackWorker
       client = Slack::Web::Client.new token: slack_channel.token
       client.chat_postMessage(message.to_slack)
     end
+
+    # Record owner message
+    slack_channel = owner.slack_channels.find_by(room: room)
+
+    return if slack_channel.nil?
+
+    client = Slack::Web::Client.new token: slack_channel.token
+    client.chat_postMessage(message.to_slack(true))
   end
 end

@@ -53,7 +53,7 @@ class PostsController < ApplicationController
       @message.process_command
 
       if last_message.bot_description?
-        message = @room.messages.create(seen: true, body: 'Thanks for your detailed write up. We are assigning someone who can get this done faster. To stay upto date, feel free to add this task as Slack channel', room: @room, user: @room.manager, msg_type: 'slack-integration')
+        message = @room.messages.create(seen: true, body: 'Do you use Slack?', room: @room, user: @room.manager, msg_type: 'slack-integration')
         message.create_attachment(
           message: @message,
           html: slack_integration_html
@@ -62,26 +62,6 @@ class PostsController < ApplicationController
 
       respond_modal_with @post, location: request.referer and return
     end
-    # respond_to do |format|
-    #   if @post.save
-    #     debugger
-    #     format.html do
-    #       # It's a full-size story
-    #       debugger
-    #       if @post.content
-    #         @post.generate_link_for_story!
-    #         redirect_to @post.goomp, notice: 'Post was successfully created.'
-    #       else
-    #         redirect_back fallback_location: @post.goomp, notice: 'Post was successfully created.'
-    #       end
-    #     end
-    #     format.json { render :show, status: :created, location: @post }
-    #     format.js
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @post.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # PATCH/PUT /posts/1
@@ -141,13 +121,5 @@ class PostsController < ApplicationController
         :link_video,
         :link_url,
       )
-    end
-
-    def slack_integration_html
-      "</br>#{view_context.link_to 'Add to Slack', slack_integration_url, class: 'mini ui green button custom-padding' } #{view_context.link_to 'No, Thanks', reject_slack_integration_room_path(@room), class: 'mini ui green button custom-padding' }"
-    end
-
-    def slack_integration_url
-      "https://slack.com/oauth/authorize?scope=incoming-webhook,channels:write,chat:write:bot&client_id=#{Rails.application.secrets.slack_app_id}"
     end
 end

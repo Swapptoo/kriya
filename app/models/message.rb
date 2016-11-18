@@ -243,8 +243,10 @@ class Message < ApplicationRecord
     self.user.presence || self.freelancer
   end
 
-  def to_slack
+  def to_slack(as_user = false)
     if file?
+      text = as_user ? '' : "*#{owner_full_name}*"
+
       {
         attachments: [
           {
@@ -252,17 +254,26 @@ class Message < ApplicationRecord
             text: image.file.filename
           }
         ],
-        text: "*#{owner_full_name}*",
-        channel: "##{room.channel_name}"
+        text: text,
+        channel: "##{room.channel_name}",
+        as_user: as_user
       }
     elsif post.present?
+      text = "I've just created a task at #{post.public_url}"
+      text = "*#{owner_full_name}*: #{text}" unless as_user
+
       {
-        text: "*#{owner_full_name}*: I've just created a task at #{post.public_url}",
+        text: text,
+        as_user: as_user,
         channel: "##{room.channel_name}"
       }
     else
+      text = self.body
+      text = "*#{owner_full_name}*: #{text}" unless as_user
+
       {
-        text: "*#{owner_full_name}*: #{self.body}",
+        text: text,
+        as_user: as_user,
         channel: "##{room.channel_name}"
       }
     end

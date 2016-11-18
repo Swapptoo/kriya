@@ -547,7 +547,7 @@ AppView = {
     )
 
   initFluidBox: ->
-    $(".ui.comments a").fluidbox()
+    $(".ui.comments a:not(.slack-button)").fluidbox()
 }
 
 document.addEventListener "turbolinks:load", ->

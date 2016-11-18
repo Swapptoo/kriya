@@ -34,6 +34,4 @@ class SlackChannel < ApplicationRecord
             :web_hook_url,
             :team_name,
             :team_id, presence: true
-
-  validates :room, presence: true
 end

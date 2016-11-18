@@ -102,7 +102,7 @@ class Room < ApplicationRecord
   end
 
   def unfinish?
-    messages.last.bot_description? || messages.last.slack_integration?
+    messages.last.bot_description?
   end
 
   def finished?
@@ -110,7 +110,7 @@ class Room < ApplicationRecord
   end
 
   def channel_name
-    "kriya-#{title}"
+    "kriya-#{title.underscore.gsub(' ', '-')}"
   end
 
   def get_room_name_for_user(user, index = nil)
@@ -131,6 +131,16 @@ class Room < ApplicationRecord
 
   def get_index(user)
     user.joined_rooms.includes(:user).find_index(self)
+  end
+
+  def notify_new_gig(freelancer)
+    return if freelancer.gig_slack_channel.nil?
+
+    client = Slack::Web::Client.new(token: freelancer.gig_slack_channel.token)
+    client.chat_postMessage(
+      text: "You are now assigned to #{self.title}, find out more at #{posts.first.public_url}",
+      channel: '#general'
+    )
   end
 
   def send_asigned_room_email_to_freelancer(record)

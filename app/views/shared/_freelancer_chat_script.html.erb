@@ -67,7 +67,7 @@
     };
   <%- else %>
     <%- if current_freelancer.pending_rooms.any? %>
-      <%- unless @room.in_progress_freelancers.any? %>  
+      <%- unless @room.in_progress_freelancers.any? %>
         var description = [
           'You are now assigned to the following task. <br> <%= @room.posts.first.content.gsub("'", %q(\\\')).split.join(' ').html_safe %> <br> Please note that the budget is only an estimate and you can negotiate. Are you available?',
           {
@@ -94,6 +94,23 @@
         greeting: description
       };
     <%- else %>
+
+      <%- if current_freelancer.gig_slack_channel.nil? %>
+        var description = [
+          'Welcome to Kriya. We are glad you are here. We will notify you as soon as there\'s a gig matching your profile. Keep watching this space or adding us to your slack',
+          {
+            type: 'visit',
+            path: 'notice',
+            key: "description",
+            answers: [{
+              'text': 'Add to Slack',
+              'path': "<%== escape_javascript "https://slack.com/oauth/authorize?scope=incoming-webhook,channels:write,chat:write:bot&client_id=#{Rails.application.secrets.slack_app_id}" %>",
+              'key': 'quality'
+            }]
+          }
+        ];
+      <%- end %>
+
       var configs = {
         greeting: description
       };
