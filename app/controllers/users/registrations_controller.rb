@@ -5,14 +5,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     super do |user|
-      authdata = session["devise.oauth_data"]
       if authdata
-        user.first_name = authdata["first_name"]
-        user.last_name = authdata["last_name"]
-        user.picture = authdata["picture"]
-        user.headline = authdata["headline"]
-        user.email = authdata["email"]
-        user.gender = "male"
+        user.first_name = authdata[:first_name]
+        user.last_name = authdata[:last_name]
+        user.picture = authdata[:picture]
+        user.headline = authdata[:headline]
+        user.email = authdata[:email]
+        user.gender = 'male'
       end
       @oauth = !authdata.nil?
     end
@@ -20,11 +19,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    authdata = session["devise.oauth_data"]
     super do |user|
       if authdata
-        resource.email ||= authdata["email"]
-        resource.password = authdata["password"] || Devise.friendly_token[0,20]
+        resource.email ||= authdata[:email]
+        resource.password = authdata[:password] || Devise.friendly_token[0,20]
       end
 
       resource.save
@@ -33,13 +31,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
         if authdata
           resource.authorizations.create!(
-            uid: authdata["uid"],
-            provider: authdata["provider"],
-            token: authdata["token"],
-            refresh_token: authdata["refresh_token"]
+            uid: authdata[:uid],
+            provider: authdata[:provider],
+            token: authdata[:token],
+            refresh_token: authdata[:refresh_token]
             # expires_at: authdata["expires_at"],
           )
-          session.delete("devise.oauth_data")
+          session.delete('devise.oauth_data')
         end
       end
 
@@ -93,4 +91,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+  private
+
+  def authdata
+    @authdata ||= session['devise.oauth_data']
+    @authdata.deep_symbolize_keys
+  end
 end
