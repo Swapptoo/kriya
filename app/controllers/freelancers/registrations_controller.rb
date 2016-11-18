@@ -99,6 +99,6 @@ class Freelancers::RegistrationsController < Devise::RegistrationsController
 
   def authdata
     @authdata ||= session['devise.oauth_data']
-    @authdata.deep_symbolize_keys
+    @authdata.try(:deep_symbolize_keys)
   end
 end
