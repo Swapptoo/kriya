@@ -61,7 +61,6 @@ gem 'whenever', require: false
 gem 'jquery-datatables-rails', '~> 3.4.0'
 gem 'activerecord-session_store', '~> 1.0.0'
 gem 'httparty'
-gem 'slack-notifier'
 gem 'slack-ruby-client'
 
 ## Utils

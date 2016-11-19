@@ -19,7 +19,6 @@ Rails.application.routes.draw do
       get :freelancers_list
       get :asign_freelancer
       get :remove_asigned_freelancer
-      get :reject_slack_integration, as: :reject_slack_integration
     end
   end
 

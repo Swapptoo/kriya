@@ -400,7 +400,6 @@ GEM
       actionpack (>= 3.2.6, < 6)
       devise (>= 3.2, < 6)
     sixarm_ruby_unaccent (1.1.1)
-    slack-notifier (1.5.1)
     slack-ruby-client (0.7.7)
       activesupport
       faraday
@@ -535,7 +534,6 @@ DEPENDENCIES
   sidekiq (~> 4.2.2)
   simple_form
   simple_token_authentication (~> 1.14.0)
-  slack-notifier
   slack-ruby-client
   slim-rails
   spring
@@ -555,4 +553,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.5
+   1.13.6

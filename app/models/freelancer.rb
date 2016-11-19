@@ -83,10 +83,6 @@ class Freelancer < ApplicationRecord
     slack_channels.find_by(room_id: nil)
   end
 
-  def ready?(room)
-
-  end
-
   def pending_rooms
     self.asigned_rooms.where(freelancers_rooms: { status: 'pending' })
   end
