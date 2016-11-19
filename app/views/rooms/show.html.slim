@@ -23,7 +23,7 @@ css:
             #messages.ui.comments data-room-id=@room.id
               .chat-content
                 = render @messages, :user => current_user
-            = render 'new_message' unless @room.unfinish?
+            = render 'new_message' if @room.finished?
 
         .ui.vertical.divider
         .four.wide.column
@@ -49,6 +49,8 @@ css:
             .ui.divider
             h4 Budget
             = number_to_currency(@room.budget)
+            .ui.divider
+            = slack_integration_html if @room.finished?
             - if current_user.manager?
               .ui.divider
               #freelancers_section

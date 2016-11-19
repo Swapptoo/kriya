@@ -67,7 +67,7 @@
     };
   <%- else %>
     <%- if current_freelancer.pending_rooms.any? %>
-      <%- unless @room.in_progress_freelancers.any? %>  
+      <%- unless @room.in_progress_freelancers.any? %>
         var description = [
           'You are now assigned to the following task. <br> <%= @room.posts.first.content.gsub("'", %q(\\\')).split.join(' ').html_safe %> <br> Please note that the budget is only an estimate and you can negotiate. Are you available?',
           {

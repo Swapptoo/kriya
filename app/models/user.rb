@@ -58,6 +58,7 @@ class User < ApplicationRecord
   has_many :unseen_messages, dependent: :destroy
 
   has_many :rooms, dependent: :destroy
+  has_many :slack_channels, dependent: :destroy
   has_many :managed_rooms, dependent: :destroy, class_name: "Room", foreign_key: :manager_id
   has_many :messages, dependent: :destroy
 

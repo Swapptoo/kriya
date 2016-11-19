@@ -21,6 +21,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def slack_integration_html
+    link = view_context.link_to slack_integration_url, class: 'slack-button' do
+      view_context.image_tag 'https://platform.slack-edge.com/img/add_to_slack.png', alt: 'Add this task to Slack'
+    end
+
+    @slack_integration_html = "</br>#{link}".html_safe
+  end
+
+  helper_method :slack_integration_html
 
   private
 
@@ -103,10 +112,13 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     root_path
   end
-  private
 
   def set_raven_context
     Raven.user_context(id: session[:current_user_id]) # or anything else in session
     Raven.extra_context(params: params.to_unsafe_h, url: request.url)
+  end
+
+  def slack_integration_url
+    "https://slack.com/oauth/authorize?scope=incoming-webhook,channels:write,channels:read,chat:write:bot,chat:write:user&client_id=#{Rails.application.secrets.slack_app_id}"
   end
 end

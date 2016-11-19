@@ -2,22 +2,23 @@
 #
 # Table name: posts
 #
+#  id               :integer          not null, primary key
 #  body             :text
 #  comments_count   :integer
-#  content          :text
-#  created_at       :datetime         not null
 #  goomp_id         :integer
-#  id               :integer          not null, primary key
+#  user_id          :integer
+#  subtopic_id      :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  title            :string
 #  likes_count      :integer          default(0)
-#  link_description :string
-#  link_image       :string
 #  link_title       :string
 #  link_url         :string
+#  link_image       :string
+#  link_description :string
+#  content          :text
 #  link_video       :string
-#  subtopic_id      :integer
-#  title            :string
-#  updated_at       :datetime         not null
-#  user_id          :integer
+#  token            :string
 #
 # Indexes
 #
@@ -43,7 +44,8 @@ class Post < ApplicationRecord
   validates :title, presence: true
   validate  :validate_content_from_editor
 
-  after_commit :trigger_room_notification, on: :create
+  before_save   :ensure_token
+  after_commit  :trigger_room_notification, on: :create
 
   include Likable
 
@@ -58,6 +60,17 @@ class Post < ApplicationRecord
     )
   end
 
+  def content_escaped
+    ActionView::Base.full_sanitizer.sanitize(content).gsub('+', '')
+  end
+
+  def public_url
+    Rails.application.routes.url_helpers.public_post_url(
+      self.token,
+      host: Rails.application.secrets.host
+    )
+  end
+
   private
 
   def trigger_room_notification
@@ -65,6 +78,15 @@ class Post < ApplicationRecord
   end
 
   def validate_content_from_editor
-    errors.add(:content, :blank) if content.blank? || ActionView::Base.full_sanitizer.sanitize(content).match(/\A[a-zA-Z0-9]/).nil?
+    errors.add(:content, :blank) if content.blank? || content_escaped.match(/\A[a-zA-Z0-9]/).nil?
+  end
+
+  def ensure_token
+    if token.blank?
+      self.token = loop do
+        token = Devise.friendly_token(50)
+        break token unless Post.where(token: token).first
+      end
+    end
   end
 end

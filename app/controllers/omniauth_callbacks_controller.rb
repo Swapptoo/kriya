@@ -1,5 +1,82 @@
 class OmniauthCallbacksController < ApplicationController
   def create
+    if params[:provider] == 'slack'
+      code = params[:code]
+      room_id = session.delete(:room_id)
+
+      url = "https://slack.com/api/oauth.access?code=#{code}&client_secret=#{Rails.application.secrets.slack_app_secret}&client_id=#{Rails.application.secrets.slack_app_id}"
+      response = HTTParty.get(url)
+
+      if response['ok']
+        token = response['access_token']
+        scope = response['scope']
+        uid  = response['user_id']
+        team_name = response['team_name']
+        team_id   = response['team_id']
+        web_hook  = response['incoming_webhook']
+        web_hook_url = web_hook['url']
+        channel_name = web_hook['channel']
+
+        user = if user_signed_in?
+          current_user
+        else freelancer_signed_in?
+          current_freelancer
+        end
+
+        if room_id.present?
+          room = user.rooms.find_by(id: room_id)
+          room = user.managed_rooms.find_by(id: room_id) if user.respond_to?(:manager?) && user.manager?
+
+          slack_channel = user.slack_channels.find_or_initialize_by(team_id: team_id, uid: uid, room: room)
+
+          slack_channel.assign_attributes(
+            token: token,
+            team_name: team_name,
+            web_hook_url: web_hook_url,
+            name: channel_name,
+            scope: scope
+          )
+
+          slack_channel.save
+
+          #create channel
+          client = Slack::Web::Client.new token: slack_channel.token
+
+          channels = client.channels_list.channels
+
+          channel = channels.detect { |c| room.channel_name.match(/#{c.name}/) }
+
+          if channel.nil?
+            client.channels_create(name: room.channel_name)
+            client.chat_postMessage(channel: "##{room.channel_name}", text: '*Kriya Task*: Thanks for integrating with Kriya.ai, we will keep updating you in this channel of new messages.')
+          end
+        elsif freelancer_signed_in?
+          # freelancer integrate slack afer sign up
+          slack_channel = current_freelancer.slack_channels.find_or_initialize_by(team_id: team_id, uid: uid)
+
+          slack_channel.assign_attributes(
+            token: token,
+            team_name: team_name,
+            web_hook_url: web_hook_url,
+            name: channel_name,
+            scope: scope
+          )
+
+          slack_channel.save
+        end
+
+        flash[:notice] = 'Slack has been integrated successfully'
+      else
+        flash[:alert] = 'Fail to connect with slack'
+      end
+
+      if room_id.present?
+        redirect_to room_path(room_id) and return
+      else
+        redirect_to root_path and return
+      end
+    end
+
     if request.env["omniauth.auth"]["provider"] == :stripe_connect
       current_freelancer.update_attributes(
         :stripe_publishable_key => request.env["omniauth.auth"]["info"]["stripe_publishable_key"],

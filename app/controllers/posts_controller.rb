@@ -1,8 +1,10 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:edit, :update, :destroy]
   before_action :set_goomp, only: [:new]
-  before_action :authenticate!
+  before_action :authenticate!, except: [:public]
   respond_to :html, :json
+
+  layout 'pages', if: -> { action_name == 'public' }
   # GET /posts
   # GET /posts.json
   def index
@@ -39,37 +41,27 @@ class PostsController < ApplicationController
     @post = current_user.posts.new(post_params)
     @post.goomp = Goomp.friendly.find params[:goomp_id] if params[:goomp_id].present?
     if @post.save
-      #debugger
       @message = Message.new
       @message.post = @post
-      room = Room.find request.referer.split('/').last
-      @message.room = room
+      @room = Room.find request.referer.split('/').last
+      last_message = @room.messages.last
+
+      @message.room = @room
       @message.user = current_user
 
       @message.save
       @message.process_command
+
+      if last_message.bot_description?
+        message = @room.messages.create(seen: true, body: 'Do you use Slack?', room: @room, user: @room.manager, msg_type: 'slack-integration')
+        message.create_attachment(
+          message: @message,
+          html: slack_integration_html
+        )
+      end
+
       respond_modal_with @post, location: request.referer and return
     end
-    # respond_to do |format|
-    #   if @post.save
-    #     debugger
-    #     format.html do
-    #       # It's a full-size story
-    #       debugger
-    #       if @post.content
-    #         @post.generate_link_for_story!
-    #         redirect_to @post.goomp, notice: 'Post was successfully created.'
-    #       else
-    #         redirect_back fallback_location: @post.goomp, notice: 'Post was successfully created.'
-    #       end
-    #     end
-    #     format.json { render :show, status: :created, location: @post }
-    #     format.js
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @post.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # PATCH/PUT /posts/1
@@ -97,6 +89,12 @@ class PostsController < ApplicationController
       format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def public
+    @post = Post.find_by(token: params[:token])
+
+    redirect_to room_path(@post.room) and return if current_freelancer.present?
   end
 
   private

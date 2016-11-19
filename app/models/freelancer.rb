@@ -67,6 +67,7 @@ class Freelancer < ApplicationRecord
   has_many :freelancers_rooms, class_name: 'FreelancersRooms'
   has_and_belongs_to_many :asigned_rooms, join_table: :freelancers_rooms, class_name: "Room", after_add: :send_asigned_room_email_to_freelancer
   has_many :messages, dependent: :destroy
+  has_many :slack_channels, dependent: :destroy
 
   scope :live, -> { where(status: 'live') }
 
@@ -78,6 +79,10 @@ class Freelancer < ApplicationRecord
     [first_name, last_name].join(' ')
   end
 
+  def gig_slack_channel
+    slack_channels.find_by(room_id: nil)
+  end
+
   def pending_rooms
     self.asigned_rooms.where(freelancers_rooms: { status: 'pending' })
   end
@@ -85,6 +90,8 @@ class Freelancer < ApplicationRecord
   def accepted_rooms
     self.asigned_rooms.where(freelancers_rooms: { status: ['accepted', 'not_finished', 'more_work'] })
   end
+
+  alias rooms accepted_rooms
 
   def completed_rooms
     self.asigned_rooms.where(freelancers_rooms: { status: 'completed' })

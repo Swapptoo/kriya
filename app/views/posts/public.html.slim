@@ -1,0 +1,34 @@
+css:
+  #example.index .masthead .container {
+    padding-bottom: 210px;
+  }
+
+  #home_link {
+    padding: 13px;
+    color: rgba(255,255,255,.7)!important;
+    font-weight: bold;
+  }
+
+  #home_link:hover {
+      color: white;
+      background: rgba(255,255,255,.08);
+      border-radius: .28571429rem;
+  }
+
+#example.index
+  .following.bar
+    .ui.container
+      .ui.large.secondary.network.menu.inverted
+        .right.menu.inverted
+          = link_to 'Home', '/', id: 'home_link'
+
+  .masthead.segment.bg7
+    .ui.container
+      .introduction
+        span.library = image_tag "logo-invert.png", style: "height: 55px", alt: "Goomp Logo"
+        div.ui.inverted.header
+          span.tagline Become our talent partner today,
+          br
+          span.tagline work on the projects you love and get paid for it!
+        = render "new_freelancer"
+        .ui.hidden.divider

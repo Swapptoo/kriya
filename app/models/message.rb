@@ -37,16 +37,14 @@ class Message < ApplicationRecord
   belongs_to :post
   has_one :attachment, dependent: :destroy
 
-
-  # validate :body_or_image_present
-
-  # after_create :process_command
   scope :un_seen, -> { where(seen: false) }
   scope :not_by,  -> (user) { where.not(user: user) }
   scope :by,      -> (user) { where(user: user) }
 
   scope :not_by_freelancer, -> (freelancer) { where.not(freelancer: freelancer) }
   scope :by_freelancer,     -> (freelancer) { where(freelancer: freelancer) }
+
+  after_commit :notify_slack
 
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
@@ -235,5 +233,63 @@ class Message < ApplicationRecord
 
   def bot_description?
     msg_type == 'bot-description'
+  end
+
+  def slack_integration?
+    msg_type == 'slack-integration'
+  end
+
+  def owner
+    self.user.presence || self.freelancer
+  end
+
+  def to_slack(as_user = false)
+    if file?
+      text = as_user ? '' : "*#{owner_full_name}*"
+
+      {
+        attachments: [
+          {
+            image_url: image.url,
+            text: image.file.filename
+          }
+        ],
+        text: text,
+        channel: "##{room.channel_name}",
+        as_user: as_user
+      }
+    elsif post.present?
+      text = "I've just created a task at #{post.public_url}"
+      text = "*#{owner_full_name}*: #{text}" unless as_user
+
+      {
+        text: text,
+        as_user: as_user,
+        channel: "##{room.channel_name}"
+      }
+    else
+      text = self.body
+      text = "*#{owner_full_name}*: #{text}" unless as_user
+
+      {
+        text: text,
+        as_user: as_user,
+        channel: "##{room.channel_name}"
+      }
+    end
+  end
+
+  def file?
+    image.file.present?
+  end
+
+  private
+
+  def owner_full_name
+    owner == room.manager ? 'Kriya Task' : owner.full_name
+  end
+
+  def notify_slack
+    SlackWorker.perform_async(id)
   end
 end
