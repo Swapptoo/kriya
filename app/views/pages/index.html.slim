@@ -22,7 +22,7 @@ css:
             = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: "item"
             br
           - unless user_signed_in? && freelancer_signed_in?
-            = link_to '#StartupLessons', 'https://blog.kriya.ai', id: 'blog_link'
+            = link_to '#StartupLessons', 'https://blog.kriya.ai', target: '_blank', id: 'blog_link'
             = link_to 'Service Partners', '/network', id: 'network_link'
 
   .masthead.segment.bg7
