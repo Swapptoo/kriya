@@ -44,7 +44,9 @@ class OmniauthCallbacksController < ApplicationController
 
           channels = client.channels_list.channels
 
-          channel = channels.detect { |c| room.channel_name.match(/#{c.name}/) }
+          # Channel max length is 21
+          # https://get.slack.help/hc/en-us/articles/201402297-Create-a-channel
+          channel = channels.detect { |c| room.channel_name.first(21) == c.name }
 
           if channel.nil?
             client.channels_create(name: room.channel_name)

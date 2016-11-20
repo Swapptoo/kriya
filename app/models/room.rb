@@ -110,7 +110,7 @@ class Room < ApplicationRecord
   end
 
   def channel_name
-    "kriya-#{title.underscore.gsub(' ', '-')}"
+    "kriya-#{title.parameterize}"
   end
 
   def get_room_name_for_user(user, index = nil)
