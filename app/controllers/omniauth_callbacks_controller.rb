@@ -42,14 +42,14 @@ class OmniauthCallbacksController < ApplicationController
           #create channel
           client = Slack::Web::Client.new token: slack_channel.token
 
-          channels = client.channels_list.channels
+          channels = client.groups_list.groups
 
           # Channel max length is 21
           # https://get.slack.help/hc/en-us/articles/201402297-Create-a-channel
           channel = channels.detect { |c| room.channel_name.first(21) == c.name }
 
           if channel.nil?
-            client.channels_create(name: room.channel_name)
+            client.groups_create(name: room.channel_name)
             client.chat_postMessage(channel: "##{room.channel_name}", text: '*Kriya Task*: Thanks for integrating with Kriya.ai, we will keep updating you in this channel of new messages.')
           end
         elsif freelancer_signed_in?
