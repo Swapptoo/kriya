@@ -1,7 +1,7 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:edit, :update, :destroy, :mark_messages_seen]
   before_action :authenticate_user!, :except => [:create_dummy, :show, :accept, :reject]
-  before_action :authenticate_freelancer!, only: [:accept, :reject]
+  before_action :authenticate_freelancer!, only: [:accept, :reject, :mark_messages_seen]
   respond_to :html, :json, :js
   # GET /rooms
   # GET /rooms.json
