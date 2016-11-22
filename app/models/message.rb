@@ -44,6 +44,8 @@ class Message < ApplicationRecord
   scope :not_by_freelancer, -> (freelancer) { where.not(freelancer: freelancer) }
   scope :by_freelancer,     -> (freelancer) { where(freelancer: freelancer) }
 
+  after_commit :set_room_last_message_created_at, on: :create
+
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1
@@ -289,5 +291,9 @@ class Message < ApplicationRecord
 
   def notify_slack
     SlackWorker.perform_async(id)
+  end
+
+  def set_room_last_message_created_at
+    room.update_column(:last_message_created_at, self.created_at)
   end
 end

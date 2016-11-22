@@ -4,12 +4,12 @@
       #tasks
         a
         -if current_freelancer.pending_rooms.any?
-          - current_freelancer.pending_rooms.includes(:user).each_with_index do |room, index|
+          - current_freelancer.pending_rooms.reorder(last_message_created_at: :desc).includes(:user).each_with_index do |room, index|
             = link_to room, class: "item primary #{'active' if @room == room}", style: 'text-align: left;line-height: 20px;color: #888;' do
               = Sanitize.fragment(truncate(room.get_room_name_for_freelancer(current_freelancer, index), :length => 23, :escape => false), Sanitize::Config::RELAXED).html_safe
           ui.divider
         - if current_freelancer.accepted_rooms.any?
-          - current_freelancer.accepted_rooms.includes(:user).each_with_index do |room, index|
+          - current_freelancer.accepted_rooms.reorder(last_message_created_at: :desc).includes(:user).each_with_index do |room, index|
             = link_to room, class: "item primary #{'active' if @room == room}" do
               = Sanitize.fragment(truncate(room.get_room_name_for_freelancer(current_freelancer, index), :length => 23, :escape => false), Sanitize::Config::RELAXED).html_safe
         ui.divider
@@ -19,7 +19,7 @@
           = link_to 'New Task', new_room_path, class: "item new #{'active primary' if action_name == 'new'}"
         - else
           a
-        - current_user.joined_rooms.includes(:user).each_with_index do |room, index|
+        - current_user.joined_rooms.reorder(last_message_created_at: :desc).includes(:user).each_with_index do |room, index|
           = link_to room, class: "item primary #{'active' if @room == room}" do
             = Sanitize.fragment(truncate(room.get_room_name_for_user(current_user, index), :length => 23, :escape => false), Sanitize::Config::RELAXED).html_safe
 
