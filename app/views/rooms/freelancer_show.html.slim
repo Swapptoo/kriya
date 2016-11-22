@@ -31,7 +31,7 @@
         - else
           = render "goomp_bot/new_goomp"
       .ui.vertical.divider
-      .four.wide.column
+      #task_details.four.wide.column
         .ui.segment.fixed
           h3 Task details
           .ui.divider
@@ -47,7 +47,7 @@
               p = @room.posts.first.content.html_safe
           .ui.divider
           h4 Expertise level
-          p = @room.quality.capitalize
+          = @room.quality.capitalize
           .ui.divider
           h4 Timeline
           = @room.timeline

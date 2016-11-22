@@ -26,7 +26,7 @@ css:
             = render 'new_message' if @room.finished?
 
         .ui.vertical.divider
-        .four.wide.column
+        #task_details.four.wide.column
           .ui.segment.fixed
             h3 Task details
             .ui.divider
@@ -42,7 +42,7 @@ css:
                 p = @room.posts.first.content.html_safe
             .ui.divider
             h4 Expertise level
-            p = @room.quality.capitalize
+            = @room.quality.capitalize
             .ui.divider
             h4 Timeline
             = @room.timeline
