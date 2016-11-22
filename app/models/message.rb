@@ -44,8 +44,6 @@ class Message < ApplicationRecord
   scope :not_by_freelancer, -> (freelancer) { where.not(freelancer: freelancer) }
   scope :by_freelancer,     -> (freelancer) { where(freelancer: freelancer) }
 
-  after_commit :notify_slack
-
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1

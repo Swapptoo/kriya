@@ -52,14 +52,6 @@ class PostsController < ApplicationController
       @message.save
       @message.process_command
 
-      if last_message.bot_description?
-        message = @room.messages.create(seen: true, body: 'Do you use Slack?', room: @room, user: @room.manager, msg_type: 'slack-integration')
-        message.create_attachment(
-          message: @message,
-          html: slack_integration_html
-        )
-      end
-
       respond_modal_with @post, location: request.referer and return
     end
   end

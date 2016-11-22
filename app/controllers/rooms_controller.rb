@@ -109,9 +109,6 @@ class RoomsController < ApplicationController
       @message.msg_type = 'bot-task-accepted'
       @message.save
       @message.process_command
-
-      message = @room.messages.create(seen: true, body: 'Do you use Slack?', room: @room, user: @room.manager, msg_type: 'slack-integration')
-      message.create_attachment(message: @message, html: slack_integration_html)
     end
 
     redirect_to @room
@@ -153,9 +150,6 @@ class RoomsController < ApplicationController
           message = @room.messages.create(:body => msg_body, :user => @room.user, :seen => true)
           message.post = Post.new(:content => post_body, :title => post_title, :user => @room.user)
           message.post.save!
-
-          message = @room.messages.create(seen: true, body: 'Do you use Slack?', room: @room, user: @room.manager, msg_type: 'slack-integration')
-          message.create_attachment(message: @message, html: slack_integration_html)
         end
 
         format.html { redirect_to @room, notice: 'Room was successfully created.' }

@@ -55,5 +55,3 @@
           h4 Budget
           = number_to_currency(@room.budget)
           .ui.divider
-          = slack_integration_html if @room.finished?
-          .ui.divider
