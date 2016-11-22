@@ -61,18 +61,20 @@ class Room < ApplicationRecord
   end
 
   def create_unseen_messages(message, message_owner)
+    return if unfinish?
+
     users = []
 
     if user == message_owner
-      users = accepted_freelancers.to_a
+      users = in_progress_freelancers.to_a
       users << manager
     elsif manager == message_owner
-      users = accepted_freelancers.to_a
+      users = in_progress_freelancers.to_a
       users << user
-    elsif accepted_freelancers.include?(message_owner)
+    elsif in_progress_freelancers.include?(message_owner)
       users << user
       users << manager
-      users += accepted_freelancers.to_a
+      users += in_progress_freelancers.to_a
       users -= [message_owner]
     end
 

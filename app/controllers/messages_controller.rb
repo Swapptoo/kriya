@@ -29,11 +29,13 @@ class MessagesController < ApplicationController
     @message = Message.new(message_params)
     room = Room.find params[:room_id]
     @message.room = room
+
     if user_signed_in?
       @message.user = current_user
     elsif freelancer_signed_in?
       @message.freelancer = current_freelancer
     end
+
     @message.save
 
     message_owner = @message.user || @message.freelancer

@@ -5,30 +5,18 @@ class UnseenMessageAlertWorker
   # Alert user if there're new unseen messages
   def perform(room_id, user_id, user_type = :user)
     @room = Room.find(room_id)
+
     @recipient = if user_type == :user
       User.find(user_id)
     else
       Freelancer.find(user_id)
     end
 
-    unseen_message_ids = @recipient.unseen_messages.where(room: @room).pluck(:message_id)
-    return if unseen_message_ids.size.zero?
+    if @recipient.unseen_messages.where(room: @room).any?
+      messages = @room.messages.includes(:user, :freelancer).order(:created_at).last(10)
+      UserNotifierMailer.notify_unseen_messages(@room, @recipient, messages).deliver_now
 
-    messages = @room.messages.includes(:user, :freelancer).where(id: unseen_message_ids).order(:created_at)
-
-    users = messages.map(&:user).compact.uniq
-    freelancers = messages.map(&:freelancer).compact.uniq
-
-    users.each do |sender|
-      msgs = messages.select{ |msg| msg.user == sender }
-      UserNotifierMailer.notify_unseen_messages(@room, sender, @recipient, msgs).deliver_now
+      @recipient.unseen_messages.where(room: @room).destroy_all
     end
-
-    freelancers.each do |sender|
-      msgs = messages.select{ |msg| msg.freelancer == sender }
-      UserNotifierMailer.notify_unseen_messages(@room, sender, @recipient, msgs).deliver_now
-    end
-
-    @recipient.unseen_messages.where(room: @room).destroy_all
   end
 end
