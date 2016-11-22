@@ -187,6 +187,34 @@
     }
   ];
 
+  var network = [
+    '',
+    {
+      type: 'visit',
+      path: '/freelancers/sign_in'
+    }
+  ];
+
+  var freelancer_login = [
+    'Cool, please login to get to your projects',
+    {
+      type: 'visit',
+      answers: [{
+        'text': 'Twitter',
+        'path': '/auth/twitter?user=freelancer'
+      },{
+        'text': 'Facebook',
+        'path': '/auth/facebook?user=freelancer'
+      },{
+        'text': 'LinkedIn',
+        'path': '/auth/linkedin?user=freelancer'
+      },{
+        'text': 'Email',
+        'path': '/freelancers/sign_in'
+      }]
+    }
+  ];
+
   <%- if new_user %>
     var configs = {
       greeting: [
@@ -195,16 +223,22 @@
           type: 'choose',
           answers: [
             {
-              'text': 'Get Started',
+              'text': 'Create Task',
               'path': 'options'
             },
             {
-              'text': 'Sign In',
+              'text': 'Client Sign In',
               'path': 'login'
+            },
+            {
+              'type': 'visit',
+              'text': 'Service Sign In',
+              'path': 'freelancer_login'
             }
           ]
         }
       ],
+      freelancer_login: freelancer_login,
       options: category,
       timeline: timeline,
       expertiseLevel: expertise_level,
