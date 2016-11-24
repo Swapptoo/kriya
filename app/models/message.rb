@@ -44,7 +44,7 @@ class Message < ApplicationRecord
   scope :not_by_freelancer, -> (freelancer) { where.not(freelancer: freelancer) }
   scope :by_freelancer,     -> (freelancer) { where(freelancer: freelancer) }
 
-  after_commit :set_room_last_message_created_at, on: :create
+  after_commit :set_room_last_message_created_at, :notify_slack, on: :create
 
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
@@ -245,7 +245,7 @@ class Message < ApplicationRecord
 
   def to_slack(as_user = false)
     if file?
-      text = as_user ? '' : "*#{owner_full_name}*"
+      text = (as_user || user.try(:manager?)) ? '' : "*#{owner_full_name}*"
 
       {
         attachments: [
@@ -260,7 +260,7 @@ class Message < ApplicationRecord
       }
     elsif post.present?
       text = "I've just created a task at #{post.public_url}"
-      text = "*#{owner_full_name}*: #{text}" unless as_user
+      text = "*#{owner_full_name}*: #{text}" unless as_user || user.try(:manager?)
 
       {
         text: text,
@@ -269,7 +269,7 @@ class Message < ApplicationRecord
       }
     else
       text = self.body
-      text = "*#{owner_full_name}*: #{text}" unless as_user
+      text = "*#{owner_full_name}*: #{text}" unless as_user || user.try(:manager?)
 
       {
         text: text,
@@ -286,7 +286,7 @@ class Message < ApplicationRecord
   private
 
   def owner_full_name
-    owner == room.manager ? 'Kriya Task' : owner.full_name
+    owner.full_name
   end
 
   def notify_slack

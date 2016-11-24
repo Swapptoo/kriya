@@ -29,7 +29,12 @@ class ApplicationController < ActionController::Base
     @slack_integration_html = "</br>#{link}".html_safe
   end
 
+  def slack_integration_url
+    "https://slack.com/oauth/authorize?scope=incoming-webhook,groups:write,groups:read,chat:write:bot,chat:write:user&client_id=#{Rails.application.secrets.slack_app_id}"
+  end
+
   helper_method :slack_integration_html
+  helper_method :slack_integration_url
 
   private
 
@@ -116,9 +121,5 @@ class ApplicationController < ActionController::Base
   def set_raven_context
     Raven.user_context(id: session[:current_user_id]) # or anything else in session
     Raven.extra_context(params: params.to_unsafe_h, url: request.url)
-  end
-
-  def slack_integration_url
-    "https://slack.com/oauth/authorize?scope=incoming-webhook,groups:write,groups:read,chat:write:bot,chat:write:user&client_id=#{Rails.application.secrets.slack_app_id}"
   end
 end

@@ -12,6 +12,7 @@ css:
 .main
   .twelve.wide.column
     - if @room
+      - slack_channel = current_user.slack_channels.find_by(room: @room)
       #room.ui.divided.grid
         .twelve.wide.column
           #ui_form_room.ui.stacked.segment
@@ -23,7 +24,8 @@ css:
             #messages.ui.comments data-room-id=@room.id
               .chat-content
                 = render @messages, :user => current_user
-            = render 'new_message' if @room.finished?
+                = render 'slack' if @room.finished? && slack_channel.nil? && current_user.client?
+            = render 'new_message' if (@room.finished? && slack_channel.present?) || current_user.manager?
 
         .ui.vertical.divider
         #task_details.four.wide.column
@@ -49,6 +51,9 @@ css:
             .ui.divider
             h4 Budget
             = number_to_currency(@room.budget)
+            - if current_user.manager? || (@room.finished? && slack_channel.present? && slack_channel.inactive?)
+              .ui.divider
+              = slack_integration_html
             .ui.divider
             - if current_user.manager?
               .ui.divider

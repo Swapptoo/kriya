@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     member do
       post :mark_messages_seen
       get :accept
+      get :deny_slack
       get :reject
       get :freelancers_list
       get :asign_freelancer
