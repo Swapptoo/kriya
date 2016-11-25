@@ -46,8 +46,17 @@
       type: 'choose',
       answers: [{
         'text': 'Sounds Good!',
-        'path': 'slack'
+        'path': 'accept_kriya_policy'
       }]
+    }
+  ];
+
+  var accept_kriya_policy = [
+    '',
+    {
+      type: 'acceptPolicy',
+      key: 'submit-dummy',
+      path: 'slack'
     }
   ];
 
@@ -62,7 +71,7 @@
         },
         {
           'text': 'No',
-          'path': '/tasks/deny_slack'
+          'path': '/freelancers/deny_slack'
         }
       ]
     }
@@ -118,15 +127,31 @@
         greeting: description
       };
     <%- else %>
-      <%- if current_freelancer.gig_slack_channel.nil? || current_freelancer.gig_slack_channel.inactive? %>
-        var configs = {
-          greeting: description,
-          slack: slack
-        };
+      <%- if current_freelancer.accepted_kriya_policy? %>
+        <%- slack_channel = current_freelancer.slack_channels.find_by(room_id: nil) %>
+        <%- if slack_channel.present? %>
+          var configs = {
+            greeting: [
+              'Welcome to Kriya. We are glad you are here. We will notify you as soon as there\'s a gig matching your profile. Keep watching this space'
+            ]
+          }
+        <%- else %>
+          var configs = {
+            greeting: slack
+          };
+        <%- end %>
       <%- else %>
-        var configs = {
-          greeting: description
-        };
+        <%- if current_freelancer.gig_slack_channel.nil? || current_freelancer.gig_slack_channel.inactive? %>
+          var configs = {
+            greeting: description,
+            accept_kriya_policy: accept_kriya_policy,
+            slack: slack
+          };
+        <%- else %>
+          var configs = {
+            greeting: description
+          };
+        <%- end %>
       <%- end %>
     <%- end %>
   <%- end %>

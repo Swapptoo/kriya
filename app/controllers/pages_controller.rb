@@ -2,6 +2,8 @@ class PagesController < ApplicationController
   before_action :set_room, if: :user_signed_in?
 
   def index
+    session.delete(:room_id)
+
     if user_signed_in?
       if @room.present?
         redirect_to @room

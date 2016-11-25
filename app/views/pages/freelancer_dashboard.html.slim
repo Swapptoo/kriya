@@ -30,7 +30,10 @@
                 .progress
 
       - else
-        = render "goomp_bot/new_goomp"
+        - if freelancer_signed_in? && current_freelancer.accepted_kriya_policy?
+          = render "rooms/freelancer_chat_snapshot"
+        - else
+          = render "goomp_bot/new_goomp"
 
   coffee:
     setTimeout =>

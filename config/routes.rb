@@ -23,6 +23,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :freelancers, only: [] do
+    collection do
+      get :deny_slack
+      post :accept_kriya_policy
+    end
+  end
+
   get 'task/public/:token', to: 'posts#public' , as: :public_post
 
   resources :photos

@@ -1,6 +1,6 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:edit, :update, :destroy, :mark_messages_seen, :deny_slack]
-  before_action :authenticate_user!, :except => [:create_dummy, :show, :accept, :reject, :mark_messages_seen]
+  before_action :authenticate_user!, :except => [:create_dummy, :show, :accept, :reject, :mark_messages_seen, :deny_slack]
   before_action :authenticate_freelancer!, only: [:accept, :reject]
   before_action :authenticate!, only: [:mark_messages_seen, :deny_slack]
   respond_to :html, :json, :js
@@ -44,7 +44,8 @@ class RoomsController < ApplicationController
   end
 
   def deny_slack
-    channel = current_user.slack_channels.find_or_create_by(room: @room)
+    user = current_user.presence || current_freelancer
+    channel = user.slack_channels.find_or_create_by(room: @room)
     @room.messages.create(seen: true, body: 'Do you use Slack?', msg_type: 'slack', user: @room.manager)
     @room.messages.last.create_attachment(:message => @room.messages.last, :html => "<br/>#{view_context.link_to 'No', '#', :class => 'mini ui green button custom-padding slack'}")
 

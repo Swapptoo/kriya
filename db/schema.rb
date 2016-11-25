@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161122175659) do
+ActiveRecord::Schema.define(version: 20161124140103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,6 +145,7 @@ ActiveRecord::Schema.define(version: 20161122175659) do
     t.string   "stripe_token"
     t.string   "stripe_client_id"
     t.datetime "last_seen_at"
+    t.boolean  "accepted_kriya_policy",                 default: false
     t.index ["authentication_token"], name: "index_freelancers_on_authentication_token", unique: true, using: :btree
     t.index ["email"], name: "index_freelancers_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_freelancers_on_reset_password_token", unique: true, using: :btree

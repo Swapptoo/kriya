@@ -61,9 +61,12 @@
               - else
                 = auto_link message.body, html: { target: '_blank', rel: "nofollow" }
                 - if message.attachment
-                  = message.attachment.html.html_safe
+                  - if message.bot_description? || message.slack?
+                    .right= message.attachment.html.html_safe
+                  - else
+                    = message.attachment.html.html_safe
           - unless message.post.nil?
-            = link_to post_path(message.post), :data => {:modal => true} do
+            = link_to post_path(message.post), :data => { :modal => true } do
               .post-dialog
                 .title
                   = Sanitize.fragment(truncate(message.post.title, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
@@ -136,7 +139,7 @@
               - else
                 = auto_link message.body, html: { target: '_blank', rel: "nofollow" }
                 - if message.attachment
-                  - if message.msg_type == 'slack'
+                  - if message.bot_description? || message.slack?
                     .right= message.attachment.html.html_safe
                   - else
                     = message.attachment.html.html_safe

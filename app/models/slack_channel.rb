@@ -15,7 +15,7 @@
 #  freelancer_id :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  status        :integer          default(0)
+#  status        :integer          default("inactive")
 #
 # Indexes
 #

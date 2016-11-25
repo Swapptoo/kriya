@@ -189,6 +189,20 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
         }
       }
     }, {
+      key: "acceptPolicy",
+      value: function(e) {
+        var t = this;
+        $.ajax("/freelancers/accept_kriya_policy", {
+          method: 'POST'
+        });
+        t.say(t.messages[e.path]), t.emit("answer", {});
+        if ($('#new_user').length > 0) {
+          setTimeout(function() {
+            $('#new_user').animate({scrollTop: document.getElementById("new_user").scrollHeight}, 2000);
+          }, 2000);
+        }
+      }
+    }, {
       key: "openModal",
       value: function(e) {
         var t = this,
@@ -348,6 +362,8 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
                 return t.visitLink(e)
               case "submit":
                 return t.submitProject(e)
+              case "acceptPolicy":
+                return t.acceptPolicy(e)
               case "submitDummy":
                 return t.submitDummy(e)
               case "open-modal":

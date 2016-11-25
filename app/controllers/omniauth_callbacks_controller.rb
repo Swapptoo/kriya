@@ -60,9 +60,11 @@ class OmniauthCallbacksController < ApplicationController
 
         elsif freelancer_signed_in?
           # freelancer integrate slack afer sign up
-          slack_channel = current_freelancer.slack_channels.find_or_initialize_by(team_id: team_id, uid: uid)
+          slack_channel = current_freelancer.slack_channels.find_or_initialize_by(room_id: nil)
 
           slack_channel.assign_attributes(
+            team_id: team_id,
+            uid: uid,
             token: token,
             team_name: team_name,
             web_hook_url: web_hook_url,
@@ -71,6 +73,7 @@ class OmniauthCallbacksController < ApplicationController
           )
 
           slack_channel.save
+          slack_channel.active!
         end
 
         flash[:notice] = 'Slack has been integrated successfully'

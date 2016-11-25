@@ -38,6 +38,7 @@
 #  stripe_token               :string
 #  stripe_client_id           :string
 #  last_seen_at               :datetime
+#  accepted_kriya_policy      :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -83,12 +84,21 @@ class Freelancer < ApplicationRecord
     slack_channels.find_by(room_id: nil)
   end
 
+  def accept_kriya_policy!
+    update!(accepted_kriya_policy: true)
+  end
+
   def pending_rooms
     self.asigned_rooms.where(freelancers_rooms: { status: 'pending' })
   end
 
   def accepted_rooms
     self.asigned_rooms.where(freelancers_rooms: { status: ['accepted', 'not_finished', 'more_work'] })
+  end
+
+  def just_accepted_rooms?(room_id)
+    room = accepted_rooms.where(id: room_id).first
+    room.messages.last.bot_task_accepted?
   end
 
   alias rooms accepted_rooms

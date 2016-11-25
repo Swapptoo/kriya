@@ -243,6 +243,14 @@ class Message < ApplicationRecord
     self.user.presence || self.freelancer
   end
 
+  def slack?
+    msg_type == 'slack'
+  end
+
+  def bot_task_accepted?
+    msg_type == 'bot-task-accepted'
+  end
+
   def to_slack(as_user = false)
     if file?
       text = (as_user || user.try(:manager?)) ? '' : "*#{owner_full_name}*"
