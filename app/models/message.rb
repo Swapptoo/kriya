@@ -253,7 +253,7 @@ class Message < ApplicationRecord
 
   def to_slack(as_user = false)
     if file?
-      text = (as_user || user.try(:manager?)) ? '' : "*#{owner_full_name}*"
+      text = (as_user || user.try(:manager?)) ? '' : "*#{owner.first_name}*"
 
       {
         attachments: [
@@ -268,7 +268,7 @@ class Message < ApplicationRecord
       }
     elsif post.present?
       text = "I've just created a task at #{post.public_url}"
-      text = "*#{owner_full_name}*: #{text}" unless as_user || user.try(:manager?)
+      text = "*#{owner.first_name}*: #{text}" unless as_user || user.try(:manager?)
 
       {
         text: text,
@@ -277,7 +277,7 @@ class Message < ApplicationRecord
       }
     else
       text = self.body
-      text = "*#{owner_full_name}*: #{text}" unless as_user || user.try(:manager?)
+      text = "*#{owner.first_name}*: #{text}" unless as_user || user.try(:manager?)
 
       {
         text: text,
