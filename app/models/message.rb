@@ -13,6 +13,8 @@
 #  seen          :boolean          default(FALSE)
 #  freelancer_id :integer
 #  msg_type      :string
+#  slack_ts      :string
+#  slack_channel :string
 #
 # Indexes
 #
