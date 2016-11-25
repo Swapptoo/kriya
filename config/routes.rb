@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'task/public/:token', to: 'posts#public' , as: :public_post
+  get 'task/p/:token', to: 'posts#public' , as: :public_post
 
   resources :photos
   resources :follows

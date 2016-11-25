@@ -83,7 +83,9 @@ class PostsController < ApplicationController
   end
 
   def public
-    @post = Post.find_by(token: params[:token])
+    token = params[:token].gsub('engineering-slack-task-', '')
+
+    @post = Post.find_by(token: token)
 
     redirect_to room_path(@post.room) and return if current_freelancer.present?
   end

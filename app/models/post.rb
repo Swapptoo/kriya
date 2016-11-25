@@ -66,7 +66,7 @@ class Post < ApplicationRecord
 
   def public_url
     Rails.application.routes.url_helpers.public_post_url(
-      self.token,
+      "engineering-slack-task-#{self.token}",
       host: Rails.application.secrets.host
     )
   end
@@ -84,7 +84,7 @@ class Post < ApplicationRecord
   def ensure_token
     if token.blank?
       self.token = loop do
-        token = Devise.friendly_token(50)
+        token = Devise.friendly_token(6)
         break token unless Post.where(token: token).first
       end
     end
