@@ -1,0 +1,27 @@
+<script>
+  var configs = {
+    greeting: [
+      'Do you use Slack?',
+      {
+        type: 'visit',
+        answers: [
+          {
+            'text': 'Yes',
+            'path': "<%== escape_javascript slack_integration_url =%>"
+          },
+          {
+            'text': 'No',
+            'path': '/tasks/<%= @room.id %>/deny_slack'
+          }
+        ]
+      }
+    ]
+  };
+
+  new Chat(
+    configs,
+    {
+      targetNode: '#chat'
+    }
+  );
+</script>

@@ -1,0 +1,36 @@
+div class="ui segment feed"
+  div class="event"
+    div class="label"
+      img src="/favicon.ico"
+    div class="content"
+      div class="summary" Kriya Bot
+      span class="date" Just Now
+
+      .ui.form.cui
+        ol.cui__list.no-marg-bottom
+          li.cui__list__item
+            .cui__bubble.cui__bubble--slideIn.cui__bubble--fade style=""
+              .freelancer.after-sign-up-greeting
+                p Welcome to the Kriya network. We’re excited to have a partner with your expertise and talent. Here at Kriya, we believe in distribution of work and our mission is to provide you with a steady flow of valuable work.
+                p
+                  strong Our Terms
+                .ui.ordered.list
+                  .item When we assign you to a task, you will get notified in email or Slack.
+                  .item After accepting the task, remember to introduce yourself.
+                  .item Explain your rates, propose a few times that work for an initial call,
+                  .item The budget is a starting point and is always negotiable
+                  .item If you use Slack, feel free to integrate with it. This will be useful for keeping the lines of communication open.
+          li.cui__list__item
+            .cui__bubble.cui__bubble--response.secondary style="transform: translate3d(0px), 0px, 0px); opacity: 1;"  Sounds Good!
+        - slack_channel = current_freelancer.slack_channels.find_by(room_id: nil)
+        - if slack_channel.present?
+          ol.cui__list.no-marg-bottom
+            li.cui__list__item
+              .cui__bubble.cui__bubble--slideIn.cui__bubble--fade style=""  Do you use Slack?
+            li.cui__list__item
+              .cui__bubble.cui__bubble--response.secondary style="transform: translate3d(0px), 0px, 0px); opacity: 1;"
+                = (slack_channel.active? ? 'Yes' : 'No')
+
+      #chat.ui.form
+      div class="extra text"
+      = render 'shared/freelancer_chat_script'

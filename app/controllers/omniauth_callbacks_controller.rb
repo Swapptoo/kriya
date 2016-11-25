@@ -27,9 +27,11 @@ class OmniauthCallbacksController < ApplicationController
           room = user.rooms.find_by(id: room_id)
           room = user.managed_rooms.find_by(id: room_id) if user.respond_to?(:manager?) && user.manager?
 
-          slack_channel = user.slack_channels.find_or_initialize_by(team_id: team_id, uid: uid, room: room)
+          slack_channel = user.slack_channels.find_or_initialize_by(room: room)
 
           slack_channel.assign_attributes(
+            team_id: team_id,
+            uid: uid,
             token: token,
             team_name: team_name,
             web_hook_url: web_hook_url,
@@ -37,6 +39,7 @@ class OmniauthCallbacksController < ApplicationController
             scope: scope
           )
 
+          slack_channel.active!
           slack_channel.save
 
           #create channel
@@ -48,13 +51,20 @@ class OmniauthCallbacksController < ApplicationController
 
           if channel.nil?
             client.groups_create(name: room.channel_name)
-            client.chat_postMessage(channel: "##{room.channel_name}", text: '*Kriya Task*: Thanks for integrating with Kriya.ai, we will keep updating you in this channel of new messages.')
+            client.chat_postMessage(channel: "##{room.channel_name}", text: 'Thanks for integrating with Kriya.ai, we will keep updating you in this channel of new messages.')
           end
+
+          slack_msg = room.messages.find_or_create_by(seen: true, body: 'Do you use Slack?', user: room.manager, msg_type: 'slack')
+          slack_msg.attachment.try(:destroy)
+          slack_msg.create_attachment(:message => slack_msg, :html => "<br/>#{view_context.link_to 'Yes', '#', :class => 'mini ui green button custom-padding slack'}")
+
         elsif freelancer_signed_in?
           # freelancer integrate slack afer sign up
-          slack_channel = current_freelancer.slack_channels.find_or_initialize_by(team_id: team_id, uid: uid)
+          slack_channel = current_freelancer.slack_channels.find_or_initialize_by(room_id: nil)
 
           slack_channel.assign_attributes(
+            team_id: team_id,
+            uid: uid,
             token: token,
             team_name: team_name,
             web_hook_url: web_hook_url,
@@ -63,6 +73,7 @@ class OmniauthCallbacksController < ApplicationController
           )
 
           slack_channel.save
+          slack_channel.active!
         end
 
         flash[:notice] = 'Slack has been integrated successfully'

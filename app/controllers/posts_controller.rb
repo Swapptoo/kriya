@@ -44,7 +44,6 @@ class PostsController < ApplicationController
       @message = Message.new
       @message.post = @post
       @room = Room.find request.referer.split('/').last
-      last_message = @room.messages.last
 
       @message.room = @room
       @message.user = current_user

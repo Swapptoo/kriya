@@ -15,6 +15,7 @@
 #  freelancer_id :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  status        :integer          default("inactive")
 #
 # Indexes
 #
@@ -24,6 +25,8 @@
 #
 
 class SlackChannel < ApplicationRecord
+  enum status: { active: 1, inactive: 0 }
+
   belongs_to :room
   belongs_to :user
   belongs_to :freelancer
@@ -33,5 +36,5 @@ class SlackChannel < ApplicationRecord
             :token,
             :web_hook_url,
             :team_name,
-            :team_id, presence: true
+            :team_id, presence: true, if: :active?
 end

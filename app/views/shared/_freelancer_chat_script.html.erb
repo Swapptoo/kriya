@@ -41,7 +41,40 @@
   ];
 
   var description = [
-    'Welcome to Kriya. We are glad you are here. We will notify you as soon as there\'s a gig matching your profile. Keep watching this space'
+    '<%= freelancer_after_sign_up_greeting  %>',
+    {
+      type: 'choose',
+      answers: [{
+        'text': 'Sounds Good!',
+        'path': 'accept_kriya_policy'
+      }]
+    }
+  ];
+
+  var accept_kriya_policy = [
+    '',
+    {
+      type: 'acceptPolicy',
+      key: 'submit-dummy',
+      path: 'slack'
+    }
+  ];
+
+  var slack = [
+    'Do you use Slack?',
+    {
+      type: 'visit',
+      answers: [
+        {
+          'text': 'Yes',
+          'path': "<%== escape_javascript slack_integration_url =%>"
+        },
+        {
+          'text': 'No',
+          'path': '/freelancers/deny_slack'
+        }
+      ]
+    }
   ];
 
   <%- if new_user %>
@@ -94,25 +127,32 @@
         greeting: description
       };
     <%- else %>
-      <%- if current_freelancer.gig_slack_channel.nil? %>
-        var description = [
-          'Welcome to Kriya. We are glad you are here. We will notify you as soon as there\'s a gig matching your profile. Keep watching this space or adding us to your slack',
-          {
-            type: 'visit',
-            path: 'notice',
-            key: "description",
-            answers: [{
-              'text': 'Add to Slack',
-              'path': "<%== escape_javascript "https://slack.com/oauth/authorize?scope=incoming-webhook,groups:write,groups:read,chat:write:bot,chat:write:user&client_id=#{Rails.application.secrets.slack_app_id}" %>",
-              'key': 'quality'
-            }]
+      <%- if current_freelancer.accepted_kriya_policy? %>
+        <%- slack_channel = current_freelancer.slack_channels.find_by(room_id: nil) %>
+        <%- if slack_channel.present? %>
+          var configs = {
+            greeting: [
+              'Welcome to Kriya. We are glad you are here. We will notify you as soon as there\'s a gig matching your profile. Keep watching this space'
+            ]
           }
-        ];
+        <%- else %>
+          var configs = {
+            greeting: slack
+          };
+        <%- end %>
+      <%- else %>
+        <%- if current_freelancer.gig_slack_channel.nil? || current_freelancer.gig_slack_channel.inactive? %>
+          var configs = {
+            greeting: description,
+            accept_kriya_policy: accept_kriya_policy,
+            slack: slack
+          };
+        <%- else %>
+          var configs = {
+            greeting: description
+          };
+        <%- end %>
       <%- end %>
-
-      var configs = {
-        greeting: description
-      };
     <%- end %>
   <%- end %>
 

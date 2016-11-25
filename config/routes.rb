@@ -15,10 +15,18 @@ Rails.application.routes.draw do
     member do
       post :mark_messages_seen
       get :accept
+      get :deny_slack
       get :reject
       get :freelancers_list
       get :asign_freelancer
       get :remove_asigned_freelancer
+    end
+  end
+
+  resources :freelancers, only: [] do
+    collection do
+      get :deny_slack
+      post :accept_kriya_policy
     end
   end
 
