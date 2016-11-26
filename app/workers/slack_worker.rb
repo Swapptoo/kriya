@@ -16,7 +16,7 @@ class SlackWorker
 
     recipients.each do |recipient|
       slack_channel = recipient.slack_channels.find_by(room: room)
-      next if slack_channel.nil?
+      next if slack_channel.nil? || slack_channel.inactive?
 
       client = Slack::Web::Client.new token: slack_channel.token
       client.chat_postMessage(message.to_slack)
@@ -25,7 +25,7 @@ class SlackWorker
     # Record owner message
     slack_channel = owner.slack_channels.find_by(room: room)
 
-    return if slack_channel.nil?
+    return if slack_channel.nil? || slack_channel.inactive?
 
     client = Slack::Web::Client.new token: slack_channel.token
     client.chat_postMessage(message.to_slack(true))
