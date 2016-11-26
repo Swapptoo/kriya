@@ -174,12 +174,13 @@ class Message < ApplicationRecord
       message: MessagesController.render(
         partial: 'messages/message',
         locals: {
-          message: self, user: user
+          message: self, user: (user.presence || freelancer)
         }
       ),
       room_id: room.id,
       is_user: 'user'
     )
+
     self.room.in_progress_freelancers.each do |freelancer|
       ActionCable.server.broadcast(
         "rooms:#{room.id}:messages",
@@ -193,6 +194,7 @@ class Message < ApplicationRecord
         is_user: 'freelancer'
       )
     end
+
     self.room.completed_freelancers.each do |freelancer|
       ActionCable.server.broadcast(
         "rooms:#{room.id}:messages",
