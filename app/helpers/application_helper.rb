@@ -21,6 +21,8 @@ module ApplicationHelper
       concat content_tag(:div, 'Explain your rates, propose a few times that work for an initial call,',class: 'item')
       concat content_tag(:div, 'The budget is a starting point and is always negotiable',class: 'item')
       concat content_tag(:div, 'If you use Slack, feel free to integrate with it. This will be useful for keeping the lines of communication open.',class: 'item')
+      concat content_tag(:div, 'Please DON\'T share your contact information. It\'s against our terms and conditions.',class: 'item')
+
     end
 
     content_tag :div, class: 'freelancer after-sign-up-greeting' do
