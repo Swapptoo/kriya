@@ -5,7 +5,7 @@ class SlackSyncWorker
   def perform(slack_channel_id)
     slack_channel = SlackChannel.find_by(id: slack_channel_id)
 
-    return if slack_channel.nil?
+    return if slack_channel.nil? || slack_channel.inactive?
 
     slack_channel.sync? || slack_channel.sync!
   end
