@@ -13,9 +13,6 @@ class OmniauthCallbacksController < ApplicationController
         uid  = response['user_id']
         team_name = response['team_name']
         team_id   = response['team_id']
-        web_hook  = response['incoming_webhook']
-        web_hook_url = web_hook['url']
-        channel_name = web_hook['channel']
 
         user = if user_signed_in?
           current_user
@@ -34,8 +31,6 @@ class OmniauthCallbacksController < ApplicationController
             uid: uid,
             token: token,
             team_name: team_name,
-            web_hook_url: web_hook_url,
-            name: channel_name,
             scope: scope
           )
 
@@ -54,6 +49,9 @@ class OmniauthCallbacksController < ApplicationController
             client.chat_postMessage(channel: "##{room.channel_name}", text: 'Thanks for integrating with Kriya.ai, we will keep updating you in this channel of new messages.')
           end
 
+          slack_channel.update(channel_id: channel.id)
+          slack_channel.sync
+
           slack_msg = room.messages.find_or_create_by(seen: true, body: 'Do you use Slack?', user: room.manager, msg_type: 'slack')
           slack_msg.attachment.try(:destroy)
           slack_msg.create_attachment(:message => slack_msg, :html => "<br/>#{view_context.link_to 'Yes', '#', :class => 'mini ui green button custom-padding slack'}")
@@ -67,8 +65,6 @@ class OmniauthCallbacksController < ApplicationController
             uid: uid,
             token: token,
             team_name: team_name,
-            web_hook_url: web_hook_url,
-            name: channel_name,
             scope: scope
           )
 

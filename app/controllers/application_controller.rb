@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def slack_integration_url
-    "https://slack.com/oauth/authorize?scope=incoming-webhook,groups:write,groups:read,chat:write:bot,chat:write:user&client_id=#{Rails.application.secrets.slack_app_id}"
+    "https://slack.com/oauth/authorize?scope=identify,client&client_id=#{Rails.application.secrets.slack_app_id}"
   end
 
   helper_method :slack_integration_html

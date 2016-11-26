@@ -3,7 +3,7 @@
 # Table name: slack_channels
 #
 #  id            :integer          not null, primary key
-#  name          :string
+#  channel_id    :string
 #  uid           :string
 #  token         :string
 #  web_hook_url  :string
@@ -16,6 +16,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  status        :integer          default("inactive")
+#  sync          :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -31,10 +32,41 @@ class SlackChannel < ApplicationRecord
   belongs_to :user
   belongs_to :freelancer
 
-  validates :name,
-            :uid,
+  validates :uid,
             :token,
-            :web_hook_url,
             :team_name,
             :team_id, presence: true, if: :active?
+
+  def sync!
+    client = Slack::RealTime::Client.new(token: self.token, websocket_ping: 50)
+
+    client.on :hello do
+      update!(sync: true)
+      puts "Successfully connected, welcome '#{client.self.name}' to the '#{client.team.name}' team at https://#{client.team.domain}.slack.com."
+    end
+
+    client.on :message do |data|
+      if data.user == self.uid && data.channel == self.channel_id
+        puts data
+        message_owner = user.presence || freelancer
+        body = Slack::Messages::Formatting.unescape(data.text)
+
+        message = room.messages.create(body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel)
+        message.process_command
+        room.create_unseen_messages(message, message_owner)
+      end
+    end
+
+    client.on :close do |_data|
+      puts 'Client is about to disconnect'
+    end
+
+    client.on :closed do |_data|
+      puts 'Client has disconnected successfully!'
+
+      update(sync: false)
+    end
+
+    client.start_async
+  end
 end

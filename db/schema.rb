@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161124140103) do
+ActiveRecord::Schema.define(version: 20161126195131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -220,6 +220,8 @@ ActiveRecord::Schema.define(version: 20161124140103) do
     t.boolean  "seen",          default: false
     t.integer  "freelancer_id"
     t.string   "msg_type"
+    t.string   "slack_ts"
+    t.string   "slack_channel"
     t.index ["freelancer_id"], name: "index_messages_on_freelancer_id", using: :btree
     t.index ["post_id"], name: "index_messages_on_post_id", using: :btree
     t.index ["room_id"], name: "index_messages_on_room_id", using: :btree
@@ -312,7 +314,7 @@ ActiveRecord::Schema.define(version: 20161124140103) do
   end
 
   create_table "slack_channels", force: :cascade do |t|
-    t.string   "name"
+    t.string   "channel_id"
     t.string   "uid"
     t.string   "token"
     t.string   "web_hook_url"
@@ -322,9 +324,10 @@ ActiveRecord::Schema.define(version: 20161124140103) do
     t.integer  "room_id"
     t.integer  "user_id"
     t.integer  "freelancer_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "status",        default: 0
+    t.boolean  "sync",          default: false
     t.index ["freelancer_id"], name: "index_slack_channels_on_freelancer_id", using: :btree
     t.index ["room_id"], name: "index_slack_channels_on_room_id", using: :btree
     t.index ["user_id"], name: "index_slack_channels_on_user_id", using: :btree
