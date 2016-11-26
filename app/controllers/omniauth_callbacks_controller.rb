@@ -50,7 +50,7 @@ class OmniauthCallbacksController < ApplicationController
           end
 
           slack_channel.update(channel_id: channel.id)
-          slack_channel.sync
+          slack_channel.sync? || slack_channel.sync!
 
           slack_msg = room.messages.find_or_create_by(seen: true, body: 'Do you use Slack?', user: room.manager, msg_type: 'slack')
           slack_msg.attachment.try(:destroy)
