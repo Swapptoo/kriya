@@ -23,7 +23,7 @@ class SlackWorker
     end
 
     # Record owner message
-    return if message.slack_ts?
+    return if message.slack_ts.present?
     slack_channel = owner.slack_channels.find_by(room: room)
 
     return if slack_channel.nil? || slack_channel.inactive?
