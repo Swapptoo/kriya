@@ -7,6 +7,6 @@ class SlackSyncWorker
 
     return if slack_channel.nil? || slack_channel.inactive?
 
-    slack_channel.sync? || slack_channel.sync!
+    slack_channel.sync! unless slack_channel.sync?
   end
 end

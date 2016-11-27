@@ -38,6 +38,8 @@ class SlackChannel < ApplicationRecord
             :team_id, presence: true, if: :active?
 
   def sync!
+    return if sync?
+
     client = Slack::RealTime::Client.new(token: self.token, websocket_ping: 50)
 
     client.on :hello do
@@ -73,6 +75,6 @@ class SlackChannel < ApplicationRecord
       update_columns(sync: false)
     end
 
-    client.start_async
+    client.start!
   end
 end
