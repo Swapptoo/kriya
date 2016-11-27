@@ -12,9 +12,19 @@ class SlackWorker
     room  = message.room
 
     recipients = []
-    recipients += room.accepted_freelancers if room.accepted_freelancers.exclude?(owner)
-    recipients << room.user if room.user != owner
-    recipients << room.manager if room.manager != owner
+
+    if room.user == owner
+      recipients = room.in_progress_freelancers.to_a
+      recipients << room.manager
+    elsif room.manager == owner
+      recipients = room.in_progress_freelancers.to_a
+      recipients << room.user
+    elsif room.in_progress_freelancers.include?(owner)
+      recipients << room.user
+      recipients << room.manager
+      recipients += room.in_progress_freelancers.to_a
+      recipients -= [owner]
+    end
 
     recipients.each do |recipient|
       slack_channel = recipient.slack_channels.find_by(room: room)
