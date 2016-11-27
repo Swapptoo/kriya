@@ -41,7 +41,7 @@ class SlackChannel < ApplicationRecord
     client = Slack::RealTime::Client.new(token: self.token, websocket_ping: 50)
 
     client.on :hello do
-      update!(sync: true)
+      update_columns(sync: true)
       puts "Successfully connected, welcome '#{client.self.name}' to the '#{client.team.name}' team at https://#{client.team.domain}.slack.com."
     end
 
@@ -52,9 +52,14 @@ class SlackChannel < ApplicationRecord
         puts '@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
         message_owner = user.presence || freelancer
         body = Slack::Messages::Formatting.unescape(data.text)
-        message = room.messages.create(body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel, msg_type: 'slack')
-        message.process_command
-        room.create_unseen_messages(message, message_owner)
+
+        if room.message_slack_histories.find_by(ts: data.ts).blank?
+          message = room.messages.create(body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel)
+          message.process_command
+
+          room.message_slack_histories.create(ts: data.ts)
+          room.create_unseen_messages(message, message_owner)
+        end
       end
     end
 
@@ -65,7 +70,7 @@ class SlackChannel < ApplicationRecord
     client.on :closed do |_data|
       puts 'Client has disconnected successfully!'
 
-      update(sync: false)
+      update_columns(sync: false)
     end
 
     client.start_async

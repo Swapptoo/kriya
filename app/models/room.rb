@@ -29,6 +29,8 @@
 class Room < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :slack_channels, dependent: :destroy
+  has_many :message_slack_histories, dependent: :destroy
+
   belongs_to :user
   belongs_to :manager, class_name: "User"
   monetize :budget_cents

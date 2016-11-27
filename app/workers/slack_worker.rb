@@ -6,7 +6,7 @@ class SlackWorker
     message = Message.find_by(id: message_id)
 
     return if message.nil?
-    return if message.msg_type.present? && message.msg_type != 'slack'
+    return if message.msg_type.present?
 
     owner = message.owner
     room  = message.room
@@ -21,7 +21,9 @@ class SlackWorker
       next if slack_channel.nil? || slack_channel.inactive?
 
       client = Slack::Web::Client.new token: slack_channel.token
-      client.chat_postMessage(message.to_slack(slack_channel.channel_id))
+      slack_message = client.chat_postMessage(message.to_slack(slack_channel.channel_id))
+
+      room.message_slack_histories.create(ts: slack_message.ts)
     end
 
     # Record owner message
@@ -31,6 +33,8 @@ class SlackWorker
     return if slack_channel.nil? || slack_channel.inactive?
 
     client = Slack::Web::Client.new token: slack_channel.token
-    client.chat_postMessage(message.to_slack(slack_channel.channel_id, true))
+    slack_message = client.chat_postMessage(message.to_slack(slack_channel.channel_id, true))
+
+    room.message_slack_histories.create(ts: slack_message.ts)
   end
 end

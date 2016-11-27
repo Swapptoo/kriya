@@ -310,7 +310,7 @@ class Message < ApplicationRecord
   end
 
   def notify_slack
-    SlackWorker.perform_async(id) if msg_type.present? && msg_type != 'slack'
+    SlackWorker.perform_async(id) if msg_type.nil?
   end
 
   def set_room_last_message_created_at
