@@ -53,7 +53,7 @@ class SlackChannel < ApplicationRecord
         message_owner = user.presence || freelancer
         body = Slack::Messages::Formatting.unescape(data.text)
 
-        if room.message_slack_histories.find_by(ts: data.ts).blank?
+        if room.message_slack_histories.find_by(ts: data.ts).blank? && room.messages.find_by(body: body, user: user, freelancer: freelancer, created_at: 1.minute.ago..0.minute.ago).blank?
           message = room.messages.create(body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel)
           message.process_command
 
