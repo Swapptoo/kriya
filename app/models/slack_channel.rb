@@ -51,9 +51,11 @@ class SlackChannel < ApplicationRecord
         message_owner = user.presence || freelancer
         body = Slack::Messages::Formatting.unescape(data.text)
 
-        message = room.messages.create(body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel)
-        message.process_command
-        room.create_unseen_messages(message, message_owner)
+        if room.messages.where(body: body, user: user, freelancer: freelancer, slack_channel: data.channel).any?
+          message = room.messages.create(body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel)
+          message.process_command
+          room.create_unseen_messages(message, message_owner)
+        end
       end
     end
 
