@@ -23,9 +23,5 @@ module Dantos
 
       config.eager_load_paths += %W(#{config.root}/app/workers)
     end
-
-    config.after_initialize do
-      SlackChannel.update_all(sync: false)
-    end
   end
 end
