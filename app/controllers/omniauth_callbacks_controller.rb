@@ -46,7 +46,7 @@ class OmniauthCallbacksController < ApplicationController
 
           if channel.nil?
             client.groups_create(name: room.channel_name)
-            client.chat_postMessage(channel: "##{room.channel_name}", text: 'Thanks for integrating with Kriya.ai, we will keep updating you in this channel of new messages.')
+            client.chat_postMessage(channel: channel.id, text: 'Thanks for integrating with Kriya.ai, we will keep updating you in this channel of new messages.')
           end
 
           slack_channel.update(channel_id: channel.id)

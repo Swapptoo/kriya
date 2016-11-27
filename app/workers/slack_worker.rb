@@ -19,7 +19,7 @@ class SlackWorker
       next if slack_channel.nil? || slack_channel.inactive?
 
       client = Slack::Web::Client.new token: slack_channel.token
-      client.chat_postMessage(message.to_slack)
+      client.chat_postMessage(message.to_slack(slack_channel.id))
     end
 
     # Record owner message
@@ -29,6 +29,6 @@ class SlackWorker
     return if slack_channel.nil? || slack_channel.inactive?
 
     client = Slack::Web::Client.new token: slack_channel.token
-    client.chat_postMessage(message.to_slack(true))
+    client.chat_postMessage(message.to_slack(slack_channel.id, true))
   end
 end

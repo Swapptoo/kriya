@@ -1,4 +1,4 @@
-# == Schema Information
+p# == Schema Information
 #
 # Table name: messages
 #
@@ -255,7 +255,7 @@ class Message < ApplicationRecord
     msg_type == 'bot-task-accepted'
   end
 
-  def to_slack(as_user = false)
+  def to_slack(slack_channel, as_user = false)
     if file?
       text = (as_user || user.try(:manager?)) ? '' : "*#{owner.first_name}*"
 
@@ -267,7 +267,7 @@ class Message < ApplicationRecord
           }
         ],
         text: text,
-        channel: "##{room.channel_name}",
+        channel: slack_channel,
         as_user: as_user
       }
     elsif post.present?
@@ -277,7 +277,7 @@ class Message < ApplicationRecord
       {
         text: text,
         as_user: as_user,
-        channel: "##{room.channel_name}"
+        channel: slack_channel
       }
     else
       text = self.body
@@ -286,7 +286,7 @@ class Message < ApplicationRecord
       {
         text: text,
         as_user: as_user,
-        channel: "##{room.channel_name}"
+        channel: slack_channel
       }
     end
   end
