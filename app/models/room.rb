@@ -115,7 +115,7 @@ class Room < ApplicationRecord
   # Channel max length is 21
   # https://get.slack.help/hc/en-us/articles/201402297-Create-a-channel
   def channel_name
-    "kriya-#{title.parameterize}".first(21)
+    "kr-#{title.parameterize}".first(21)
   end
 
   def get_room_name_for_user(user, index = nil)
