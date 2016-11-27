@@ -4,7 +4,9 @@ class SlackWorker
 
   def perform(message_id)
     message = Message.find_by(id: message_id)
-    return if message.nil? || message.msg_type.present?
+
+    return if message.nil?
+    return if message.msg_type.present? && message.msg_type != 'slack'
 
     owner = message.owner
     room  = message.room

@@ -47,15 +47,14 @@ class SlackChannel < ApplicationRecord
 
     client.on :message do |data|
       if data.user == self.uid && data.channel == self.channel_id
-        puts data
+        puts '@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
+        puts "@@@@@@@@@@@@@@@@@@@@@#{data}@@@@@@@@@@@@@@@@@@@@"
+        puts '@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
         message_owner = user.presence || freelancer
         body = Slack::Messages::Formatting.unescape(data.text)
-
-        if room.messages.where(body: body, user: user, freelancer: freelancer, slack_channel: data.channel).any?
-          message = room.messages.create(body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel)
-          message.process_command
-          room.create_unseen_messages(message, message_owner)
-        end
+        message = room.messages.create(body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel, msg_type: 'slack')
+        message.process_command
+        room.create_unseen_messages(message, message_owner)
       end
     end
 
