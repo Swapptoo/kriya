@@ -1,5 +1,5 @@
 - if user.class.name == 'Freelancer'
-  - if message.msg_type != 'bot-ask-continue-work' && message.msg_type != 'bot-falied-payment' && message.msg_type != 'bot-charge-task'
+  - if message.msg_type != 'bot-ask-continue-work' && message.msg_type != 'bot-falied-payment' && message.msg_type != 'bot-charge-task' && !message.bot_to_client?
     - within_60_secs_from_previous = message.within_60_secs_from_previous?
     .comment[class=('inline' if within_60_secs_from_previous)]
       - if message.user && message.user.picture
@@ -75,7 +75,7 @@
                   = Sanitize.fragment(truncate(message.post.content, :length => 100, :escape => false), Sanitize::Config::RELAXED).html_safe
 
 - if user.class.name == 'User'
-  - if message.msg_type != 'bot-not-connect-stripe'
+  - if message.msg_type != 'bot-not-connect-stripe' && !message.bot_to_freelancer?
     - within_60_secs_from_previous = message.within_60_secs_from_previous?
     .comment[class=('inline' if within_60_secs_from_previous)]
       - if message.user && message.user.picture

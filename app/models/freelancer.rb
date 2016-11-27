@@ -84,6 +84,10 @@ class Freelancer < ApplicationRecord
     slack_channels.find_by(room_id: nil)
   end
 
+  def type
+    'freelancer'
+  end
+
   def accept_kriya_policy!
     update!(accepted_kriya_policy: true)
   end

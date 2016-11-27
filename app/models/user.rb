@@ -86,6 +86,11 @@ class User < ApplicationRecord
     !manager? && (self.role == 'client' || self.role.blank?)
   end
 
+  def type
+    return 'client'   if client?
+    return 'manager'  if manager?
+  end
+
   def online?
     return false if last_seen_at.nil?
     last_seen_at > 10.minutes.ago

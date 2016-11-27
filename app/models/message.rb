@@ -248,7 +248,15 @@ class Message < ApplicationRecord
   end
 
   def slack?
-    msg_type == 'slack'
+    msg_type.include? 'slack'
+  end
+
+  def bot_to_freelancer?
+    ['slack-freelancer'].include?(msg_type)
+  end
+
+  def bot_to_client?
+    ['slack-client'].include?(msg_type)
   end
 
   def bot_task_accepted?
