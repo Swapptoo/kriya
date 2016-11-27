@@ -23,6 +23,6 @@ every 5.minutes do
   rake 'message:unseen_alert', output: 'log/message_unseen_alert.log'
 end
 
-every 1.minutes do
-  rake 'slack:sync', output: 'log/slack_sync.log'
-end
+# every 1.minutes do
+#   rake 'slack:sync', output: 'log/slack_sync.log'
+# end
