@@ -79,7 +79,7 @@ class User < ApplicationRecord
   end
 
   def manager?
-    self.role == 'manager' || self.email == 'manager@goomp.co' || self.email == 'manager@kriya.ai'
+    self.role == 'manager' || self.email == 'manager@goomp.co'
   end
 
   def client?

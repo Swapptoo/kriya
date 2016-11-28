@@ -23,7 +23,7 @@ class UserNotifierMailer < ApplicationMailer
     @room = room
     @manager = room.manager
 
-    mail(:to => 'manager@kriya.ai', :subject => "#{room.title}")
+    mail(:to => 'manager@goomp.co', :subject => "#{room.title}")
   end
 
   def notify_unseen_messages(room, recipient, messages)
