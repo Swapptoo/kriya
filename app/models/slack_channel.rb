@@ -57,6 +57,19 @@ class SlackChannel < ApplicationRecord
 
         if room.message_slack_histories.find_by(ts: data.ts).blank? && room.messages.find_by(body: body, user: user, freelancer: freelancer, created_at: 2.minutes.ago..0.minute.ago).blank?
           message = room.messages.create(body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel)
+
+          if data.file.present?
+            web_client = Slack::Web::Client.new(token: self.token)
+            file = web_client.files_sharedPublicURL(file: data.file.id)
+
+            if file.ok?
+              message.remote_image_url = "#{file.file.url_private}?pub_secret=#{file.file.permalink_public.split('-').last}"
+              message.save
+            end
+
+            web_client.files_revokePublicURL(file: data.file.id)
+          end
+
           message.process_command
 
           room.message_slack_histories.create(ts: data.ts)
