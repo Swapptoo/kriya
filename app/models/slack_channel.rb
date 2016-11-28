@@ -73,6 +73,8 @@ class SlackChannel < ApplicationRecord
           message.process_command
 
           room.message_slack_histories.create(ts: data.ts)
+          
+          message_owner.unseen_messages.where(room: room).destroy_all
           room.create_unseen_messages(message, message_owner)
         end
       end
