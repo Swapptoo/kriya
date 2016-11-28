@@ -23,7 +23,7 @@ class EmailProcessor
 
     message_params = { body: body }
 
-    if room.accepted_freelancers.include?(user)
+    if room.in_progress_freelancers.include?(user)
       message_params[:freelancer] = user
     else
       message_params[:user] = user
