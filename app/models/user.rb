@@ -104,6 +104,10 @@ class User < ApplicationRecord
     [first_name, last_name].join(' ')
   end
 
+  def first_name_for_email
+    manager? ? 'Kriya Bot' : first_name
+  end
+
   def name
     [first_name, last_name].join(' ')
   end

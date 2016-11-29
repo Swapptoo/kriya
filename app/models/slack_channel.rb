@@ -56,7 +56,7 @@ class SlackChannel < ApplicationRecord
         body = Slack::Messages::Formatting.unescape(data.text)
 
         if room.message_slack_histories.find_by(ts: data.ts).blank? && room.messages.find_by(body: body, user: user, freelancer: freelancer, created_at: 2.minutes.ago..0.minute.ago).blank?
-          message = room.messages.create(body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel)
+          message = room.messages.create(source: 'slack', body: body, user: user, freelancer: freelancer, slack_ts: data.ts, slack_channel: data.channel)
 
           if data.file.present?
             web_client = Slack::Web::Client.new(token: self.token)
@@ -73,7 +73,7 @@ class SlackChannel < ApplicationRecord
           message.process_command
 
           room.message_slack_histories.create(ts: data.ts)
-          
+
           message_owner.unseen_messages.where(room: room).destroy_all
           room.create_unseen_messages(message, message_owner)
         end

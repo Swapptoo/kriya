@@ -21,7 +21,7 @@ class EmailProcessor
     user = User.find_by(email: email)
     user = Freelancer.find_by(email: email) if user.nil?
 
-    message_params = { body: body }
+    message_params = { body: body, source: 'email' }
 
     if room.in_progress_freelancers.include?(user)
       message_params[:freelancer] = user

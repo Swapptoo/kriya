@@ -88,6 +88,10 @@ class Freelancer < ApplicationRecord
     'freelancer'
   end
 
+  def first_name_for_email
+    first_name
+  end
+
   def accept_kriya_policy!
     update!(accepted_kriya_policy: true)
   end
