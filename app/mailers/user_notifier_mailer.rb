@@ -35,8 +35,8 @@ class UserNotifierMailer < ApplicationMailer
 
     messages.each do |msg|
       message_owner = msg.user.presence || msg.freelancer
-      full_name = message_owner.full_name
-      full_name = 'Kriya Task' if message_owner.is_a?(User) && message_owner.manager?
+      full_name = message_owner.first_name
+      full_name = 'Kriya Bot' if message_owner.is_a?(User) && message_owner.manager?
 
       if msg.image.file.present?
         @messages << ['file', full_name, msg.image]
