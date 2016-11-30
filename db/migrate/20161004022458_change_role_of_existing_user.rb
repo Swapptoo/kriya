@@ -4,7 +4,7 @@ class ChangeRoleOfExistingUser < ActiveRecord::Migration[5.0]
 
   def up
     User.find_each do |user|
-      if user.email == 'manager@goomp.co'
+      if user.email == 'manager@kriya.ai'
         user.role = 2
       elsif !user.role.present?
         user.role = 0

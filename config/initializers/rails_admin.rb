@@ -9,7 +9,7 @@ RailsAdmin.config do |config|
   config.current_user_method(&:current_user)
 
   config.authorize_with do
-    redirect_to main_app.root_path unless current_user.email.in? %w(manager@goomp.co)
+    redirect_to main_app.root_path unless current_user.email.in? %w(manager@kriya.ai)
   end
 
   config.included_models = ["User", "Freelancer", "Room", "FreelancersRooms","Message", "Skill"]
