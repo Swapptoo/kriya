@@ -16,7 +16,9 @@ class EmailProcessor
 
   	room = Room.find(num)
     email = @email.from[:email]
-    body = Slack::Messages::Formatting.unescape @email.body
+    reply_text = EmailReplyParser.parse_reply @email.body
+    puts reply_text
+    body = Slack::Messages::Formatting.unescape reply_text
 
     user = User.find_by(email: email)
     user = Freelancer.find_by(email: email) if user.nil?

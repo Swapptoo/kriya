@@ -60,6 +60,7 @@ gem 'griddler-sendgrid'
 gem 'whenever', require: false
 gem 'jquery-datatables-rails', '~> 3.4.0'
 gem 'activerecord-session_store', '~> 1.0.0'
+gem 'email_reply_parser', '~> 0.5.9'
 
 ## Slack
 gem 'httparty'
