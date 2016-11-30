@@ -11,7 +11,7 @@
             #messages.ui.comments data-room-id=@room.id
               .chat-content
                 = render @messages, :user => current_freelancer
-                = render 'slack' if current_freelancer.just_accepted_rooms?(@room.id)
+                = render 'slack' if current_freelancer.slack_channels.find_by(room: @room.id).nil?
 
             - unless current_freelancer.just_accepted_rooms?(@room.id)
               .ui.active.progress.primary style="display: none"

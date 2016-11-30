@@ -56,8 +56,12 @@
     {
       type: 'acceptPolicy',
       key: 'submit-dummy',
-      path: 'slack'
+      path: 'freelancer_greeting'
     }
+  ];
+
+  var freelancer_greeting = [
+    'Welcome to Kriya. We are glad you are here. We will notify you as soon as there\'s a gig matching your profile. Keep watching this space'
   ];
 
   var slack = [
@@ -137,7 +141,7 @@
           }
         <%- else %>
           var configs = {
-            greeting: slack
+            greeting: freelancer_greeting
           };
         <%- end %>
       <%- else %>
@@ -145,7 +149,7 @@
           var configs = {
             greeting: description,
             accept_kriya_policy: accept_kriya_policy,
-            slack: slack
+            freelancer_greeting: freelancer_greeting
           };
         <%- else %>
           var configs = {
