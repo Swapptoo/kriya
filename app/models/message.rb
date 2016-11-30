@@ -285,7 +285,7 @@ class Message < ApplicationRecord
   end
 
   def slack?
-    msg_type.include? 'slack'
+    msg_type.present? && msg_type.include?('slack')
   end
 
   def bot_to_freelancer?
