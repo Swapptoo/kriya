@@ -49,7 +49,8 @@ Rails.application.configure do
     /http:\/\/*/,
     /https:\/\/*/
   ]
-
+  config.action_cable.url = "wss://www.kriya.ai/cable"
+  config.force_ssl = false
 
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
