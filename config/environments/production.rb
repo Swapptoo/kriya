@@ -40,7 +40,7 @@ Rails.application.configure do
     /http:\/\/*/,
     /https:\/\/*/
   ]
-  config.action_cable.url = "wss://www.kriya.ai/cable"
+  config.action_cable.url = "wss://www.kriya.ai/cable/"
   config.force_ssl = false
 
 
