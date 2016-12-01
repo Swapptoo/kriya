@@ -20,10 +20,9 @@ class OmniauthCallbacksController < ApplicationController
           current_freelancer
         end
 
-        if room_id.present?
-          room = user.rooms.find_by(id: room_id)
-          room = user.managed_rooms.find_by(id: room_id) if user.respond_to?(:manager?) && user.manager?
+        room = Room.find_by(id: room_id)
 
+        if room.present?
           slack_channel = user.slack_channels.find_or_initialize_by(room: room)
 
           slack_channel.assign_attributes(
