@@ -34,12 +34,12 @@ class UserNotifierMailer < ApplicationMailer
     from = "Kriya Task <task-#{room.id}@messages.kriya.ai>"
 
     messages.each do |msg|
-      message_owner = msg.user.presence || msg.freelancer
+      next if msg.owner.nil?
 
       if msg.image.file.present?
-        @messages << ['file', message_owner.first_name_for_email, msg.image]
+        @messages << ['file', msg.owner.first_name_for_email, msg.image]
       elsif msg.body.present?
-        @messages << ['text', message_owner.first_name_for_email, msg.body]
+        @messages << ['text', msg.owner.first_name_for_email, msg.body]
       end
     end
 
