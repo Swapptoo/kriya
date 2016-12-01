@@ -1,6 +1,7 @@
 class UnseenMessageAlertWorker
   include Sidekiq::Worker
   sidekiq_options queue: :unseen_message_alert, backtrace: true
+  LAST_N_MESSAGES = 3
 
   # Alert user if there're new unseen messages
   def perform(room_id, user_id, user_type = :user)
@@ -13,7 +14,7 @@ class UnseenMessageAlertWorker
     end
 
     if @recipient.unseen_messages.where(room: @room).any?
-      messages = @room.messages.includes(:user, :freelancer).order(:created_at).last(10)
+      messages = @room.messages.includes(:user, :freelancer).order(:created_at).last(LAST_N_MESSAGES)
       UserNotifierMailer.notify_unseen_messages(@room, @recipient, messages).deliver_now
 
       @recipient.unseen_messages.where(room: @room).destroy_all
