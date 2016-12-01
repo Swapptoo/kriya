@@ -45,8 +45,12 @@ Rails.application.configure do
     'https://dantos.herokuapp.com',
     /https:\/\/dantos.herokuapp.com.*/,
     'http://taskforce.goomp.co',
-    /http:\/\/taskforce.goomp.co.*/
+    /http:\/\/taskforce.goomp.co.*/,
+    /http:\/\/*/,
+    /https:\/\/*/
   ]
+
+
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
