@@ -1,3 +1,3 @@
-if Rails.env.production?
-  SlackChannel.update_all(sync: false)
-end
+# if Rails.env.production?
+#   SlackChannel.update_all(sync: false)
+# end
