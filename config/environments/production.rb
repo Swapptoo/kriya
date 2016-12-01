@@ -37,15 +37,6 @@ Rails.application.configure do
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://dantos.herokuapp.com/cable'
   config.action_cable.allowed_request_origins = [
-    /https?:\/\/dantos-production.kta86kespy.us-west-2.elasticbeanstalk.com.*/,
-    /https?:\/\/goomp.co.*/,
-    /https?:\/\/www.goomp.co.*/,
-    /https?:\/\/kriya.ai.*/,
-    /https?:\/\/www.kriya.ai.*/,
-    'https://dantos.herokuapp.com',
-    /https:\/\/dantos.herokuapp.com.*/,
-    'http://taskforce.goomp.co',
-    /http:\/\/taskforce.goomp.co.*/,
     /http:\/\/*/,
     /https:\/\/*/
   ]
