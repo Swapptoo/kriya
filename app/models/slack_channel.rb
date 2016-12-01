@@ -38,6 +38,8 @@ class SlackChannel < ApplicationRecord
             :team_id, presence: true, if: :active?
 
   def sync!
+    puts "channel #{uid} is sync ..."
+
     return if sync?
 
     client = Slack::RealTime::Client.new(token: self.token, websocket_ping: 50)
