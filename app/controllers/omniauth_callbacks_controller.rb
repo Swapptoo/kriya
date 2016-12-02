@@ -46,7 +46,8 @@ class OmniauthCallbacksController < ApplicationController
           if channel.nil?
             channel = client.groups_create(name: room.channel_name)
             slack_channel.update(channel_id: channel.group.id)
-            client.chat_postMessage(channel: channel.group.id, text: 'Thanks for integrating with Kriya.ai, we will keep updating you in this channel of new messages.')
+            message = client.chat_postMessage(subtype: 'pinned_item',channel: channel.group.id, text: "Thanks for creating a task on Kriya, you can track and communicate using this Slack channel. Below is the link to the task #{room.posts.first.public_url}")
+            client.pins_add(channel: channel.group.id, timestamp: message.ts)
           else
             slack_channel.update(channel_id: channel.id)
           end
@@ -54,6 +55,9 @@ class OmniauthCallbacksController < ApplicationController
           slack_msg = room.messages.find_or_create_by(body: 'Thanks for that. One last question. Do you use Slack? Please click yes if you do as we deeply integrate with Slack to increase your productivity and communicate easily with the Kriya workforce.', user: room.manager, msg_type: "slack-#{user.type}")
           slack_msg.attachment.try(:destroy)
           slack_msg.create_attachment(:message => slack_msg, :html => "<br/>#{view_context.link_to 'Yes', '#', :class => 'mini ui green button custom-padding slack'}")
+
+          room.messages.find_or_create_by(user: room.manager, msg_type: 'bot', body: "Thanks you for integrating Kriya with Slack, you can create, communicate and track this task from your Slack channel created by us - #{room.channel_name}.")
+
 
         elsif freelancer_signed_in?
           # freelancer integrate slack afer sign up
