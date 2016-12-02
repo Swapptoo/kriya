@@ -200,11 +200,7 @@ class RoomsController < ApplicationController
       @room.messages.new({:seen => true, :body => @room.timeline, :room => @room, :user => @room.user})
       @room.messages.new({:seen => true, :body => 'Please choose the expertise level', :room => @room, :user => @room.manager, :msg_type => 'bot-expertise-level'})
       @room.messages.new({:seen => true, :body => @room.quality, :room => @room, :user => @room.user})
-<<<<<<< 82a8eda1df889fc0291c089774b0ae01b4e971ec
-      @room.messages.new({:seen => true, :body => 'What is your budget estimate for this task?', :room => @room, :user => @room.manager, :msg_type => 'bot-budget-estimate'})
-=======
       @room.messages.new({:seen => true, :body => 'What is your budget estimate for this task in USD?', :room => @room, :user => @room.manager, :msg_type => 'bot-budget-estimate'})
->>>>>>> feat(auto-message): after description added
       @room.messages.new({:seen => true, :body => @room.budget, :room => @room, :user => @room.user})
       @room.messages.new({:seen => true, :body => 'Please give detailed description of what needs to be done by creating a post, meanwhile I\'ll get this started with our workforce', :room => @room, :user => @room.manager, :msg_type => 'bot-description'})
       @room.messages.last.create_attachment(:message => @room.messages.last, :html => "<br/>#{view_context.link_to 'Add Description', new_post_path, :data => {:modal => true}, :class => 'mini ui green button custom-padding'}")
