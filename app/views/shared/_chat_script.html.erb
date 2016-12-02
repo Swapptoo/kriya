@@ -2,7 +2,7 @@
 <script>
 
   var category = [
-    "Please specify the department you need help with?",
+    "Hi! I am Kriya, helping startups and businesses to get their work done with the help of top skilled freelancers across the world. Choose one of the fields below:",
     {
       type: 'choose',
       answers: [{
@@ -44,7 +44,7 @@
     }
   ];
   var timeline = [
-    'What\'s the length of this project?',
+    'Please choose your project timeline',
     {
       type: 'choose',
       answers: [
@@ -99,7 +99,7 @@
     }
   ];
   var budget = [
-    'What is your budget estimate for this project in USD? ',
+    'What is your budget estimate for this task in USD?',
     {
       type: 'write',
       path: "<%= new_user ? 'dummy' : 'description' %>",
@@ -108,7 +108,7 @@
   ];
 
   var description = [
-    'Please give detailed description of what needs to be done by creating a post, meanwhile I\'ll get this started with our workforce',
+    "Please give detailed description of what needs to be done by creating a post, meanwhile I'll get this started with our workforce",
     {
       type: 'open-modal',
       path: 'notice',
@@ -218,7 +218,7 @@
   <%- if new_user %>
     var configs = {
       greeting: [
-        'Hi, I am Kriya Bot. Welcome! I am here to help your teams connect with the right workforce.',
+        'Welcome to Kriya. Thank you for choosing us. Please select from the following options',
         {
           type: 'choose',
           answers: [
