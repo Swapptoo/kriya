@@ -288,6 +288,12 @@ class Message < ApplicationRecord
     msg_type.present? && msg_type.include?('slack')
   end
 
+  def attachment_right?
+    slack? ||
+    msg_type == 'add-website' ||
+    msg_type == 'add-total-employee'
+  end
+
   def bot_to_freelancer?
     ['slack-freelancer'].include?(msg_type)
   end

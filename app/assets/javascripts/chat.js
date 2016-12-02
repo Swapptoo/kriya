@@ -203,6 +203,73 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
         }
       }
     }, {
+      key: "submitAnswer",
+      value: function(e) {
+        var t = this,
+          n = this.createAnswerButton(e, {
+            onFinish: function(e) {
+              e.focus()
+            }
+          });
+
+        n.classList.add(e.htmlClass);
+        n.classList.add("cui__answers__placeholder"), n.setAttribute("contentEditable", !0), n.addEventListener("paste", function(e) {
+          requestAnimationFrame(function() {
+            n.innerHTML = n.innerText
+          })
+        }), n.addEventListener("keyup", function(e) {
+          return n.innerText.length ? void n.classList.remove("cui__answers__placeholder") : (n.classList.add("cui__answers__placeholder"), n.focus())
+        });
+        var s = !1,
+          i = function() {
+            n.innerText.length && !s && (s = !0, t.animateResponse(n, n.cloneNode(!0), function(n) {
+              if (e.key !== undefined) {
+                // console.log(n.innerText);
+                // localStorage.setItem(e.key, n.innerText);
+                $('#room_' + e.key).val(n.innerText);
+                var room = {};
+                room[e.key] = n.innerText;
+
+                $.ajax(e.submitUrl, {
+                  method: 'PUT',
+                  dataType: 'json',
+                  data: {
+                    room: room
+                  }
+                });
+              }
+
+              e.path && t.say(t.messages[e.path]), t.emit("answer", {
+                item: e,
+                text: n.innerHTML
+              })
+            }))
+          };
+        n.addEventListener("blur", i.bind(this)), n.addEventListener("keydown", function(e) {
+          13 === e.keyCode && (e.preventDefault(), n.removeEventListener("blur", i), i())
+        }), n.addEventListener("keypress", function(e) {
+          n.innerText.length > t.config.maxCharsResponse && (e.preventDefault(), t.state.hasSeenMaxCharResponse || (t.state.hasSeenMaxCharResponse = !0, t.say([t.config.maxCharsResponseText])))
+        })
+
+        if ($('#new_user').length > 0) {
+          setTimeout(function() {
+            $('#new_user').animate({scrollTop: document.getElementById("new_user").scrollHeight}, 2000);
+          }, 2000);
+        }
+      }
+    },{
+      key: "blank",
+      value: function(e) {
+        var t = this;
+
+        t.say(t.messages[e.path]), t.emit("answer", {});
+        if ($('#new_user').length > 0) {
+          setTimeout(function() {
+            $('#new_user').animate({scrollTop: document.getElementById("new_user").scrollHeight}, 2000);
+          }, 2000);
+        }
+      }
+    }, {
       key: "openModal",
       value: function(e) {
         var t = this,
@@ -364,6 +431,10 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
                 return t.submitProject(e)
               case "acceptPolicy":
                 return t.acceptPolicy(e)
+              case "submitAnswer":
+                return t.submitAnswer(e)
+              case "blank":
+                return t.blank(e)
               case "submitDummy":
                 return t.submitDummy(e)
               case "open-modal":

@@ -14,6 +14,8 @@
 #  quality                 :string
 #  description             :text
 #  last_message_created_at :datetime
+#  website                 :string
+#  total_employee          :integer
 #
 # Indexes
 #

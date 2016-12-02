@@ -1,0 +1,22 @@
+.content
+  .summary Kriya Bot
+  span.date Just Now
+  #chat.cui
+    ol.cui__list
+      li.cui__list__item
+        .cui__bubble.cui__bubble--slideIn.cui__bubble--fade Awesome! Thank you for letting us know what you need. I am now matching your job with one of our many freelancers who will be reaching out shortly. In the meantime, can you please help me get to know you better?
+      li.cui__list__item
+        .cui__bubble.cui__bubble--slideIn.cui__bubble--fade Please provide your website
+      li.cui__list__item
+        .cui__bubble.cui__bubble--response.secondary.website contenteditable="true" style="transform: translate3d(0px), 0px, 0px); opacity: 1;"  example.com
+          = @room.website
+      li.cui__list__item
+        .cui__bubble.cui__bubble--slideIn.cui__bubble--fade Great! And how many employees are you?
+      li.cui__list__item
+        .cui__bubble.cui__bubble--response.secondary.employee-count contenteditable="true" style="transform: translate3d(0px), 0px, 0px); opacity: 1;"
+          = @room.totalEmployee
+      li.cui__list__item
+        .cui__bubble.cui__bubble--slideIn.cui__bubble--fade Thanks for that. One last question. Do you use Slack? Please click yes if you do as we deeply integrate with Slack to increase your productivity and communicate easily with the Kriya workforce.
+      li.cui__list__item
+        .cui__bubble.cui__bubble--response.secondary.employee-count contenteditable="true" style="transform: translate3d(0px), 0px, 0px); opacity: 1;"
+          = (@room.slack_channel.find_by(user: @room.user).nil? ? 'Pass' : 'Add Slack')

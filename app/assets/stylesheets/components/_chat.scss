@@ -107,8 +107,27 @@
   .cui__answers__placeholder:before {
     content: 'Ex: $1000 (currency USD)';
     display: inline-block;
-    opacity: 0.5; }
+    opacity: 0.5;
+  }
 
+  .cui__answers__placeholder.website:before {
+    content: 'Ex: example.com';
+  }
+  .cui__answers__placeholder.employee-count:before {
+    content: 'Ex: 20';
+  }
 .cui__list.no-marg-bottom {
   margin-bottom: 0;
+}
+
+#messages {
+  .cui__list, .cui__bubble.cui__bubble--slideIn.cui__bubble--fade {
+    padding: 0
+  }
+
+  .cui__bubble--response.secondary {
+    line-height: 1em;
+    font-size: 0.78571429rem;
+    padding: 0.78571429em 1.5em 0.78571429em;
+  }
 }

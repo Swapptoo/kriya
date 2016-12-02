@@ -51,9 +51,7 @@ class OmniauthCallbacksController < ApplicationController
             slack_channel.update(channel_id: channel.id)
           end
 
-          slack_channel.sync! unless slack_channel.sync?
-
-          slack_msg = room.messages.find_or_create_by(seen: true, body: 'Do you use Slack?', user: room.manager, msg_type: "slack-#{user.type}")
+          slack_msg = room.messages.find_or_create_by(body: 'Thanks for that. One last question. Do you use Slack? Please click yes if you do as we deeply integrate with Slack to increase your productivity and communicate easily with the Kriya workforce.', user: room.manager, msg_type: "slack-#{user.type}")
           slack_msg.attachment.try(:destroy)
           slack_msg.create_attachment(:message => slack_msg, :html => "<br/>#{view_context.link_to 'Yes', '#', :class => 'mini ui green button custom-padding slack'}")
 

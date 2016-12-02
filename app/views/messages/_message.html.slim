@@ -61,7 +61,7 @@
               - else
                 = auto_link message.body, html: { target: '_blank', rel: "nofollow" }
                 - if message.attachment
-                  - if (message.bot_description? && message.room.finished?) || message.slack?
+                  - if (message.bot_description? && message.room.finished?) || message.attachment_right?
                     .right= message.attachment.html.html_safe
                   - else
                     = message.attachment.html.html_safe
@@ -139,7 +139,7 @@
               - else
                 = auto_link message.body, html: { target: '_blank', rel: "nofollow" }
                 - if message.attachment
-                  - if (message.bot_description? && message.room.finished?) || message.slack?
+                  - if (message.bot_description? && message.room.finished?) || message.attachment_right?
                     .right= message.attachment.html.html_safe
                   - else
                     = message.attachment.html.html_safe

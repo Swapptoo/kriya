@@ -46,8 +46,12 @@ class RoomsController < ApplicationController
   def deny_slack
     user = current_user.presence || current_freelancer
     channel = user.slack_channels.find_or_create_by(room: @room)
-    @room.messages.create(seen: true, body: 'Do you use Slack?', msg_type: "slack-#{user.type}", user: @room.manager)
+    @room.messages.create(msg_type: "slack-#{user.type}", user: @room.manager, body: 'Thanks for that. One last question. Do you use Slack? Please click yes if you do as we deeply integrate with Slack to increase your productivity and communicate easily with the Kriya workforce.')
     @room.messages.last.create_attachment(:message => @room.messages.last, :html => "<br/>#{view_context.link_to 'No', '#', :class => 'mini ui green button custom-padding slack'}")
+
+    @room.messages.create(user: @room.manager, body: 'Alright, no problem', msg_type: 'bot')
+    @room.messages.create(user: @room.manager, body: 'Thank you for letting me know what you need and answering my questions. I am now matching your job with one of our many freelancers who will be reaching out shortly.', msg_type: 'bot')
+    @room.messages.create(user: @room.manager, body: 'Please note, we have a distributed network of freelancers with a majority working internationally. Please allow 6 to 12 hrs delay in response since your task was created after 10am PST. Thank you!', msg_type: 'bot')
 
     channel.inactive!
 
@@ -150,11 +154,11 @@ class RoomsController < ApplicationController
         post_body = params.dig(:room, :messages, :post, :content)
         post_title = params.dig(:room, :messages, :post, :title)
 
-        @room.messages.create({:seen => true, :body => 'Please choose one your project timeline', :room => @room, :user => @room.manager, :msg_type => 'bot-timeline'})
+        @room.messages.create({:seen => true, :body => 'Please choose your project timeline', :room => @room, :user => @room.manager, :msg_type => 'bot-timeline'})
         @room.messages.create({:seen => true, :body => @room.timeline, :room => @room, :user => @room.user})
         @room.messages.create({:seen => true, :body => 'Please choose the expertise level', :room => @room, :user => @room.manager, :msg_type => 'bot-expertise-level'})
         @room.messages.create({:seen => true, :body => @room.quality, :room => @room, :user => @room.user})
-        @room.messages.create({:seen => true, :body => 'What is your budget estimate for this task? (Kriya fees will apply)', :room => @room, :user => @room.manager, :msg_type => 'bot-budget-estimate'})
+        @room.messages.create({:seen => true, :body => 'What is your budget estimate for this task in USD? (Kriya fees will apply)', :room => @room, :user => @room.manager, :msg_type => 'bot-budget-estimate'})
         @room.messages.create({:seen => true, :body => @room.budget, :room => @room, :user => @room.user})
         @room.messages.create({:seen => true, :body => 'Please give detailed description of what needs to be done by creating a post, meanwhile I\'ll get this started with our workforce', :room => @room, :user => @room.manager, :msg_type => 'bot-description'})
 
@@ -188,15 +192,19 @@ class RoomsController < ApplicationController
       @room.user = current_user
       @room.manager = User.where(:email => 'manager@kriya.ai').first || User.where.not(id: current_user.id).all.sample
 
-      @room.messages.new({:seen => true, :body => 'Welcome to Kriya. We are pleased to have you here. Please select from the following options', :room => @room, :user => @room.manager, :msg_type => 'bot-welcome'})
+      @room.messages.new({:seen => true, :body => 'Welcome to Kriya. Thank you for choosing us. Please select from the following options', :room => @room, :user => @room.manager, :msg_type => 'bot-welcome'})
       @room.messages.new({:seen => true, :body => 'Create Task', :room => @room, :user => @room.user})
-      @room.messages.new({:seen => true, :body => 'Hi! I am Kriya, helping startups and businesses to get their work done with the help of top skilled freelancers across the world. Choose one of the fields below:', :room => @room, :user => @room.manager, :msg_type => 'bot-choose-fields'})
+      @room.messages.new({:seen => true, :body => 'Hi! I am Kriya, helping startups and businesses complete tasks with the help of skilled global freelancers. Choose one of the fields below:', :room => @room, :user => @room.manager, :msg_type => 'bot-choose-fields'})
       @room.messages.new({:seen => true, :body => @room.category_name, :room => @room, :user => @room.user})
-      @room.messages.new({:seen => true, :body => 'Please choose one your project timeline', :room => @room, :user => @room.manager, :msg_type => 'bot-timeline'})
+      @room.messages.new({:seen => true, :body => 'Please choose your project timeline', :room => @room, :user => @room.manager, :msg_type => 'bot-timeline'})
       @room.messages.new({:seen => true, :body => @room.timeline, :room => @room, :user => @room.user})
       @room.messages.new({:seen => true, :body => 'Please choose the expertise level', :room => @room, :user => @room.manager, :msg_type => 'bot-expertise-level'})
       @room.messages.new({:seen => true, :body => @room.quality, :room => @room, :user => @room.user})
+<<<<<<< 82a8eda1df889fc0291c089774b0ae01b4e971ec
       @room.messages.new({:seen => true, :body => 'What is your budget estimate for this task?', :room => @room, :user => @room.manager, :msg_type => 'bot-budget-estimate'})
+=======
+      @room.messages.new({:seen => true, :body => 'What is your budget estimate for this task in USD?', :room => @room, :user => @room.manager, :msg_type => 'bot-budget-estimate'})
+>>>>>>> feat(auto-message): after description added
       @room.messages.new({:seen => true, :body => @room.budget, :room => @room, :user => @room.user})
       @room.messages.new({:seen => true, :body => 'Please give detailed description of what needs to be done by creating a post, meanwhile I\'ll get this started with our workforce', :room => @room, :user => @room.manager, :msg_type => 'bot-description'})
       @room.messages.last.create_attachment(:message => @room.messages.last, :html => "<br/>#{view_context.link_to 'Add Description', new_post_path, :data => {:modal => true}, :class => 'mini ui green button custom-padding'}")
@@ -212,7 +220,22 @@ class RoomsController < ApplicationController
   # PATCH/PUT /rooms/1.json
   def update
     respond_to do |format|
-      if @room.update(room_params)
+      @room.assign_attributes(room_params)
+      website_changed = @room.website_changed?
+      total_employee_changed = @room.total_employee_changed?
+
+      if @room.save
+        if website_changed
+          @room.messages.create(user: @room.manager, msg_type: 'ask-more', body: 'Awesome! Thank you for letting us know what you need. I am now matching your job with one of our many freelancers who will be reaching out shortly. In the meantime, can you please help me get to know you better?') if @room.messages.find_by(msg_type: 'ask-more').nil?
+          message = @room.messages.create(user: @room.manager, msg_type: 'add-website', body: 'Please provide your website')
+          message.create_attachment(html: "<br/>#{view_context.link_to @room.website, '#', :class => 'mini ui green button custom-padding'}")
+        end
+
+        if total_employee_changed
+          message = @room.messages.create(user: @room.manager, msg_type: 'add-total-employee', body: 'Great! And how many employees are you?')
+          message.create_attachment(html: "<br/>#{view_context.link_to @room.total_employee, '#', :class => 'mini ui green button custom-padding'}'")
+        end
+
         format.html { redirect_to @room, notice: 'Room was successfully updated.' }
         format.json { render :show, status: :ok, location: @room }
       else
@@ -259,6 +282,8 @@ class RoomsController < ApplicationController
         :timeline,
         :quality,
         :description,
+        :website,
+        :total_employee,
         :messages_attributes => [:id, :body,
                               :post_attributes => [:id, :content, :title]]
       )
