@@ -229,12 +229,9 @@
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
 }
-#example.index .masthead.segment div .tagline {
-  margin-bottom: 0;
-}
 
 #example.index .masthead.segment div span.tagline {
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin-bottom: 0;
 }
 #example.index .masthead.segment h1 > .library {
@@ -252,9 +249,9 @@
   margin-left: -0.4em;
 }
 #example.index .masthead h2 {
-  font-weight: normal;
-  margin: 0px 0 16px 0px;
-  font-size: 1.75em;
+  font-weight: bold;
+  margin: 0px 0 6px 0px;
+  font-size: 1.2em;
   border-bottom: none;
   line-height: 1;
 }
@@ -502,7 +499,7 @@
 #example .solid,
 #example .stripe {
   background-color: #FFFFFF;
-  padding: 10em 0px;
+  padding: 2em 0px;
   border-radius: 0em;
   margin: 0em;
   -webkit-transform: translate3d(0, 0, 0);
