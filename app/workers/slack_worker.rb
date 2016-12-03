@@ -31,7 +31,12 @@ class SlackWorker
       next if slack_channel.nil? || slack_channel.inactive?
 
       client = Slack::Web::Client.new token: slack_channel.token
-      slack_message = client.chat_postMessage(message.to_slack(slack_channel.channel_id))
+
+      begin
+        slack_message = client.chat_postMessage(message.to_slack(slack_channel.channel_id))
+      rescue Slack::Web::Api::Error
+        slack_channel.inactive!
+      end
 
       room.message_slack_histories.create(ts: slack_message.ts)
     end
@@ -43,7 +48,12 @@ class SlackWorker
     return if slack_channel.nil? || slack_channel.inactive?
 
     client = Slack::Web::Client.new token: slack_channel.token
-    slack_message = client.chat_postMessage(message.to_slack(slack_channel.channel_id, true))
+
+    begin
+      slack_message = client.chat_postMessage(message.to_slack(slack_channel.channel_id, true))
+    rescue Slack::Web::Api::Error
+      slack_channel.inactive!
+    end
 
     room.message_slack_histories.create(ts: slack_message.ts)
   end
