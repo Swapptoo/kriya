@@ -1,8 +1,8 @@
 namespace :slack do
   desc 'Init slack rtm'
   task sync: :environment do
-    SlackChannel.where(sync: false, status: 'active').ids.each do |slack_channel_id|
-      SlackSyncWorker.perform_async(slack_channel_id)
+    SlackChannel.where(sync: false, status: 'active').each do |slack_channel|
+      slack_channel.sync! unless slack_channel.sync?
     end
   end
 end
