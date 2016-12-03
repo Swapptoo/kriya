@@ -190,28 +190,17 @@ css:
   .ui.black.inverted.vertical.footer.segment
     .ui.center.aligned.container
       .ui.stackable.inverted.grid
-        .three.wide.column
-          h4.ui.inverted.header
-            | Our Presence
-          .ui.inverted.link.list
-            a.item[href="mailto:submissions@kriya.ai" target="_blank"]
-              | Email Us
-            a.item[href="https://facebook.com/kriyaai" target="_blank"]
-              | Facebook
-            a.item[href="https://twitter.com/kriyaai" target="_blank"]
-              | Twitter
-        .three.wide.column
-          h4.ui.inverted.header
-            | Kriya Inc
-          .ui.inverted.link.list
-            a.item
-              | San Francisco,
-            a.item
-              | California.
-        .three.wide.column
-          h4.ui.inverted.header
+        .column
           .ui.inverted.link.list
             a.item
               span.library = image_tag "logo-invert.png", style: "height: 75px", alt: "Kriya AI"
-            br
-            | Copyright 2016.
+          h4.ui.inverted.header
+            .ui.inverted.link.list
+              a.item[href="mailto:submissions@kriya.ai" target="_blank"]
+                | Email Us
+              a.item[href="https://facebook.com/kriyaai" target="_blank"]
+                | Facebook
+              a.item[href="https://twitter.com/kriyaai" target="_blank"]
+                | Twitter
+              a.item
+                | Kriya Inc Copyright 2016.
