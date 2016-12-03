@@ -7,3 +7,4 @@
 .DS_Store
 public/uploads/*
 .idea/*
+.elasticbeanstalk/app_versions/*
