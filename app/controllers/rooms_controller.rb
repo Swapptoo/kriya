@@ -51,7 +51,7 @@ class RoomsController < ApplicationController
 
     @room.messages.create(user: @room.manager, body: 'Alright, no problem', msg_type: 'bot')
     @room.messages.create(user: @room.manager, body: 'Thank you for letting me know what you need and answering my questions. I am now matching your job with one of our many freelancers who will be reaching out shortly.', msg_type: 'bot')
-    @room.messages.create(user: @room.manager, body: 'Please note, we have a distributed network of freelancers with a majority working internationally. Please allow 6 to 12 hrs delay in response since your task was created after 10am PST. Thank you!', msg_type: 'bot')
+    @room.messages.create(user: @room.manager, body: 'Please note, we have a distributed network of freelancers with a majority working internationally. Please allow 6 to 12 hrs delay in response since your task was created after 10am PST. Thank you!', msg_type: 'bot') if @room.created_at.in_time_zone("Pacific Time (US & Canada)").hour >= 10
 
     channel.inactive!
 
