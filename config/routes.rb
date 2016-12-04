@@ -23,6 +23,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :slacks, only: [] do
+    post :incoming, on: :collection
+  end
+
   resources :freelancers, only: [] do
     collection do
       get :deny_slack
