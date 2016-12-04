@@ -42,10 +42,10 @@ css:
         .right.menu.inverted
           - if user_signed_in?
             = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: "item"
-            br
-            - unless user_signed_in? && freelancer_signed_in?
-              = link_to 'Kriya Blog', 'https://blog.kriya.ai', target: '_blank', id: 'blog_link'
-              = link_to 'Service Partners', '/network', id: 'network_link'
+          br
+          - unless user_signed_in? && freelancer_signed_in?
+            = link_to 'Kriya Blog', 'https://blog.kriya.ai', target: '_blank', id: 'blog_link'
+            = link_to 'Service Partners', '/network', id: 'network_link'
 
   .masthead.segment.bg7
     .ui.container
@@ -129,10 +129,11 @@ css:
         .nine.wide.column
           img.ui.circular.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480717131/042e67d_udtu2z.jpg"]
           p
-            | Co-Founder of Grass Shack Events
             b
-          br
-          | Michael McAllen
+              | Co-Founder of Grass Shack Events
+            br
+            | Michael McAllen
+
         .seven.wide.column
           h2.ui.header
             | "Had a great experience!"
