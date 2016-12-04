@@ -12,7 +12,7 @@ class PagesController < ApplicationController
       end
     elsif freelancer_signed_in?
       if current_freelancer.available_rooms.any?
-        redirect_to current_freelancer.available_rooms.last and return
+        redirect_to current_freelancer.available_rooms.last
       else
         render "freelancer_dashboard", layout: "application"
       end

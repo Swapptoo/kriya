@@ -85,19 +85,6 @@ class Message < ApplicationRecord
 
   after_commit :set_room_last_message_created_at, :notify_slack, on: :create
 
-  def self.for_freelancer
-    exclude_typs = [
-      'bot-reject-slack',
-      'bot-thanks-client',
-      'bot-remark-time-diff',
-      'ask-more',
-      'add-website',
-      'add-total-employee'
-    ]
-
-    self.where('msg_type NOT IN (?) OR msg_type IS NULL', exclude_typs)
-  end
-
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1
