@@ -11,7 +11,7 @@ div class="ui segment feed"
 - if user_signed_in?
   = render 'rooms/post_modal'
 - if @room.blank?
-  = render 'shared/_chat_script'
+  = render 'shared/chat_script'
 - if !@room.blank?
   = render 'rooms/client_chat_script'
 - if freelancer_signed_in?
