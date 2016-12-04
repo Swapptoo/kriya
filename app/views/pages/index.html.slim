@@ -1,16 +1,17 @@
 css:
   #network_link, #blog_link {
     padding: 13px;
-    color: rgba(255,255,255,.7)!important;
+    color: rgba(255, 255, 255, .7) !important;
     font-weight: bold;
   }
+
   #network_link:hover, #blog_link:hover {
     color: white;
-    background: rgba(255,255,255,.08);
+    background: rgba(255, 255, 255, .08);
     border-radius: .28571429rem;
   }
 
-  #world_image{
+  #world_image {
     max-width: 50%;
     padding-bottom: 1rem;
     margin: auto;
@@ -22,8 +23,12 @@ css:
 
   }
 
+  .nine.wide.column.p {
+    text-align: center;
+  }
+
   .ui.image {
-    margin:auto;
+    margin: auto;
   }
 
 #example.index
@@ -34,9 +39,9 @@ css:
           - if user_signed_in?
             = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: "item"
             br
-          - unless user_signed_in? && freelancer_signed_in?
-            = link_to 'Kriya Blog', 'https://blog.kriya.ai', target: '_blank', id: 'blog_link'
-            = link_to 'Service Partners', '/network', id: 'network_link'
+            - unless user_signed_in? && freelancer_signed_in?
+              = link_to 'Kriya Blog', 'https://blog.kriya.ai', target: '_blank', id: 'blog_link'
+              = link_to 'Service Partners', '/network', id: 'network_link'
 
   .masthead.segment.bg7
     .ui.container
@@ -58,97 +63,40 @@ css:
             | The Power of Distributed Work
           p
             | Our workforce is spread across five continents
-      .ui.divider
-    .stackable.very.relaxed.ui.grid.container
-      .row
-        .nine.wide.column
-          img.ui.circular.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_200/v1480709934/Home-SaveMoney-Icon_u13glo.png"]
-        .seven.wide.column
-          h2.ui.header
-            | Cost Effective
-          p
-            | We bring down the cost significantly due to the distribution of workforce across low-cost geographies.
-          p
-            | We are our own use case, entire Kriya platform is built for under $5000. Check out our
-            a[href="https://medium.com/@raviformative/minimum-viable-product-mvp-for-3000-d5823d302396"]
-              |  story
-
-          p
-
-      .ui.divider
-      .row
-        .nine.wide.column
-          img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480712150/91-300x277_xrvcmy.png"]
-        .seven.wide.column
-          h2.ui.header
-            | Quality First
-          p
-            | At the push of a button, you get qualified people matching your requirements.
-          p
-            | We partnered with global service companies who meets our quality standards, before becoming available in the network.
-          p
-
-      .ui.divider
-      .row
-        .nine.wide.column
-          img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480711882/chat-bubble-icon-95116_npqtvr.png"]
-        .seven.wide.column
-          h2.ui.header
-            | AI Powered Real Time Communication
-          p
-            | We are a real-time messaging service that's deeply integrated with our favorite work flows like Email, Slack etc.
-          p
-            | AI helps our conversational bot to dispatch, facilitate meetings and incrases productivity by fifty fold by saving lot of time.
-          p
-
   .feature.alternate.ui.stripe.vertical.segment
     .ui.three.column.center.aligned.divided.relaxed.stackable.grid.container
       .row
         .column
           h2.ui.icon.header
             .ui.small.sequenced.images
-              img.ui.circular.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/v1480717131/042e67d_udtu2z.jpg"]
-            |  "Had a great experience!"
+              img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_250/v1480709934/Home-SaveMoney-Icon_u13glo.png"]
+            |  Cost Effective
           p
-            | Me and my partner are amazed at how fast
-            |  we are able to get our lead gen for a cheaper price.
-            | .
+            | We bring down the cost significantly due to the distribution of workforce across low-cost geographies.
             br
             br
-            b
-              | Co-Founder of Grass Shack Events
-              br
-              | Michael McAllen
+
+            | We are our own use case, entire Kriya platform is built for under $5000. Check out our
+            a[href="https://medium.com/@raviformative/minimum-viable-product-mvp-for-3000-d5823d302396"]
+              |  story
         .column
           h2.ui.icon.header
             .ui.small.sequenced.images
-              img.ui.circular.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/v1480717825/AAEAAQAAAAAAAAMbAAAAJGJlNWU0MDJkLWJjM2MtNGRiZS1iNGY1LTk1MDAyMGM1NWRkMA_ar6dnh.jpg"]
-            |  "This is the future. Period."
+              img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480712150/91-300x277_xrvcmy.png"]
+            |  Quality Vetted
           p
-            | I am an entrepreneur that don't compromise on quality.
-            | I was initially skeptical, but was able to get all the designs, engineering etc.
-            | done for a mere $5000
-            br
-            br
-            b
-              | Co-Founder, CEO of Polygon
-              br
-              | Vamsi Thatha
+            | At the push of a button, you get qualified people matching your requirements.
+            | We partnered with global service companies who meets our quality standards, before becoming available in the network.
         .column
           h2.ui.icon.header
             .ui.small.sequenced.images
-              img.ui.circular.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/v1480718077/0a0c8df_xp4grk.jpg"]
-            |  "It's delightful!"
+              img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480711882/chat-bubble-icon-95116_npqtvr.png"]
+            | AI Powered Real Time Communication
           p
-            | I am a power user of Kriya and one of their first customers.
-            | They helped me with lead-gen, engineering, design and everything that I needed to keep going.
-            | Their Slack integration is a game changer.
-            br
-            br
-            b
-              | Founder & CEO of Delighterr
-              br
-              | Baker Nanduru.
+            | We are a real-time messaging service that's deeply integrated with our favorite work flows like Email, Slack etc.
+            |  AI helps our conversational bot to dispatch, facilitate meetings and incrases productivity by fifty fold by saving lot of time.
+
+      .ui.divider
 
   .ui.stripe.vertical.segment
     .ui.stackable.very.relaxed.grid.container
@@ -170,6 +118,69 @@ css:
           a.ui.large.primary.button[href="https://blog.kriya.ai"]
             |  Kriya Blog
             i.right.chevron.icon
+
+  .ui.vertical.stripe.intro.segment
+    .stackable.very.relaxed.ui.grid.container
+      .row
+        .nine.wide.column
+          img.ui.circular.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480717131/042e67d_udtu2z.jpg"]
+          p
+            b
+              | Co-Founder of Grass Shack Events
+              br
+              | Michael McAllen
+        .seven.wide.column
+          h2.ui.header
+            | "Had a great experience!"
+          p
+            | Me and my partner are amazed at how fast
+            |  we are able to get our lead gen for a cheaper price.
+            | .
+
+
+          p
+
+      .ui.divider
+      .row
+        .nine.wide.column
+          img.ui.circular.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480717825/AAEAAQAAAAAAAAMbAAAAJGJlNWU0MDJkLWJjM2MtNGRiZS1iNGY1LTk1MDAyMGM1NWRkMA_ar6dnh.jpg"]
+          p
+            b
+              | Co-Founder, CEO of Polygon
+              br
+              | Vamsi Thatha
+        .seven.wide.column
+          h2.ui.header
+            |  "This is the future. Period."
+          p
+            | I am an entrepreneur that don't compromise on quality.
+
+            | done for a mere $5000
+          p
+            | I was initially skeptical, but was able to get all the designs, engineering etc.
+
+
+      .ui.divider
+      .row
+        #picture.nine.wide.column
+          img.ui.circular.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480718077/0a0c8df_xp4grk.jpg"]
+          p
+            b
+              | Founder & CEO of Delighterr
+              br
+              | Baker Nanduru.
+        .seven.wide.column
+          h2.ui.header
+            |  "It's delightful!"
+          p
+            | I am a power user of Kriya and one of their first customers.
+          p
+            | They helped me with lead-gen, engineering, design and everything that I needed to keep going.
+          p
+            | Their Slack integration is a game changer.
+
+          p
+
 
   .ui.alternate.stripe.vertical.segment
     .ui.stackable.center.aligned.grid.container
