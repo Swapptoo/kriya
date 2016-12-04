@@ -1,5 +1,5 @@
 class SlacksController < ApplicationController
-  before_action :authenticate_user!
+  skip_before_action  :verify_authenticity_token
 
   def incoming
     if params[:challenge] && params[:type] == 'url_verification'
