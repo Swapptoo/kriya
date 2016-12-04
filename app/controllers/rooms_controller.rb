@@ -20,13 +20,13 @@ class RoomsController < ApplicationController
     elsif freelancer_signed_in?
       begin
         @room = current_freelancer.available_rooms.find params[:id]
-        @messages = @room.messages.includes(:user, :attachment, :post).order(:created_at)
+        @messages = @room.messages.for_freelancer.includes(:user, :attachment, :post).order(:created_at)
         render 'freelancer_show'
       rescue
-        redirect_to root_path
+        redirect_to root_path and return
       end
     else
-      redirect_to root_path
+      redirect_to root_path and return
     end
 
     session[:room_id] = @room.id if @room.present?
@@ -48,11 +48,11 @@ class RoomsController < ApplicationController
     channel = user.slack_channels.find_or_create_by(room: @room)
     message = @room.messages.find_or_create_by(msg_type: "slack-#{user.type}", user: @room.manager, body: 'Thanks for that. One last question. Do you use Slack? Please click yes if you do as we deeply integrate with Slack to increase your productivity and communicate easily with the Kriya workforce.')
     message.attachment.try(:destroy)
-    message.create_attachment(:message => @room.messages.last, :html => "<br/>#{view_context.link_to 'No', '#', :class => 'mini ui green button custom-padding slack'}")
+    message.create_attachment(:message => @room.messages.last, :html => "<br/>#{view_context.link_to 'Pass', '#', :class => 'mini ui green button custom-padding slack'}")
 
-    @room.messages.find_or_create_by(user: @room.manager, body: 'Alright, no problem', msg_type: 'bot')
-    @room.messages.find_or_create_by(user: @room.manager, body: 'Thank you for letting me know what you need and answering my questions. I am now matching your job with one of our many freelancers who will be reaching out shortly.', msg_type: 'bot')
-    @room.messages.find_or_create_by(user: @room.manager, body: 'Please note, we have a distributed network of freelancers with a majority working internationally. Please allow 6 to 12 hrs delay in response since your task was created after 10am PST. Thank you!', msg_type: 'bot') if @room.created_at.in_time_zone("Pacific Time (US & Canada)").hour >= 10
+    @room.messages.find_or_create_by(user: @room.manager, body: 'Alright, no problem', msg_type: 'bot-reject-slack')
+    @room.messages.find_or_create_by(user: @room.manager, body: 'Thank you for letting me know what you need and answering my questions. I am now matching your job with one of our many freelancers who will be reaching out shortly.', msg_type: 'bot-thanks-client')
+    @room.messages.find_or_create_by(user: @room.manager, body: 'Please note, we have a distributed network of freelancers with a majority working internationally. Please allow 6 to 12 hrs delay in response since your task was created after 10am PST. Thank you!', msg_type: 'bot-remark-time-diff') if @room.created_at.in_time_zone("Pacific Time (US & Canada)").hour >= 10
 
     channel.inactive!
 
@@ -191,7 +191,7 @@ class RoomsController < ApplicationController
     @room = session.delete(:sign_up_dummy_room)
     if @room
       @room.user = current_user
-      @room.manager = User.where(:email => 'manager@kriya.ai').first || User.where.not(id: current_user.id).all.sample
+      @room.manager = manager
 
       @room.messages.new({:body => 'Welcome to Kriya. Thank you for choosing us. Please select from the following options', :room => @room, :user => @room.manager, :msg_type => 'bot-welcome'})
       @room.messages.new({:body => 'Create Task', :room => @room, :user => @room.user})

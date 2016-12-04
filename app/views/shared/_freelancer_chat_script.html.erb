@@ -65,16 +65,16 @@
   ];
 
   var slack = [
-    'Do you use Slack?',
+    'Thanks for that. One last question. Do you use Slack? Please click yes if you do as we deeply integrate with Slack to increase your productivity and communicate easily with the Kriya workforce.',
     {
       type: 'visit',
       answers: [
         {
-          'text': 'Yes',
+          'text': 'Add Slack',
           'path': "<%== escape_javascript slack_integration_url =%>"
         },
         {
-          'text': 'No',
+          'text': 'Pass',
           'path': '/freelancers/deny_slack'
         }
       ]

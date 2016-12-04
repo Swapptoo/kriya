@@ -73,6 +73,10 @@ class User < ApplicationRecord
   extend FriendlyId
   friendly_id :full_name, use: :slugged
 
+  def self.manager
+    self.find_by(email: 'manager@kriya.ai')
+  end
+
 
   def is_manager_of? goomp
     goomp.user == self
