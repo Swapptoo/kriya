@@ -12,7 +12,7 @@ div class="ui segment feed"
   = render 'rooms/post_modal'
   - if @room.blank?
     = render 'shared/chat_script'
-  - if !@room.blank?
+  - else
     = render 'rooms/client_chat_script'
 - if freelancer_signed_in?
   = render 'shared/freelancer_chat_script'

@@ -24,7 +24,7 @@ css:
             #messages.ui.comments data-room-id=@room.id
               .chat-content
                 = render @messages, :user => current_user
-              = render 'chatbot' if @room.finished? && slack_channel.nil? && current_user.client?
+              = render 'chatbot' if @room.finished? && slack_channel.nil?
             = render 'new_message' if (@room.finished? && slack_channel.present?) || current_user.manager?
 
         .ui.vertical.divider

@@ -33,7 +33,7 @@
     'Please provide your company website',
     {
       type: 'submitAnswer',
-      submitUrl: '/tasks/<%= !@room.blank? and @room.id %>',
+      submitUrl: '/tasks/<%= current_user.client? ? @room.id : '' %>',
       htmlClass: 'website',
       path: 'employeeCount',
       key: 'website'
@@ -44,7 +44,7 @@
     'Great! And how many employees are you?',
     {
       type: 'submitAnswer',
-      submitUrl: '/tasks/<%= !@room.blank? and @room.id %>',
+      submitUrl: '/tasks/<%= current_user.client? ? @room.id : '' %>',
       htmlClass: 'employee-count',
       path: 'slack',
       key: 'total_employee'
@@ -62,7 +62,7 @@
         },
         {
           'text': 'Pass',
-          'path': '/tasks/<%= !@room.blank? and @room.id %>/deny_slack'
+          'path': '/tasks/<%= current_user.client? ? @room.id : '' %>/deny_slack'
         }
       ]
     }
@@ -78,7 +78,7 @@
     note: note
   }
 
-  <% if !@room.blank? and @room.website? %>
+  <% if @room.website? %>
     var configs = {
       greeting: employeeCount,
       employeeCount: employeeCount,
@@ -89,7 +89,7 @@
     }
   <% end %>
 
-  <% if !@room.blank? and @room.total_employee? %>
+  <% if @room.total_employee? %>
     var configs = {
       greeting: slack,
       slack: slack,
@@ -99,7 +99,7 @@
     }
   <% end %>
 
-  <% if !@room.blank? and @room.slack_channels(user: user).present? %>
+  <% if @room.slack_channels(user: user).present? %>
     var configs = {
       greeting: slack,
       slack: slack,
