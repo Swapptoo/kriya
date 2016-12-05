@@ -33,7 +33,7 @@
     'Please provide your company website',
     {
       type: 'submitAnswer',
-      submitUrl: '/tasks/<%= current_user.client? ? @room.id : '' %>',
+      submitUrl: '/tasks/<%= @room.id %>',
       htmlClass: 'website',
       path: 'employeeCount',
       key: 'website'
@@ -44,7 +44,7 @@
     'Great! And how many employees are you?',
     {
       type: 'submitAnswer',
-      submitUrl: '/tasks/<%= current_user.client? ? @room.id : '' %>',
+      submitUrl: '/tasks/<%= @room.id %>',
       htmlClass: 'employee-count',
       path: 'slack',
       key: 'total_employee'
@@ -62,7 +62,7 @@
         },
         {
           'text': 'Pass',
-          'path': '/tasks/<%= current_user.client? ? @room.id : '' %>/deny_slack'
+          'path': '/tasks/<%= @room.id %>/deny_slack'
         }
       ]
     }
