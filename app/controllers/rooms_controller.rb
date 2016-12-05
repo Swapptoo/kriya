@@ -51,8 +51,8 @@ class RoomsController < ApplicationController
     message.create_attachment(:message => @room.messages.last, :html => "<br/>#{view_context.link_to 'Pass', '#', :class => 'mini ui green button custom-padding slack'}")
 
     @room.messages.find_or_create_by(user: @room.manager, body: 'Alright, no problem', msg_type: 'bot-reject-slack')
-    @room.messages.find_or_create_by(user: @room.manager, body: 'Thank you for letting me know what you need and answering my questions. I am now matching your job with one of our many freelancers who will be reaching out shortly.', msg_type: 'bot-thanks-client')
-    @room.messages.find_or_create_by(user: @room.manager, body: 'Please note, we have a distributed network of freelancers with a majority working internationally. Please allow 6 to 12 hrs delay in response since your task was created after 10am PST. Thank you!', msg_type: 'bot-remark-time-diff') if @room.created_at.in_time_zone("Pacific Time (US & Canada)").hour >= 10
+    @room.messages.find_or_create_by(user: @room.manager, body: 'And thanks for answering all my questions. I sent out requests to around 10 matching workforce, who should be joining us here shortly!', msg_type: 'bot-thanks-client')
+    @room.messages.find_or_create_by(user: @room.manager, body: 'Please note, we have a distributed network of workforce, majority are international. Please expect 6 to 12 hrs delay since you created after 10am PST.', msg_type: 'bot-remark-time-diff') if @room.created_at.in_time_zone("Pacific Time (US & Canada)").hour >= 10
 
     channel.inactive!
 

@@ -57,7 +57,7 @@ class OmniauthCallbacksController < ApplicationController
           slack_msg.attachment.try(:destroy)
           slack_msg.create_attachment(:message => slack_msg, :html => "<br/>#{view_context.link_to 'Add Slack', '#', :class => 'mini ui green button custom-padding slack'}")
 
-          room.messages.find_or_create_by(user: room.manager, msg_type: 'bot', body: "Thank you for integrating Kriya with Slack, you can create, communicate and track this task from your Slack channel created by us - #{room.channel_name}.")
+          room.messages.find_or_create_by(user: room.manager, msg_type: 'bot', body: "Integrated with Slack is successful, your channel name on Slack - #{room.channel_name}.")
 
 
         elsif freelancer_signed_in?
