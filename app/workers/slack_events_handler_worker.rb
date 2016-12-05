@@ -14,7 +14,7 @@ class SlackEventsHandlerWorkerSyncWorker
     room = slack_channel.room
 
     if room.message_slack_histories.find_by(ts: slack_event.ts).blank? && room.messages.find_by(body: body, user: slack_channel.user, freelancer: slack_channel.freelancer, created_at: 2.minutes.ago..0.minute.ago).blank?
-      message = room.messages.create(source: 'slack', body: body, user: user, freelancer: freelancer, slack_ts: slack_event.ts, slack_channel: slack_event.channel)
+      message = room.messages.create(source: 'slack', body: body, user: slack_channel.user, freelancer: slack_channel.freelancer, slack_ts: slack_event.ts, slack_channel: slack_event.channel)
 
       if slack_event.file.present?
         web_client = Slack::Web::Client.new(token: slack_channel.token)
