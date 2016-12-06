@@ -71,6 +71,8 @@ gem 'faye-websocket'
 ## Utils
 gem 'activerecord-import', '~> 0.16.1'
 
+gem "passenger", '~> 4.0.59'
+
 group :development, :test do
   gem 'byebug'
 end
