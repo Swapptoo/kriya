@@ -80,7 +80,7 @@ class PaymentsController < ApplicationController
           :currency => "usd",
           :customer => user.stripe_id,
           :destination => destination,
-          :description => "Example charge"
+          :description => "Kriya Task - #{room.title}"
         )
         freelancer_rooms = room.freelancers_rooms.where('status in (?)', ['accepted', 'more_work', 'not_finished']).where("freelancer_id = ?", freelancer.id)
         if freelancer_rooms.any?
@@ -116,7 +116,7 @@ class PaymentsController < ApplicationController
           :amount => amount, # Amount in cents
           :currency => "usd",
           :customer => user.stripe_id,
-          :description => "Example charge"
+          :description => "Kriya Task - #{room.title}"
         )
         message = room.messages.new({:body => 'The transaction was successful.', :room => room, :user => room.manager})
       end
