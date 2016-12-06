@@ -71,7 +71,7 @@ gem 'faye-websocket'
 ## Utils
 gem 'activerecord-import', '~> 0.16.1'
 
-gem "passenger", '~> 4.0.59'
+gem "passenger", ">= 5.0.25", require: "phusion_passenger/rack_handler"
 gem 'execjs'
 gem 'therubyracer', :platforms => :ruby
 
