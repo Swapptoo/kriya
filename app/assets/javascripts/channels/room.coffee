@@ -25,6 +25,7 @@ $ ->
             room_id = identifier.room
             if (@collection().data('room-id') == data.room_id) && (@collection().data('room-id') == parseInt room_id)
               $('#messages').append(data.message)
+              $('#messages #chat-bot').text('')
               $('#messages').imagesLoaded ->
                 ChatWindow.update()
                 $(document).trigger('message:added')
