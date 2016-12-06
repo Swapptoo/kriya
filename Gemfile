@@ -72,6 +72,7 @@ gem 'faye-websocket'
 gem 'activerecord-import', '~> 0.16.1'
 
 gem "passenger", '~> 4.0.59'
+gem 'execjs'
 gem 'therubyracer'
 
 group :development, :test do
