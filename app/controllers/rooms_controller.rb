@@ -115,11 +115,11 @@ class RoomsController < ApplicationController
 
   # GET /rooms/:id/accept
   def accept
-    @room = current_freelancer.asigned_rooms.find params[:id]
-    ru = @room.freelancers_rooms.where(freelancer_id: current_freelancer.id)
+    @room = current_freelancer.asigned_rooms.find(params[:id])
+    freelancer_room = @room.freelancers_rooms.find_by(freelancer_id: current_freelancer.id)
 
-    if ru.any? && ru[0].status == 'pending'
-      ru[0].update_attribute(:status, 'accepted')
+    if @room.in_progress_freelancers.blank? && freelancer_room.present? && freelancer_room.status == 'pending'
+      freelancer_room.update_attribute(:status, 'accepted')
       @message = Message.new({ body: "Good news, we assigned our expert, #{current_freelancer.first_name} to this task. They should be here shortly. I will let you both take it from here!" })
       @message.room = @room
       @message.user = @room.manager
