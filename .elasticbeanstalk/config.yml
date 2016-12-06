@@ -1,14 +1,15 @@
 branch-defaults:
-  master:
-    environment: dantos-production-1
+  passenger:
+    environment: LowCost-env
 environment-defaults:
-  dantos-production-1:
+  LowCost-env:
     branch: null
     repository: null
 global:
-  application_name: dantos
-  default_ec2_keyname: vibol
-  default_platform: 64bit Amazon Linux 2016.09 v2.2.0 running Ruby 2.3 (Puma)
+  application_name: kriya.ai
+  default_ec2_keyname: null
+  default_platform: 64bit Amazon Linux 2016.09 v2.2.0 running Ruby 2.3 (Passenger
+    Standalone)
   default_region: us-west-2
   profile: eb-cli
   sc: git
