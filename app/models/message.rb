@@ -101,58 +101,60 @@ class Message < ApplicationRecord
   def process_command
     if self.body =~ /\/charge \$?([\d\.]+)/
       amount = $1
-  	  if user && user.client? then
-  		  return
-  	  end
+      return if user && user.client?
 
       if self.freelancer && self.freelancer.stripe_client_id.blank?
         self.update body: 'We sent a note to the client for your charge, meanwhile please connect your stripe', user: self.room.manager, msg_type: 'bot-not-connect-stripe'
         self.create_attachment html: "<br/>"
+
         self.attachment.html += <<~HTML.squish
           <button id="customButton-#{self.id}" class="mini ui green button custom-padding">Connect with Stripe</button>
           <script>
             document.getElementById("customButton-#{self.id}").addEventListener('click', function(e) {
-              window.location.href = '/auth/stripe_connect?room_id=#{self.room_id}'
+              window.location.href = "/auth/stripe_connect?room_id=#{self.room_id}"
             });
           </script>
         HTML
+
         self.attachment.save
       else
-
         self.create_attachment html: "<br/>"
-        if self.room.user.stripe_id != nil then
 
+        if self.room.user.stripe_id.present?
           self.attachment.html += <<~HTML.squish
-          <button id="customButton-#{self.id}" class="mini ui green button custom-padding">Pay</button>
-          <script>
-            document.getElementById("customButton-#{self.id}").addEventListener('click', function(e) {
-              $.post("/payments.json", {
-                  amount: #{(amount.to_f*100).to_i},
-                  message_id: #{self.id},
-                  payment: {
-                    user_id: #{self.room.user.id},
-                    freelancer_id: #{self.freelancer.nil? ? 'undefined' : self.freelancer.id}
-                  }
-                });
-              e.preventDefault();
-            });
-          </script>
+            <button id="customButton-#{self.id}" class="mini ui green button custom-padding">Pay</button>
+            <script>
+              document.getElementById("customButton-#{self.id}").addEventListener('click', function(e) {
+                $.post("/payments.json", {
+                    amount: "#{(amount.to_f*100).to_i}",
+                    message_id: "#{self.id}",
+                    payment: {
+                      user_id: "#{self.room.user.id}",
+                      freelancer_id: "#{self.freelancer.nil? ? 'undefined' : self.freelancer.id}"
+                    }
+                  });
+                e.preventDefault();
+              });
+            </script>
           HTML
-          title = "Change card"
-          color = "white"
+
+          title = 'Change card'
+          color = 'white'
           update_customer = 1
         else
-          if !self.user.nil?
-            title = "Pay with card"
-          elsif !self.freelancer.nil?
-            title = "Yes, Pay with card"
+          if self.user.present?
+            title = 'Pay with card'
+          elsif self.freelancer.present?
+            title = 'Yes, Pay with card'
           end
-          color = "green"
+
+          color = 'green'
           update_customer = 0
         end
+
         self.attachment.html += <<~HTML.squish
-        <script src="https://checkout.stripe.com/checkout.js"></script>
-        <button id="customButton-#{self.id}-2" class="mini ui #{color} button custom-padding">#{title}</button>
+          <script src="https://checkout.stripe.com/checkout.js"></script>
+          <button id="customButton-#{self.id}-2" class="mini ui #{color} button custom-padding">#{title}</button>
           <script>
             var handler = StripeCheckout.configure({
               key: $("meta[name=stripePublishableKey]").attr("content"),
@@ -163,11 +165,11 @@ class Message < ApplicationRecord
               token: function(token) {
                 return $.post("/payments.json", {
                   token: token,
-                  amount: #{(amount.to_f*100).to_i},
-                  update_customer: #{update_customer},
-                  message_id: #{self.id},
+                  amount: "#{(amount.to_f*100).to_i}",
+                  update_customer: "#{update_customer}",
+                  message_id: "#{self.id}",
                   payment: {
-                    user_id: #{self.room.user.id}
+                    user_id: "#{self.room.user.id}"
                   }
                 });
               }
@@ -187,15 +189,18 @@ class Message < ApplicationRecord
             });
           </script>
         HTML
-        if !self.user.nil?
-          self.update body: "The charge for this task is $#{amount}, please finish this transaction so the workforce gets paid?", :msg_type => 'bot-charge-task'
-        elsif !self.freelancer.nil?
+
+        if self.user.present?
+          self.update(body: "The charge for this task is $#{amount}, please finish this transaction so the workforce gets paid?", msg_type: 'bot-charge-task')
+        elsif self.freelancer.present?
           freelancer_rooms = self.room.freelancers_rooms.where('status in (?)', ['accepted', 'more_work', 'not_finished']).where("freelancer_id = ?", self.freelancer.id)
+
           if freelancer_rooms.any?
             freelancer_room_id = freelancer_rooms[0].id
           else
             freelancer_room_id = ''
           end
+
           self.attachment.html += <<~HTML.squish
             <button id="customButton-#{self.id}-3" class="mini ui white button custom-padding">No</button>
             <script>
@@ -210,8 +215,10 @@ class Message < ApplicationRecord
               });
             </script>
           HTML
-          self.update body: "The charge for this task is $#{amount}, please finish this transaction so the workforce gets paid?", user: self.room.manager, msg_type: 'bot-task-finish'
+
+          self.update(body: "The charge for this task is $#{amount}, please finish this transaction so the workforce gets paid?", user: self.room.manager, msg_type: 'bot-task-finish')
         end
+
         self.attachment.save
 
         logger.debug self.inspect
