@@ -60,7 +60,22 @@ class ImageUploader < CarrierWave::Uploader::Base
   #   "something.jpg" if original_filename
   # end
 
-private
+  def image?(new_file = nil)
+    if new_file.nil?
+      content_type.include?('image')
+    else
+      new_file.content_type.include?('image')
+    end
+  end
+
+  def not_image?(new_file = nil)
+    file = new_file.presence || self
+
+    !image?(file)
+  end
+
+  private
+
   def crop(geometry)
     manipulate! do |img|
       img.combine_options do |image|
@@ -70,12 +85,5 @@ private
       end
       img
     end
-  end
-protected
-  def image?(new_file)
-    new_file.content_type.include? 'image'
-  end
-  def not_image?(new_file)
-    !(new_file.content_type.include? 'image')
   end
 end

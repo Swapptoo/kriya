@@ -257,7 +257,7 @@ class Message < ApplicationRecord
   end
 
   def to_slack(slack_channel, as_user = false)
-    if file?
+    if image?
       text = (as_user || user.try(:manager?)) ? '' : "*#{owner.first_name}*"
 
       {
@@ -270,6 +270,13 @@ class Message < ApplicationRecord
         text: text,
         channel: slack_channel,
         as_user: as_user
+      }
+
+    elsif file?
+      {
+        content: IO.copy_stream(open(image.url), image.file.filename),
+        filename: image.file.filename,
+        channel: slack_channel
       }
     elsif post.present?
       text = "I've just created a task at #{post.public_url}"
@@ -293,7 +300,11 @@ class Message < ApplicationRecord
   end
 
   def file?
-    image.file.present?
+    image.file.present? && image.not_image?
+  end
+
+  def image?
+    image.file.present? && image.image?
   end
 
   private

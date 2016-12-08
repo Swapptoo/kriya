@@ -33,7 +33,11 @@ class SlackWorker
       client = Slack::Web::Client.new token: slack_channel.token
 
       begin
-        slack_message = client.chat_postMessage(message.to_slack(slack_channel.channel_id))
+        if message.file?
+          slack_message = client.files_upload(message.to_slack(slack_channel.channel_id))
+        else
+          slack_message = client.chat_postMessage(message.to_slack(slack_channel.channel_id))
+        end
       rescue Slack::Web::Api::Error
         slack_channel.inactive!
       end
@@ -50,7 +54,11 @@ class SlackWorker
     client = Slack::Web::Client.new token: slack_channel.token
 
     begin
-      slack_message = client.chat_postMessage(message.to_slack(slack_channel.channel_id, true))
+      if message.file?
+        slack_message = client.files_upload(message.to_slack(slack_channel.channel_id))
+      else
+        slack_message = client.chat_postMessage(message.to_slack(slack_channel.channel_id, true))
+      end
     rescue Slack::Web::Api::Error
       slack_channel.inactive!
     end
