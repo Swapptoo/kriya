@@ -126,11 +126,11 @@ class Message < ApplicationRecord
             <script>
               document.getElementById("customButton-#{self.id}").addEventListener('click', function(e) {
                 $.post("/payments.json", {
-                    amount: "#{(amount.to_f*100).to_i}",
-                    message_id: "#{self.id}",
+                    amount: #{(amount.to_f*100).to_i},
+                    message_id: #{self.id},
                     payment: {
-                      user_id: "#{self.room.user.id}",
-                      freelancer_id: "#{self.freelancer.nil? ? 'undefined' : self.freelancer.id}"
+                      user_id: #{self.room.user.id},
+                      freelancer_id: #{self.freelancer.nil? ? 'undefined' : self.freelancer.id}
                     }
                   });
                 e.preventDefault();
@@ -191,7 +191,11 @@ class Message < ApplicationRecord
         HTML
 
         if self.user.present?
-          self.update(body: "The charge for this task is $#{amount}, please finish this transaction so the workforce gets paid?", msg_type: 'bot-charge-task')
+          if self.msg_type == 'bot-half-charge-task'
+            self.update(body: "Awesome! Thank you for the detailed description of the task. Please pay 50% of the budgt, $#{amount} to continue. This goes into Kriya Escrow and will be paid to the workforce ONLY after successful completion of the task. We revert the charge otherwise.")
+          else
+            self.update(body: "The charge for this task is $#{amount}, please finish this transaction so the workforce gets paid?", msg_type: 'bot-charge-task')
+          end
         elsif self.freelancer.present?
           freelancer_rooms = self.room.freelancers_rooms.where('status in (?)', ['accepted', 'more_work', 'not_finished']).where("freelancer_id = ?", self.freelancer.id)
 

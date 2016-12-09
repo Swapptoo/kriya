@@ -51,6 +51,7 @@ class PostsController < ApplicationController
       @message.save
       @message.process_command
 
+      @room.create_escrow_payment_message if @room.posts.count == 1
       respond_modal_with @post, location: request.referer and return
     end
   end

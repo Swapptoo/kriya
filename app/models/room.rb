@@ -16,6 +16,7 @@
 #  last_message_created_at :datetime
 #  website                 :string
 #  total_employee          :integer
+#  first_paid_amount_cents :integer          default(0)
 #
 # Indexes
 #
@@ -35,7 +36,7 @@ class Room < ApplicationRecord
 
   belongs_to :user
   belongs_to :manager, class_name: "User"
-  monetize :budget_cents
+  monetize :budget_cents, :first_paid_amount_cents
 
   has_many :freelancers_rooms, class_name: 'FreelancersRooms'
   has_and_belongs_to_many :asigned_freelancers, join_table: :freelancers_rooms, class_name: "Freelancer", after_add: :send_asigned_room_email_to_freelancer
@@ -47,6 +48,43 @@ class Room < ApplicationRecord
   validates_presence_of :category_name
 
   before_create { self.category_name ||= "Design" }
+
+  def create_escrow_payment_message
+    msg = messages.create(body: "/charge $#{escrow_amount}", user: manager, msg_type: 'bot-half-charge-task')
+    msg.process_command
+  end
+
+  def escrow_amount_cents
+    percentag = if budget_cents < 1000_00
+      50
+    elsif budget_cents >= 1000_00 && budget_cents < 5000_00
+      25
+    elsif budget_cents >= 5000_00 && budget_cents < 10_000_00
+      20
+    elsif budget_cents >= 10_000_00
+      15
+    end
+
+    budget_cents.to_f * percentag / 100
+  end
+
+  def kriya_fee_cents
+    percentag = if budget_cents < 500_00
+      30
+    elsif budget_cents >= 500_00
+      20
+    end
+
+    budget_cents.to_f * percentag / 100
+  end
+
+  def remaining_amount_cents
+    budget_cents - escrow_amount_cents + kriya_fee_cents
+  end
+
+  def escrow_amount
+    escrow_amount_cents / 100
+  end
 
   def accepted_freelancers
     self.asigned_freelancers.where("freelancers_rooms.status = 'accepted'")

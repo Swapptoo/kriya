@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202100845) do
+ActiveRecord::Schema.define(version: 20161208142410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -298,6 +298,7 @@ ActiveRecord::Schema.define(version: 20161202100845) do
     t.datetime "last_message_created_at"
     t.string   "website"
     t.integer  "total_employee"
+    t.integer  "first_paid_amount_cents", default: 0
     t.index ["manager_id"], name: "index_rooms_on_manager_id", using: :btree
     t.index ["user_id"], name: "index_rooms_on_user_id", using: :btree
   end

@@ -54,7 +54,7 @@ class PaymentsController < ApplicationController
     end
 
     # Create a charge: this will charge the user's card
-    
+
     if payment_params[:freelancer_id]
       freelancer = Freelancer.find payment_params[:freelancer_id]
       destination = freelancer.stripe_client_id
@@ -118,6 +118,12 @@ class PaymentsController < ApplicationController
           :customer => user.stripe_id,
           :description => "Kriya Task - #{room.title}"
         )
+
+        if amount == room.escrow_amount_cents && room.first_paid_amount_cents == 0
+          room.update(first_paid_amount_cents: amount)
+          Payment::FirstEscrowWorker.perform_async(room.id, amount)
+        end
+
         message = room.messages.new({:body => 'The transaction was successful.', :room => room, :user => room.manager})
       end
       room.save
@@ -135,14 +141,10 @@ class PaymentsController < ApplicationController
 
     @payment = Payment.new(payment_params)
 
-    respond_to do |format|
-      if @payment.save
-        format.html { redirect_to @payment, notice: 'Payment was successfully created.' }
-        format.json { head :no_content }
-      else
-        format.html { render :new }
-        format.json { render json: @payment.errors, status: :unprocessable_entity }
-      end
+    if @payment.save
+      redirect_to room_path(room)
+    else
+      render :new
     end
   end
 

@@ -4,6 +4,7 @@
 :logfile: log/sidekiq.log
 :queues:
   - room
+  - payment
   - slack
   - slack_events_handler
   - unseen_message_alert

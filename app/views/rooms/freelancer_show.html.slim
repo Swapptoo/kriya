@@ -23,11 +23,9 @@
                 .ui.icon.bottom.left.pointing.dropdown.button.primary
                   i.plus.icon
                   .menu
-                    .item data-charge-user=true Finish Task
                     .item.fileinput-button
                       ' Upload File/Photo
                       = f.file_field :image
-                    .item data-charge-user=true Charge Task
 
                 = f.text_field :body, :autofocus => true, :autocomplete => 'off', :placeholder => "Start typing…"
         - else

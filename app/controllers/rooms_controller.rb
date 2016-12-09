@@ -167,6 +167,8 @@ class RoomsController < ApplicationController
           message = @room.messages.create(:body => msg_body, :user => @room.user, :seen => true)
           message.post = Post.new(:content => post_body, :title => post_title, :user => @room.user)
           message.post.save!
+
+          @room.create_escrow_payment_message
         end
 
         format.html { redirect_to @room, notice: 'Room was successfully created.' }
