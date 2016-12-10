@@ -82,7 +82,7 @@ class Room < ApplicationRecord
   end
 
   def remaining_amount_cents
-    budget_cents - escrow_amount_cents + kriya_fee_cents
+    budget_cents - first_paid_amount_cents + kriya_fee_cents
   end
 
   def escrow_amount
