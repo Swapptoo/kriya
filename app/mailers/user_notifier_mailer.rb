@@ -24,6 +24,8 @@ class UserNotifierMailer < ApplicationMailer
     @manager = room.manager
 
     mail(:to => 'managers@kriya.ai', :subject => "#{room.title}")
+    mail(:to => 'manager@kriya.ai', :subject => "#{room.title}")
+
   end
 
   def notify_manager_on_first_escrow(room, amount)
@@ -32,8 +34,9 @@ class UserNotifierMailer < ApplicationMailer
     @room = room
     @amount = amount / 100 #in dollars
     @manager = room.manager
-
+    mail(:to => 'managers@kriya.ai', :subject => "First Escrow of USD#{@amount} for #{room.title}")
     mail(:to => 'manager@kriya.ai', :subject => "First Escrow of USD#{@amount} for #{room.title}")
+
   end
 
   def notify_unseen_messages(room, recipient, messages)
