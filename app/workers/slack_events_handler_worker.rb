@@ -3,9 +3,11 @@ class SlackEventsHandlerWorkerSyncWorker
   sidekiq_options queue: :slack_events_handler, backtrace: true
 
   def perform(slack_params)
-    slack_event = slack_params.to_ostruct.event
+    slack = slack_params.to_ostruct
+    authed_users = slack.authed_users
+    slack_event = slack.event
 
-    slack_channel = SlackChannel.find_by(uid: slack_event.user, channel_id: slack_event.channel)
+    slack_channel = SlackChannel.find_by(uid: authed_users, channel_id: slack_event.channel)
 
     return if slack_channel.nil?
 
