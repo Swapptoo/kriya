@@ -99,7 +99,9 @@
     }
   <% end %>
 
-  <% if @room.slack_channels(user: user).present? %>
+  <% slack_channel = @room.slack_channels.find_by(user: user) %>
+
+  <% if slack_channel.present? && slack_channel.inactive? %>
     var configs = {
       greeting: slack,
       slack: slack,
