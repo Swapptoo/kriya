@@ -54,18 +54,21 @@ class Room < ApplicationRecord
     msg.process_command
   end
 
-  def escrow_amount_cents
-    percentag = if budget_cents < 1000_00
+  def first_paid_amount_percentag
+    if budget_cents < 1000_00
       50
     elsif budget_cents >= 1000_00 && budget_cents < 5000_00
       25
     elsif budget_cents >= 5000_00 && budget_cents < 10_000_00
       20
-    elsif budget_cents >= 10_000_00
+    # elsif budget_cents >= 10_000_00
+    else
       15
     end
+  end
 
-    budget_cents.to_f * percentag / 100
+  def escrow_amount_cents
+    budget_cents.to_f * first_paid_amount_percentag / 100
   end
 
   def kriya_fee_cents

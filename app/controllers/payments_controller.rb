@@ -119,9 +119,9 @@ class PaymentsController < ApplicationController
           :description => "Kriya Task - #{room.title}"
         )
 
-        if amount == room.escrow_amount_cents && room.first_paid_amount_cents == 0
-          room.update(first_paid_amount_cents: amount)
-          Payment::FirstEscrowWorker.perform_async(room.id, amount)
+        if amount.to_i == room.escrow_amount_cents.to_i && room.first_paid_amount_cents == 0
+          room.update(first_paid_amount_cents: amount.to_i)
+          Payment::FirstEscrowWorker.perform_async(room.id, amount.to_i)
         end
 
         message = room.messages.new({:body => 'The transaction was successful.', :room => room, :user => room.manager})
