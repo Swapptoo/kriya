@@ -9,7 +9,7 @@ class SlackEventsHandlerWorkerSyncWorker
 
     slack_channel = SlackChannel.find_by(uid: authed_users, channel_id: slack_event.channel)
 
-    return if slack_channel.nil?
+    return if slack_channel.nil? || slack_event.hidden == true
 
     message_owner = slack_channel.user.presence || slack_channel.freelancer
     body = Slack::Messages::Formatting.unescape(slack_event.text)
