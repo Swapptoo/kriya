@@ -46,6 +46,7 @@ class Room < ApplicationRecord
   has_many :freelancer_rates
 
   validates_presence_of :category_name
+  validates :budget_cents, numericality: { :greater_than_or_equal_to => 0 }
 
   before_create { self.category_name ||= "Design" }
 
