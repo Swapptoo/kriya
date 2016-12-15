@@ -192,7 +192,7 @@ class Message < ApplicationRecord
 
         if self.user.present?
           if self.msg_type == 'bot-half-charge-task'
-            self.update(body: "Awesome! Thank you for the detailed description of the task. Please pay #{self.room.first_paid_amount_percentag}% of the budgt, $#{amount} to continue. This goes into Kriya Escrow and will be paid to the workforce ONLY after successful completion of the task. We revert the charge otherwise.")
+            self.update(body: "Awesome! Thank you for the detailed description of the task. Please pay #{self.room.first_paid_amount_percentag}% of the budget, $#{amount} to continue. This goes into Kriya Escrow and will be paid to the workforce ONLY after successful completion of the task. We revert the charge otherwise.")
           else
             self.update(body: "The charge for this task is $#{amount}, please finish this transaction so the workforce gets paid?", msg_type: 'bot-charge-task')
           end
