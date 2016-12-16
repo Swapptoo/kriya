@@ -39,6 +39,8 @@
 
 #example.index .masthead {
   position: relative;
+  height: auto;
+  min-height: 45rem;
   overflow: hidden;
   text-align: center;
   padding: 0em;
@@ -129,8 +131,6 @@
 #example.index .masthead .container {
   margin-left: auto !important;
   margin-right: auto !important;
-  min-height: 700px;
-
   padding-top: 50px;
   padding-bottom: 25px;
 

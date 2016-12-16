@@ -427,7 +427,9 @@ a.fluidbox
   height: 92vh
 
 .ui.segment.feed.new
-  width: 650px
+  min-width: 60%
+  width: 60%
+  margin: auto
 
 .ui.segment.feed
   .content
@@ -610,19 +612,24 @@ hr
   width: 100px
   display: inline-block
 
-@media (min-width: 320px)
 /* smartphones, iPhone, portrait 480x320 phones
+@media (min-width: 320px)
+  .ui.segment.feed.new
+    width: 100%
 
-@media (min-width: 481px)
 /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide.
+@media (min-width: 481px)
+  .ui.segment.feed.new
+    width: 100%
 
-@media (min-width: 641px)
 /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones
-
+@media (min-width: 641px)
+  .ui.segment.feed.new
+    width: 100%
 /* tablet, landscape iPad, lo-res laptops ands desktops
 @media (min-width: 961px)
   .ui.segment.feed.new
-    width: 100%
+    width: 60% !important
 
   #new_user.main
     width: 50%
@@ -631,7 +638,7 @@ hr
 /* big landscape tablets, laptops, and desktops
 @media (min-width: 1025px)
   .ui.segment.feed.new
-    width: 100%
+    width: 60% !important
 
   #new_user.main
     width: 100%
@@ -641,7 +648,7 @@ hr
 /* hi-res laptops and desktops
 @media (min-width: 1281px)
   .ui.segment.feed.new
-    width: 100%
+    width: 60% !important
 
   #new_user.main
     width: 100%
