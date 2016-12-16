@@ -26,7 +26,7 @@ css:
                 = render @messages, :user => current_user
               - if @room.finished? && (@room.created_at <= Time.zone.parse('09 Dec 2016 14:52:24 UTC +00:00') || @room.first_paid_amount_cents?) && slack_channel.nil? && current_user.client?
                 = render 'chatbot'
-            - if (@room.finished? && (@room.created_at <= Time.zone.parse('09 Dec 2016 14:52:24 UTC +00:00') || @room.first_paid_amount_cents?) && slack_channel.present?) || current_user.manager?
+            - if @room.finished? || current_user.manager?
               = render 'new_message'
 
         .ui.vertical.divider
