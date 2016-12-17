@@ -85,35 +85,43 @@ class PostsController < ApplicationController
 
   def public
     token = params[:token].split('-').last
-
     @post = Post.find_by(token: token)
 
-    redirect_to room_path(@post.room) and return if freelancer_signed_in? || user_signed_in?
+    redirect_to room_path(@post.room) and return if user_can_access_room? || freelancer_can_access_room?
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_post
-      @post = current_user.posts.find(params[:id])
-    end
 
-    def set_goomp
-      @goomp = Goomp.friendly.find(params[:goomp_id]) if params[:goomp_id]
-    end
+  def user_can_access_room?
+    user_signed_in? && (current_user.rooms.include?(@post.room) || current_user.manager?)
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def post_params
-      params.require(:post).permit(
-        :title,
-        :body,
-        :content,
-        :goomp_id,
-        :subtopic_id,
-        :link_title,
-        :link_description,
-        :link_image,
-        :link_video,
-        :link_url,
-      )
-    end
+  def freelancer_can_access_room?
+    freelancer_signed_in? && current_freelancer.available_rooms.include?(@post.room)
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_post
+    @post = current_user.posts.find(params[:id])
+  end
+
+  def set_goomp
+    @goomp = Goomp.friendly.find(params[:goomp_id]) if params[:goomp_id]
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def post_params
+    params.require(:post).permit(
+      :title,
+      :body,
+      :content,
+      :goomp_id,
+      :subtopic_id,
+      :link_title,
+      :link_description,
+      :link_image,
+      :link_video,
+      :link_url,
+    )
+  end
 end
