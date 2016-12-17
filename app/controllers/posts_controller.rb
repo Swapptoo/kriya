@@ -84,7 +84,7 @@ class PostsController < ApplicationController
   end
 
   def public
-    token = params[:token].gsub('engineering-slack-task-', '')
+    token = params[:token].split('-').last
 
     @post = Post.find_by(token: token)
 

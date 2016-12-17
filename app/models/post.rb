@@ -64,9 +64,13 @@ class Post < ApplicationRecord
     ActionView::Base.full_sanitizer.sanitize(content).gsub('+', '')
   end
 
+  def short_title
+    self.title.first(5)
+  end
+
   def public_url
     Rails.application.routes.url_helpers.public_post_url(
-      "engineering-slack-task-#{self.token}",
+      "#{short_title}-#{self.token}",
       host: Rails.application.secrets.host
     )
   end

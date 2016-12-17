@@ -23,9 +23,12 @@ class RoomsController < ApplicationController
         @messages = @room.messages.for_freelancer.includes(:user, :attachment, :post).order(:created_at)
         render 'freelancer_show'
       rescue
+        redirect_to @room.posts.first.public_url and return if @room.posts.first.present?
         redirect_to root_path and return
       end
     else
+      room = Room.find(params[:id])
+      redirect_to room.posts.first.public_url and return if room.posts.first.present?
       redirect_to root_path and return
     end
 
