@@ -1,7 +1,7 @@
 doctype html
 html
   head = render "layouts/head"
-  body
+  body id="#{css_class_name}"
     - if user_signed_in?
       input type="hidden" value="user" id="is_user"
     - if freelancer_signed_in?

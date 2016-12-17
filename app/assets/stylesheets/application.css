@@ -17,6 +17,7 @@
  *= require itcss
  *= require docs
  *= require home
+ *= require posts/public
  *= require jquery.fileupload
  *= require fluidbox.min
  *= require dataTables/jquery.dataTables

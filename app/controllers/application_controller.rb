@@ -33,6 +33,11 @@ class ApplicationController < ActionController::Base
     "https://slack.com/oauth/authorize?&scope=chat:write:bot%20chat:write:user%20files:write:user%20groups:history%20groups:read%20groups:write%20pins:write%20identify%20incoming-webhook%20channels:read%20channels:write&client_id=#{Rails.application.secrets.slack_app_id}"
   end
 
+  def css_class_name
+    "#{controller_name}-#{action_name}"
+  end
+
+  helper_method :css_class_name
   helper_method :slack_integration_html
   helper_method :slack_integration_url
 

@@ -47,7 +47,7 @@
   <%- if new_user %>
     var configs = {
       greeting: [
-        '<%== escape_javascript ["Hi, I am Kriya Bot. One of our clients need the following task to be done. If you or anyone you know can do this, please share it or sign up.", @post.content_escaped].join("</br></br>").html_safe %>',
+        '<%== escape_javascript ["<p>Hi, I am Kriya Bot. One of our clients need the following task to be done. If you or anyone you know can do this, please share it or sign up.</p>", "<h2>#{@post.title}</h2>", "<p>#{@post.content_escaped}</p>"].join('').html_safe %>',
         {
           type: 'choose',
           answers: [
