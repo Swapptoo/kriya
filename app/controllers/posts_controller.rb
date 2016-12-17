@@ -88,7 +88,7 @@ class PostsController < ApplicationController
 
     @post = Post.find_by(token: token)
 
-    redirect_to room_path(@post.room) and return if current_freelancer.present?
+    redirect_to room_path(@post.room) and return if freelancer_signed_in? || user_signed_in?
   end
 
   private
