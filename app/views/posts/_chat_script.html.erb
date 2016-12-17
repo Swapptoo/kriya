@@ -44,7 +44,7 @@
     'Welcome to Kriya. We are glad you are here. We will notify you as soon as there\'s a gig matching your profile. Keep watching this space'
   ];
 
-  <%- if new_user %>
+  <%- if new_user && @post.present? && @post.room.present? %>
 
     var taskDescription = [
       '<%== escape_javascript ["<p>Hi, I am Kriya Bot. One of our clients need the following task to be done. If you or anyone you know can do this, please share it or sign up.</p>", "<h2>#{@post.title}</h2>", "<p>#{@post.content}</p>"].join('').html_safe %>',
