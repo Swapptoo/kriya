@@ -2,4 +2,11 @@
   .cui__list__item p {
     font-size: 1rem !important;
   }
+
+  .cui__bubble--response.no-float {
+    float: none;
+    background: transparent;
+    padding-left: 0;
+    color: rgba(0, 0, 0, 0.87);
+  }
 }

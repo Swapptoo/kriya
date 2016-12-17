@@ -45,23 +45,37 @@
   ];
 
   <%- if new_user %>
+
+    var taskDescription = [
+      '<%== escape_javascript ["<p>Hi, I am Kriya Bot. One of our clients need the following task to be done. If you or anyone you know can do this, please share it or sign up.</p>", "<h2>#{@post.title}</h2>", "<p>#{@post.content}</p>"].join('').html_safe %>',
+      {
+        type: 'blank',
+        path: 'timeLine'
+      }
+    ]
+
+    var timeLine = [
+      '<%== escape_javascript "<div class='cui__bubble cui__bubble--response no-float'><b>Budget:</b> #{number_to_currency @post.room.budget}</div>" %>' +
+      '<%== escape_javascript "<div class='cui__bubble cui__bubble--response no-float'><b>Date posted:</b> #{@post.created_at.to_date.to_s(:long)}</div>" %>' +
+      '<%== escape_javascript "<div class='cui__bubble cui__bubble--response no-float'><b>Timeline:</b> #{@post.room.timeline}</div>" %>',
+      {
+        type: 'choose',
+        answers: [
+          {
+            'text': 'Get Started',
+            'path': 'signup'
+          },
+          {
+            'text': 'Sign In',
+            'path': 'login'
+          }
+        ]
+      }
+    ]
+
     var configs = {
-      greeting: [
-        '<%== escape_javascript ["<p>Hi, I am Kriya Bot. One of our clients need the following task to be done. If you or anyone you know can do this, please share it or sign up.</p>", "<h2>#{@post.title}</h2>", "<p>#{@post.content_escaped}</p>"].join('').html_safe %>',
-        {
-          type: 'choose',
-          answers: [
-            {
-              'text': 'Get Started',
-              'path': 'signup'
-            },
-            {
-              'text': 'Sign In',
-              'path': 'login'
-            }
-          ]
-        }
-      ],
+      greeting: taskDescription,
+      timeLine: timeLine,
       login: login,
       signup: sign_up
     };

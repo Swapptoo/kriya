@@ -44,7 +44,8 @@ class Post < ApplicationRecord
   validates :title, presence: true
   validate  :validate_content_from_editor
 
-  before_save   :ensure_token
+  before_save   :ensure_token,
+                :ensure_auto_link
   after_commit  :trigger_room_notification, on: :create
 
   include Likable
@@ -92,5 +93,9 @@ class Post < ApplicationRecord
         break token unless Post.where(token: token).first
       end
     end
+  end
+
+  def ensure_auto_link
+    self.content = ActionController::Base.helpers.auto_link(content, sanitize_options: { attributes: ['style']}, html: { target: '_blank', rel: "nofollow" })
   end
 end
