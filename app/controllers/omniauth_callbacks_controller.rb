@@ -47,7 +47,7 @@ class OmniauthCallbacksController < ApplicationController
             channel = client.groups_create(name: room.channel_name)
             slack_channel.update(channel_id: channel.group.id)
             client.chat_postMessage(channel: channel.group.id, text: "Thanks for creating a task on Kriya, you can track and communicate using this Slack channel.")
-            message = client.chat_postMessage(channel: channel.group.id, text: "Below is the link to the task #{room.posts.first.public_url}")
+            message = client.chat_postMessage(channel: channel.group.id, text: "Keep this link to the Kriya room #{room.posts.first.public_url}")
             client.pins_add(channel: channel.group.id, timestamp: message.ts)
           else
             slack_channel.update(channel_id: channel.id)
