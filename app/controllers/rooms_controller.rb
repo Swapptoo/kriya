@@ -162,7 +162,7 @@ class RoomsController < ApplicationController
         @room.messages.create({:body => @room.timeline, :room => @room, :user => @room.user})
         @room.messages.create({:body => 'Please choose the expertise level', :room => @room, :user => @room.manager, :msg_type => 'bot-expertise-level'})
         @room.messages.create({:body => @room.quality, :room => @room, :user => @room.user})
-        @room.messages.create({:body => 'What is your budget estimate for this task in USD? (Kriya fees will apply)', :room => @room, :user => @room.manager, :msg_type => 'bot-budget-estimate'})
+        @room.messages.create({:body => 'What is your budget estimate for this task in USD? (Kriya fees will apply - 5% for budget > $500, 10% otherwise)', :room => @room, :user => @room.manager, :msg_type => 'bot-budget-estimate'})
         @room.messages.create({:body => @room.budget, :room => @room, :user => @room.user})
         @room.messages.create({:body => 'Please give detailed description of what needs to be done by creating a post, meanwhile I\'ll get this started with our workforce', :room => @room, :user => @room.manager, :msg_type => 'bot-description'})
 
