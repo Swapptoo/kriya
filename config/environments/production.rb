@@ -37,7 +37,7 @@ Rails.application.configure do
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://dantos.herokuapp.com/cable'
   config.action_cable.allowed_request_origins = ['https://kriya.ai', 'http://kriya.ai']
-  config.action_cable.url = "wss://www.kriya.ai/cable/"
+  config.action_cable.url = "ws://www.kriya.ai/cable/"
   config.force_ssl = false
 
 
