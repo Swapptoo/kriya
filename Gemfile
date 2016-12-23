@@ -73,6 +73,11 @@ gem 'activerecord-import', '~> 0.16.1'
 
 group :development, :test do
   gem 'byebug'
+
+  gem 'capistrano', '~> 3.6'
+  gem 'capistrano-rails', '~> 1.2'
+  gem 'capistrano-passenger'
+  gem 'capistrano-rvm'
 end
 
 group :development do

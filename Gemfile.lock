@@ -54,6 +54,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
+    airbrussh (1.1.1)
+      sshkit (>= 1.6.1, != 1.7.0)
     annotate (2.7.1)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
@@ -69,6 +71,24 @@ GEM
     builder (3.2.2)
     byebug (9.0.6)
     callsite (0.0.11)
+    capistrano (3.7.1)
+      airbrussh (>= 1.0.0)
+      capistrano-harrow
+      i18n
+      rake (>= 10.0.0)
+      sshkit (>= 1.9.0)
+    capistrano-bundler (1.2.0)
+      capistrano (~> 3.1)
+      sshkit (~> 1.2)
+    capistrano-harrow (0.5.3)
+    capistrano-passenger (0.2.0)
+      capistrano (~> 3.0)
+    capistrano-rails (1.2.0)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+    capistrano-rvm (0.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
     capybara (2.11.0)
       addressable
       mime-types (>= 1.16)
@@ -258,6 +278,9 @@ GEM
     multipart-post (2.0.0)
     nenv (0.3.0)
     nested_form (0.3.2)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (3.2.0)
     netrc (0.11.0)
     newrelic_rpm (3.17.2.327)
     nio4r (1.2.1)
@@ -431,6 +454,9 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sshkit (1.11.5)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     stripe (1.57.1)
       rest-client (>= 1.4, < 4.0)
     temple (0.7.7)
@@ -482,6 +508,10 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   byebug
+  capistrano (~> 3.6)
+  capistrano-passenger
+  capistrano-rails (~> 1.2)
+  capistrano-rvm
   capybara
   carrierwave
   cocoon
