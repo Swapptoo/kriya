@@ -2,8 +2,6 @@ Rails.application.routes.draw do
   resources :payments
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
-  mount ActionCable.server => '/cable'
-
   require 'sidekiq/web'
   mount Sidekiq::Web => 'sidekiq'
 
