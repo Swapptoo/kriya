@@ -19,7 +19,7 @@ set :deploy_to, "/var/www/#{fetch(:application)}"
 
 # Default value for :pty is false
 set :pty, true
-
+set :rvm_ruby_version, '2.3.1@kriyaai'
 set :rvm_roles, [:app, :web]
 
 set :passenger_restart_with_touch, true
@@ -45,7 +45,7 @@ namespace :deploy do
 
   task :cleanup_assets do
     on roles :all do
-      execute "cd #{release_path}/ && ~/.rvm/bin/rvm default do bundle exec rake assets:clobber RAILS_ENV=#{fetch(:stage)}"
+      execute "cd #{release_path}/ && ~/.rvm/bin/rvm 2.3.1@kriyaai do bundle exec rake assets:clobber RAILS_ENV=#{fetch(:stage)}"
     end
   end
 
