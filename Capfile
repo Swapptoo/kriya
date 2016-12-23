@@ -36,6 +36,7 @@ install_plugin Capistrano::SCM::Git
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
 require 'capistrano/rvm'
+require 'capistrano/bundler'
 require 'capistrano/rails'
 require 'capistrano/passenger'
 
