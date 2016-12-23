@@ -8,6 +8,8 @@ Bundler.require(*Rails.groups)
 
 ENV['RAILS_ADMIN_THEME'] = 'rollincode'
 
+Dotenv::Railtie.load
+
 module Dantos
   class Application < Rails::Application
     config.filter_parameters << :password
