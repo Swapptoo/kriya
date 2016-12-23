@@ -31,7 +31,7 @@ Rails.application.configure do
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
-  # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
@@ -39,7 +39,6 @@ Rails.application.configure do
   config.action_cable.allowed_request_origins = ['https://kriya.ai', 'http://kriya.ai', 'http://35.166.9.27', 'https://35.166.9.27']
   config.action_cable.url = "wss://www.kriya.ai/cable"
   config.force_ssl = false
-
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true

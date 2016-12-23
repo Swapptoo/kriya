@@ -39,5 +39,6 @@ require 'capistrano/rvm'
 require 'capistrano/bundler'
 require 'capistrano/rails'
 require 'capistrano/passenger'
+require 'capistrano/sidekiq'
 
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }
