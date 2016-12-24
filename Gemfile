@@ -83,6 +83,10 @@ group :development, :test do
   gem 'capistrano-rvm'
 end
 
+group :production do
+  gem 'turnout'
+end
+
 group :development do
   gem 'web-console'
   gem 'listen', '~> 3.0.5'
