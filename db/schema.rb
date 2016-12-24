@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161208142410) do
+ActiveRecord::Schema.define(version: 20161224143000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -220,16 +220,17 @@ ActiveRecord::Schema.define(version: 20161208142410) do
     t.string   "body"
     t.integer  "room_id"
     t.integer  "user_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.string   "image"
     t.integer  "post_id"
-    t.boolean  "seen",          default: false
+    t.boolean  "seen",                 default: false
     t.integer  "freelancer_id"
     t.string   "msg_type"
     t.string   "slack_ts"
     t.string   "slack_channel"
-    t.integer  "source",        default: 0
+    t.integer  "source",               default: 0
+    t.boolean  "one_mn_from_previous", default: false
     t.index ["freelancer_id"], name: "index_messages_on_freelancer_id", using: :btree
     t.index ["post_id"], name: "index_messages_on_post_id", using: :btree
     t.index ["room_id"], name: "index_messages_on_room_id", using: :btree

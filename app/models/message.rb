@@ -2,20 +2,21 @@
 #
 # Table name: messages
 #
-#  id            :integer          not null, primary key
-#  body          :string
-#  room_id       :integer
-#  user_id       :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  image         :string
-#  post_id       :integer
-#  seen          :boolean          default(FALSE)
-#  freelancer_id :integer
-#  msg_type      :string
-#  slack_ts      :string
-#  slack_channel :string
-#  source        :integer          default("kriya")
+#  id                   :integer          not null, primary key
+#  body                 :string
+#  room_id              :integer
+#  user_id              :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  image                :string
+#  post_id              :integer
+#  seen                 :boolean          default(FALSE)
+#  freelancer_id        :integer
+#  msg_type             :string
+#  slack_ts             :string
+#  slack_channel        :string
+#  source               :integer          default("kriya")
+#  one_mn_from_previous :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -83,6 +84,7 @@ class Message < ApplicationRecord
   scope :not_by_freelancer, -> (freelancer) { where.not(freelancer: freelancer) }
   scope :by_freelancer,     -> (freelancer) { where(freelancer: freelancer) }
 
+  before_create :ensure_one_mn_from_previous
   after_commit :set_room_last_message_created_at, :notify_slack, on: :create
 
   def self.for_freelancer
@@ -279,9 +281,14 @@ class Message < ApplicationRecord
     end
   end
 
+  def ensure_one_mn_from_previous
+    puts "run callback"
+    last_msg = room.messages.last
+    self.one_mn_from_previous = true if last_msg.present? && last_msg.user == self.user && (Time.current.to_f - last_msg.created_at.to_f) <= 60
+  end
+
   def within_60_secs_from_previous?
-    message = previous_message
-    !message.nil? && message.user == self.user && seconds_from_message(message) <= 60
+    try :one_mn_from_previous?
   end
 
   def seconds_from_message(message = previous_message)
@@ -289,7 +296,7 @@ class Message < ApplicationRecord
   end
 
   def previous_message
-    room.messages.where('id < ?', self.id).last
+    @previous_message ||= room.messages.where('id < ?', self.id).last
   end
 
   def next_message
