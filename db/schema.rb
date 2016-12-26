@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161224143000) do
+ActiveRecord::Schema.define(version: 20161226154940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 20161224143000) do
     t.integer  "message_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_attachments_on_deleted_at", using: :btree
     t.index ["message_id"], name: "index_attachments_on_message_id", using: :btree
   end
 
@@ -231,6 +233,8 @@ ActiveRecord::Schema.define(version: 20161224143000) do
     t.string   "slack_channel"
     t.integer  "source",               default: 0
     t.boolean  "one_mn_from_previous", default: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_messages_on_deleted_at", using: :btree
     t.index ["freelancer_id"], name: "index_messages_on_freelancer_id", using: :btree
     t.index ["post_id"], name: "index_messages_on_post_id", using: :btree
     t.index ["room_id"], name: "index_messages_on_room_id", using: :btree

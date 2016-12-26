@@ -50,6 +50,31 @@ class Room < ApplicationRecord
 
   before_create { self.category_name ||= "Design" }
 
+  def reset
+    prioritized_reset_point_msg_types = [
+      'bot-remark-time-diff',
+      'bot-thanks-client',
+      'bot-reject-slack',
+      'slack-client',
+      'add-total-employee',
+      'add-website',
+      'ask-more',
+      'bot-half-charge-task',
+      'bot-description'
+    ]
+
+    prioritized_reset_point_msg_types.each do |msg_type|
+      msg = self.messages.find_by(msg_type: msg_type)
+
+      if msg.present?
+        messages.where('id > ?', msg.id).destroy_all
+        return true
+      end
+
+      false
+    end
+  end
+
   def create_escrow_payment_message
     msg = messages.create(body: "/charge $#{escrow_amount}", user: manager, msg_type: 'bot-half-charge-task')
     msg.process_command

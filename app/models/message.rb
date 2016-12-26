@@ -17,42 +17,11 @@
 #  slack_channel        :string
 #  source               :integer          default("kriya")
 #  one_mn_from_previous :boolean          default(FALSE)
+#  deleted_at           :datetime
 #
 # Indexes
 #
-#  index_messages_on_freelancer_id  (freelancer_id)
-#  index_messages_on_post_id        (post_id)
-#  index_messages_on_room_id        (room_id)
-#  index_messages_on_user_id        (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_273a25a7a6  (user_id => users.id)
-#  fk_rails_a8db0fb63a  (room_id => rooms.id)
-#  fk_rails_f36d097b9e  (post_id => posts.id)
-#  fk_rails_f9bcdb85dc  (freelancer_id => freelancers.id)
-#
-
-p# == Schema Information
-#
-# Table name: messages
-#
-#  id            :integer          not null, primary key
-#  body          :string
-#  room_id       :integer
-#  user_id       :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  image         :string
-#  post_id       :integer
-#  seen          :boolean          default(FALSE)
-#  freelancer_id :integer
-#  msg_type      :string
-#  slack_ts      :string
-#  slack_channel :string
-#
-# Indexes
-#
+#  index_messages_on_deleted_at     (deleted_at)
 #  index_messages_on_freelancer_id  (freelancer_id)
 #  index_messages_on_post_id        (post_id)
 #  index_messages_on_room_id        (room_id)
@@ -68,6 +37,7 @@ p# == Schema Information
 
 class Message < ApplicationRecord
   mount_uploader :image, ImageUploader
+  acts_as_paranoid
 
   enum source: { kriya: 0, email: 1, slack: 2 }
 

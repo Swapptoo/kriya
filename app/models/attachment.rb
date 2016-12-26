@@ -2,14 +2,16 @@
 #
 # Table name: attachments
 #
-#  created_at :datetime         not null
-#  html       :text
 #  id         :integer          not null, primary key
+#  html       :text
 #  message_id :integer
+#  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  deleted_at :datetime
 #
 # Indexes
 #
+#  index_attachments_on_deleted_at  (deleted_at)
 #  index_attachments_on_message_id  (message_id)
 #
 # Foreign Keys
@@ -18,19 +20,21 @@
 #
 
 class Attachment < ApplicationRecord
-  belongs_to :message
+  acts_as_paranoid
   
+  belongs_to :message
+
   def select_pay_button
     self.html = <<~HTML.squish
         <p><button class="mini ui green button custom-padding" style="float:right">Pay</button></p><br/>
     HTML
-    save  
+    save
   end
-  
+
   def select_change_card_button
     self.html = <<~HTML.squish
         <p><button class="mini ui white button custom-padding" style="float:right">Change card</button></p><br/>
     HTML
-    save 
+    save
   end
 end

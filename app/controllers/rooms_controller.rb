@@ -108,6 +108,8 @@ class RoomsController < ApplicationController
       format.js do
         begin
           @room.asigned_freelancers.delete(@freelancer)
+          @room.reset
+          render inline: 'location.reload();'
         rescue
           @success = false
           return

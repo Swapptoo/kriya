@@ -72,6 +72,7 @@ gem 'faye-websocket'
 
 ## Utils
 gem 'activerecord-import', '~> 0.16.1'
+gem "paranoia", github: "rubysherpas/paranoia", branch: "rails5"
 
 group :development, :test do
   gem 'byebug'

@@ -4,6 +4,14 @@ GIT
   specs:
     remotipart (1.3.1)
 
+GIT
+  remote: git://github.com/rubysherpas/paranoia.git
+  revision: d70c4c5a7098d4c8416332489e3f63b0a959ab97
+  branch: rails5
+  specs:
+    paranoia (2.2.0.pre)
+      activerecord (>= 4.0, < 5.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -570,6 +578,7 @@ DEPENDENCIES
   omniauth-oauth2 (~> 1.3.1)
   omniauth-stripe-connect
   omniauth-twitter
+  paranoia!
   pg (~> 0.18)
   pry
   puma (~> 3.0)
