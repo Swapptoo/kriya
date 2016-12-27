@@ -17,13 +17,11 @@ css:
   .masthead.segment.bg7
     .ui.container
       .introduction
-        span.library = image_tag "logo-invert.png", style: "height: 55px", alt: "Goomp Logo"
+        span.library = link_to (image_tag "logo-invert.png", style: "height: 75px", alt: "Kriya AI"), 'https://kriya.ai'
         div.ui.inverted.header
-          span.tagline Join the Kriya workforce network to earn money
-          br
-          span.tagline by sharing your time, skills and passion!
-        .main
-          .ui.segment.feed.new style="width: 50%;max-width: 75%;margin:auto;padding: 51px"
+          h2.tagline Sign In
+        #new_user.main[style="overflow-y:scroll; max-height:373px;"]
+          .ui.segment.feed.new
             .event
               .label
                 img src="/favicon.ico"
