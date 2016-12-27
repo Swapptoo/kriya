@@ -57,3 +57,5 @@ require 'appsignal/capistrano'
 require 'appsignal/capistrano'
 
 require 'appsignal/capistrano'
+
+require 'appsignal/capistrano'
