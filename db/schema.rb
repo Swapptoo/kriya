@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161226154940) do
+ActiveRecord::Schema.define(version: 20161227013807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -292,18 +292,20 @@ ActiveRecord::Schema.define(version: 20161226154940) do
   create_table "rooms", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "manager_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.string   "category_name"
-    t.integer  "budget_cents",            default: 0,     null: false
-    t.string   "budget_currency",         default: "USD", null: false
+    t.integer  "budget_cents",               default: 0,     null: false
+    t.string   "budget_currency",            default: "USD", null: false
     t.string   "timeline"
     t.string   "quality"
     t.text     "description"
     t.datetime "last_message_created_at"
     t.string   "website"
     t.integer  "total_employee"
-    t.integer  "first_paid_amount_cents", default: 0
+    t.integer  "first_paid_amount_cents",    default: 0
+    t.integer  "kriya_client_fee_cents",     default: 0
+    t.integer  "kriya_freelancer_fee_cents", default: 0
     t.index ["manager_id"], name: "index_rooms_on_manager_id", using: :btree
     t.index ["user_id"], name: "index_rooms_on_user_id", using: :btree
   end

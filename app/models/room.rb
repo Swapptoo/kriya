@@ -2,21 +2,23 @@
 #
 # Table name: rooms
 #
-#  id                      :integer          not null, primary key
-#  user_id                 :integer
-#  manager_id              :integer
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#  category_name           :string
-#  budget_cents            :integer          default(0), not null
-#  budget_currency         :string           default("USD"), not null
-#  timeline                :string
-#  quality                 :string
-#  description             :text
-#  last_message_created_at :datetime
-#  website                 :string
-#  total_employee          :integer
-#  first_paid_amount_cents :integer          default(0)
+#  id                         :integer          not null, primary key
+#  user_id                    :integer
+#  manager_id                 :integer
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  category_name              :string
+#  budget_cents               :integer          default(0), not null
+#  budget_currency            :string           default("USD"), not null
+#  timeline                   :string
+#  quality                    :string
+#  description                :text
+#  last_message_created_at    :datetime
+#  website                    :string
+#  total_employee             :integer
+#  first_paid_amount_cents    :integer          default(0)
+#  kriya_client_fee_cents     :integer          default(0)
+#  kriya_freelancer_fee_cents :integer          default(0)
 #
 # Indexes
 #
@@ -30,6 +32,8 @@
 #
 
 class Room < ApplicationRecord
+  include RoomPayment
+
   has_many :messages, dependent: :destroy
   has_many :slack_channels, dependent: :destroy
   has_many :message_slack_histories, dependent: :destroy
@@ -49,6 +53,7 @@ class Room < ApplicationRecord
   validates :budget_cents, numericality: { :greater_than_or_equal_to => 0 }
 
   before_create { self.category_name ||= "Design" }
+  after_create :set_kriya_client_fee_cents
 
   def reset
     prioritized_reset_point_msg_types = [
@@ -73,46 +78,6 @@ class Room < ApplicationRecord
 
       false
     end
-  end
-
-  def create_escrow_payment_message
-    msg = messages.create(body: "/charge $#{escrow_amount}", user: manager, msg_type: 'bot-half-charge-task')
-    msg.process_command
-  end
-
-  def first_paid_amount_percentag
-    if budget_cents < 1000_00
-      50
-    elsif budget_cents >= 1000_00 && budget_cents < 5000_00
-      25
-    elsif budget_cents >= 5000_00 && budget_cents < 10_000_00
-      20
-    # elsif budget_cents >= 10_000_00
-    else
-      15
-    end
-  end
-
-  def escrow_amount_cents
-    budget_cents.to_f * first_paid_amount_percentag / 100
-  end
-
-  def kriya_fee_cents
-    percentag = if budget_cents < 500_00
-      30
-    elsif budget_cents >= 500_00
-      20
-    end
-
-    budget_cents.to_f * percentag / 100
-  end
-
-  def remaining_amount_cents
-    budget_cents - first_paid_amount_cents + kriya_fee_cents
-  end
-
-  def escrow_amount
-    escrow_amount_cents / 100
   end
 
   def accepted_freelancers
