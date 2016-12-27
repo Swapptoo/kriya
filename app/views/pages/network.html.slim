@@ -1,18 +1,38 @@
 css:
-  #example.index .masthead .container {
-    padding-bottom: 100%
-  }
-
-  #home_link {
+  #network_link, #blog_link {
     padding: 13px;
-    color: rgba(255,255,255,.7)!important;
+    color: rgba(255, 255, 255, .7) !important;
     font-weight: bold;
   }
 
-  #home_link:hover {
-      color: white;
-      background: rgba(255,255,255,.08);
-      border-radius: .28571429rem;
+  #network_link:hover, #blog_link:hover {
+    color: white;
+    background: rgba(255, 255, 255, .08);
+    border-radius: .28571429rem;
+  }
+
+  #world_image {
+    max-width: 50%;
+    padding-bottom: 1rem;
+    margin: auto;
+  }
+
+  #launch {
+    font-size: 7rem;
+    padding-top: 1rem;
+
+  }
+
+  .nine.wide.column.p {
+    text-align: center;
+  }
+
+  .nine.wide.column{
+    text-align: center;
+  }
+
+  .ui.image {
+    margin: auto;
   }
 
 #example.index
@@ -20,19 +40,28 @@ css:
     .ui.container
       .ui.large.secondary.network.menu.inverted
         .right.menu.inverted
-          - if freelancer_signed_in?
-            = link_to "Sign Out", destroy_user_session_path, method: :delete, class: "item"
-            br
+          - if user_signed_in?
+            = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: "item"
+          br
           - unless user_signed_in? && freelancer_signed_in?
-            = link_to 'Clients', '/', id: 'home_link'
+            = link_to 'Kriya Blog', 'https://blog.kriya.ai', target: '_blank', id: 'blog_link'
 
   .masthead.segment.bg7
     .ui.container
       .introduction
-        span.library = image_tag "logo-invert.png", style: "height: 55px", alt: "Goomp Logo"
+        span.library = link_to image_tag('logo-invert.png', style: "height: 75px", alt: "Kriya Artifical Intelligence"), 'https://kriya.ai'
         div.ui.inverted.header
-          span.tagline Be part of Kriya Workforce Network
-          br
-          span.tagline Sign up, work on your favorite tasks and earn money!
+          h2.tagline Join Our Workforce
         = render "goomp_bot/new_freelancer"
         .ui.hidden.divider
+
+  .ui.vertical.stripe.intro.segment
+    .ui.stackable.very.relaxed.center.aligned.grid.container
+      .row
+        .twelve.wide.column
+          #world_image
+            img.ui.fluid.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1480704745/world_xdht8p.png"]
+          h1.ui.header
+            | The Power of Distributed Workforce
+          p
+            | Our freelancers and talent agencies are spread across the world
