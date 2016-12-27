@@ -45,15 +45,14 @@ css:
           br
           - unless user_signed_in? && freelancer_signed_in?
             = link_to 'Kriya Blog', 'https://blog.kriya.ai', target: '_blank', id: 'blog_link'
-            = link_to 'Join Workforce', 'https://kriya.ai/network', target: '_blank', id: 'blog_link'
 
   .masthead.segment.bg7
     .ui.container
       .introduction
-        span.library = link_to image_tag('logo-invert.png', style: "height: 75px", alt: "Kriya Artifical Intelligence"), 'https://kriya.ai'
+        span.library = image_tag "logo-invert.png", style: "height: 60px", alt: "Kriya AI"
         div.ui.inverted.header
           h2.tagline Your On Demand Workforce
-          span.tagline Connecting teams to the vetted talent for getting work done!
+          span.tagline AI that connects teams to the vetted talent for getting work done!
         = render "goomp_bot/new_user"
         .ui.hidden.divider
 
@@ -110,7 +109,7 @@ css:
           |  Specially Designed for Smaller Teams
         h1
           #launch
-            | 200
+            | 100
         p
           | We processed 100 tasks successfully with deeper integration into Slack and your email workflows.
           br
