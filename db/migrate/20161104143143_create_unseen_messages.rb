@@ -9,7 +9,7 @@ class CreateUnseenMessages < ActiveRecord::Migration[5.0]
       t.timestamps
     end
 
-    Message.un_seen.includes(:room, :user, :freelancer).find_each do |message|
+    Message.with_deleted.un_seen.includes(:room, :user, :freelancer).find_each do |message|
       room = message.room
       users = []
 
