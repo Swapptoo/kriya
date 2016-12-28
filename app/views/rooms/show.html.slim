@@ -53,7 +53,7 @@ css:
             .ui.divider
             h4 Budget
             = number_to_currency(@room.budget)
-            | (including fees)
+            |  (incl. fees)
             - if @room.first_paid_amount_cents?
               .ui.divider
               h4 Balance
