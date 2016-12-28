@@ -36,8 +36,8 @@ Rails.application.configure do
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://dantos.herokuapp.com/cable'
-  config.action_cable.allowed_request_origins = ['https://kriya.ai', 'http://kriya.ai', 'http://35.166.9.27', 'https://35.166.9.27']
-  config.action_cable.url = "wss://35.166.9.27/cable"
+  config.action_cable.allowed_request_origins = ['https://staging.kriya.ai', 'http://staging.kriya.ai', 'http://35.165.228.183', 'https://35.165.228.183']
+  config.action_cable.url = "wss://35.165.228.183/cable"
   config.force_ssl = false
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
