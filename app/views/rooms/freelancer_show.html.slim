@@ -54,6 +54,7 @@
           .ui.divider
           h4 Budget
           = number_to_currency(@room.budget)
+          | (including fees)
           .ui.divider
           - slack_channel = current_freelancer.slack_channels.find_by(room: @room)
           - if slack_channel.nil? || slack_channel.inactive?

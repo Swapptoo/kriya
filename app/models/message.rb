@@ -163,9 +163,9 @@ class Message < ApplicationRecord
 
         if self.user.present?
           if self.msg_type == 'bot-half-charge-task'
-            self.update(body: "Awesome! Please pay #{self.room.first_paid_amount_percentag}% of the budget, $#{amount} to assign a freelancer. This goes into Kriya Escrow and will be paid to the workforce ONLY after the successful completion of the task, otherwise we revert it. Please let me know if you have any questions!")
+            self.update(body: "And please pay $#{amount} of the budget that goes into Kriya's Escrow. It'll be paid to the workforce ONLY after the successful completion of the work, otherwise we revert it.")
           else
-            self.update(body: "The charge for this task is $#{amount}, please finish this transaction so the workforce gets paid?", msg_type: 'bot-charge-task')
+            self.update(body: "Please pay the charge $#{amount}, so we pay the workforce?", msg_type: 'bot-charge-task')
           end
         elsif self.freelancer.present?
           freelancer_rooms = self.room.freelancers_rooms.where('status in (?)', ['accepted', 'more_work', 'not_finished']).where("freelancer_id = ?", self.freelancer.id)
