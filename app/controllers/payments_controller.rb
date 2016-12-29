@@ -30,8 +30,11 @@ class PaymentsController < ApplicationController
     room = msg.room
     update_customer = params[:update_customer].to_i
 
+    freelancers = room.in_progress_freelancers + room.completed_freelancers
+    freelancer = freelancers.first
+
     # If user.stripe_id is nil, then this is the first payment for this user
-    if user.stripe_id.nil? then
+    if user.stripe_id.nil?
       token = params[:token][:id]
       customer = Stripe::Customer.create(
           :description => "Customer for user " + user.to_s,
