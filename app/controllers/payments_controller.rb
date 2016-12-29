@@ -103,6 +103,7 @@ class PaymentsController < ApplicationController
     # Catches at least CardError and InvalidRequestError
     rescue Exception => e#Stripe::CardError => e
       # The card has been declined
+      puts e.message
       room.messages.new({:body => 'The transaction was unsuccessful. Please try again', :room => room, :user => room.manager, :msg_type => 'bot-failed-payment'})
       room.save
       room.messages.new({:body => '/charge $' + (amount.to_i / 100).to_s, :room => room, :user => room.manager})
