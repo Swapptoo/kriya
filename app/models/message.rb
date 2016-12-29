@@ -64,7 +64,6 @@ class Message < ApplicationRecord
       'ask-more',
       'add-website',
       'bot-charge-success',
-      'bot-ask-rate',
       'bot-charge-task',
       'slack-client',
       'bot-failed-payment',
