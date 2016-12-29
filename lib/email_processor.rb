@@ -27,7 +27,7 @@ class EmailProcessor
 
     if room.in_progress_freelancers.include?(user)
       message_params[:freelancer] = user
-    else
+    elsif user.is_a?(User)
       message_params[:user] = user
     end
 
