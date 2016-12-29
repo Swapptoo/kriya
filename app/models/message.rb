@@ -63,6 +63,12 @@ class Message < ApplicationRecord
       'bot-remark-time-diff',
       'ask-more',
       'add-website',
+      'bot-charge-success',
+      'bot-ask-rate',
+      'bot-charge-task',
+      'slack-client',
+      'bot-failed-payment',
+      'slack-manager',
       'add-total-employee'
     ]
 

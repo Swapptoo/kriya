@@ -64,7 +64,7 @@ class PaymentsController < ApplicationController
         :description => "Kriya Task - #{room.title}"
       )
 
-      message = room.messages.create({:body => 'The transaction was successful.', :room => room, :user => room.manager})
+      message = room.messages.create(body: 'The transaction was successful.', room: room, user: room.manager, msg_type: 'bot-charge-success')
 
       if amount.to_i == room.escrow_amount_cents.to_i && room.first_paid_amount_cents == 0
         room.update(first_paid_amount_cents: amount.to_i)

@@ -54,6 +54,8 @@
                   ' We notified the client that you started the task
               - elsif message.msg_type == 'bot-task-finish'
                 ' We notified the client that you finished the task, waiting for their approval
+              - elsif message.msg_type == 'bot-half-charge-task'
+                = "And please pay #{message.room.first_paid_amount_percentag}% of the budget that goes into Kriya's Escrow. It'll be paid to the workforce ONLY after the successful completion of the work, otherwise we revert it."
               - elsif message.msg_type == 'bot-ask-rate'
                 ' Client has paid this work.
               - elsif message.msg_type == 'bot-continue-work'
