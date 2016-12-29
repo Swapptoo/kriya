@@ -1,6 +1,4 @@
 module RoomPayment
-
-
   def create_escrow_payment_message
     msg = messages.create(body: "/charge $#{escrow_amount}", user: manager, msg_type: 'bot-half-charge-task')
     msg.process_command
@@ -31,7 +29,7 @@ module RoomPayment
   end
 
   def remaining_amount_cents
-    kriya_client_fee_cents - first_paid_amount_cents
+    budget_cents_including_fee - first_paid_amount_cents
   end
 
   def budget_cents_including_fee

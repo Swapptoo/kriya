@@ -8,6 +8,7 @@
           ' Upload File/Photo
           = f.file_field :image
         - if current_user.manager?
-          .item data-charge-user=true Charge Task
+          .item#charge-amount data-charge-user=true data-charge-amount="#{@room.remaining_amount_cents/100}"
+            | Charge Task
 
     = f.text_field :body, :autofocus => true, :autocomplete => 'off', :placeholder => "Start typing…"

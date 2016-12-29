@@ -103,7 +103,8 @@ AppView = {
 
 
   chargeUser: ->
-    $("#message_body").val("/charge $100")
+    amount = $('#charge-amount').data('charge-amount')
+    $("#message_body").val("/charge $#{amount}")
     $("#message_body").focus()
 
   clearTextArea: ->

@@ -64,42 +64,48 @@ class PaymentsController < ApplicationController
         :description => "Kriya Task - #{room.title}"
       )
 
+      message = room.messages.create({:body => 'The transaction was successful.', :room => room, :user => room.manager})
+
       if amount.to_i == room.escrow_amount_cents.to_i && room.first_paid_amount_cents == 0
         room.update(first_paid_amount_cents: amount.to_i)
         Payment::FirstEscrowWorker.perform_async(room.id, amount.to_i)
+
+      # Rating after task complete
+      elsif (room.first_paid_amount_cents + amount.to_i) == room.budget_cents_including_fee
+        message.assign_attributes({:body => 'The transaction was successful. What is the rate of this work?', :room => room, :user => room.manager, :msg_type => 'bot-ask-rate'})
+        freelancer_rooms = room.freelancers_rooms.where('status in (?)', ['accepted', 'more_work', 'not_finished']).where("freelancer_id = ?", freelancer.id)
+
+        if freelancer_rooms.any?
+          freelancer_room_id = freelancer_rooms[0].id
+        else
+          freelancer_room_id = ''
+        end
+
+        message.create_attachment html: "<br/>"
+
+        (1..5).each do |i|
+          message.attachment.html += <<~HTML.squish
+            <button id="customRateButton#{i}-#{message.id}" class="mini ui green button custom-padding">#{i}</button>
+            <script>
+              document.getElementById("customRateButton#{i}-#{message.id}").addEventListener('click', function(e) {
+                $.post("/freelancer_rates.json", {
+                    freelancer_rate: {
+                      rate: #{i},
+                      user_id: #{room.user.id},
+                      room_id: #{room.id},
+                      freelancer_id: #{freelancer.id},
+                      freelancers_room_id: #{freelancer_room_id}
+                    }
+                  });
+                e.preventDefault();
+
+              });
+            </script>
+          HTML
+        end
+        message.save
+        message.attachment.save
       end
-
-      freelancer_rooms = room.freelancers_rooms.where('status in (?)', ['accepted', 'more_work', 'not_finished']).where("freelancer_id = ?", freelancer.id)
-
-      if freelancer_rooms.any?
-        freelancer_room_id = freelancer_rooms[0].id
-      else
-        freelancer_room_id = ''
-      end
-
-      message = room.messages.new({:body => 'The transaction was successful. What is the rate of this work?', :room => room, :user => room.manager, :msg_type => 'bot-ask-rate'})
-      message.create_attachment html: "<br/>"
-      (1..5).each do |i|
-        message.attachment.html += <<~HTML.squish
-          <button id="customRateButton#{i}-#{message.id}" class="mini ui green button custom-padding">#{i}</button>
-          <script>
-            document.getElementById("customRateButton#{i}-#{message.id}").addEventListener('click', function(e) {
-              $.post("/freelancer_rates.json", {
-                  freelancer_rate: {
-                    rate: #{i},
-                    user_id: #{room.user.id},
-                    room_id: #{room.id},
-                    freelancer_id: #{freelancer.id},
-                    freelancers_room_id: #{freelancer_room_id}
-                  }
-                });
-              e.preventDefault();
-
-            });
-          </script>
-        HTML
-      end
-      message.attachment.save
     # Catches at least CardError and InvalidRequestError
     rescue Exception => e#Stripe::CardError => e
       # The card has been declined

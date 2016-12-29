@@ -80,6 +80,10 @@ class Room < ApplicationRecord
     end
   end
 
+  def ask_rate?
+    messages.where(msg_type: 'bot-ask-rate').any?
+  end
+
   def accepted_freelancers
     self.asigned_freelancers.where("freelancers_rooms.status = 'accepted'")
   end

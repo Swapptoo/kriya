@@ -57,7 +57,8 @@ css:
             - if @room.first_paid_amount_cents?
               .ui.divider
               h4 Balance
-              = "#{number_to_currency(@room.client_balance)} (incl. fees)"
+              - balance = @room.ask_rate? ? 0.0 : @room.client_balance
+              = "#{number_to_currency(balance)} (incl. fees)"
             - if current_user.manager? || (@room.finished? && slack_channel.present? && slack_channel.inactive?)
               .ui.divider
               = slack_integration_html
