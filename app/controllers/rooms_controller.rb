@@ -125,7 +125,7 @@ class RoomsController < ApplicationController
 
     if @room.in_progress_freelancers.blank? && freelancer_room.present? && freelancer_room.status == 'pending'
       freelancer_room.update_attribute(:status, 'accepted')
-      @message = Message.new({ body: "Good news, we assigned our expert, #{current_freelancer.first_name} to this work. They are rated 4.6 stars and considered as one of the top talent from Kriya's network. They should be here shortly." })
+      @message = Message.new({ body: "Good news, we assigned our expert, <strong>#{current_freelancer.first_name}</strong> to this work. They are rated <strong>4.6 stars</strong> and considered as one of the top talent from Kriya's network. They should be here shortly." })
       @message.room = @room
       @message.user = @room.manager
       @message.msg_type = 'bot-task-accepted'
