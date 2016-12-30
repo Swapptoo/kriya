@@ -15,7 +15,7 @@ class SlackEventsHandlerWorkerSyncWorker
     body = Slack::Messages::Formatting.unescape(slack_event.text)
     room = slack_channel.room
 
-    if room.message_slack_histories.find_by(ts: slack_event.ts).blank? && room.messages.find_by(body: body, user: slack_channel.user, freelancer: slack_channel.freelancer, created_at: 2.minutes.ago..0.minute.ago).blank?
+    if room.message_slack_histories.find_by(ts: slack_event.ts).blank? && room.messages.find_by(body: body, user: slack_channel.user, freelancer: slack_channel.freelancer, created_at: 20.seconds.ago..0.second.ago).blank?
       message = room.messages.create(source: 'slack', body: body, user: slack_channel.user, freelancer: slack_channel.freelancer, slack_ts: slack_event.ts, slack_channel: slack_event.channel)
 
       if slack_event.file.present?
