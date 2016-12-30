@@ -19,15 +19,20 @@ class SlackEventsHandlerWorkerSyncWorker
       message = room.messages.create(source: 'slack', body: body, user: slack_channel.user, freelancer: slack_channel.freelancer, slack_ts: slack_event.ts, slack_channel: slack_event.channel)
 
       if slack_event.file.present?
-        web_client = Slack::Web::Client.new(token: slack_channel.token)
-        file = web_client.files_sharedPublicURL(file: slack_event.file.id)
-
-        if file.ok?
-          message.remote_image_url = "#{file.file.url_private}?pub_secret=#{file.file.permalink_public.split('-').last}"
+        if slack_event.file.external_type == 'gdrive'
+          message.body += "</br>#{slack_event.file.url_private}"
           message.save
-        end
+        else
+          web_client = Slack::Web::Client.new(token: slack_channel.token)
+          file = web_client.files_sharedPublicURL(file: slack_event.file.id)
 
-        web_client.files_revokePublicURL(file: slack_event.file.id)
+          if file.ok?
+            message.remote_image_url = "#{file.file.url_private}?pub_secret=#{file.file.permalink_public.split('-').last}"
+            message.save
+          end
+
+          web_client.files_revokePublicURL(file: slack_event.file.id)
+        end
       end
 
       message.process_command
