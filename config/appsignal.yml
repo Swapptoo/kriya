@@ -1,11 +1,6 @@
 default: &defaults
   # Your push api key, it is possible to set this dynamically using ERB:
   # push_api_key: "<%= ENV['APPSIGNAL_PUSH_API_KEY'] %>"
-  push_api_key: "ba6970e7-09a2-42d4-9754-2d8ed31005a1"
-
-  # Your app's name
-  name: "kriya.ai"
-
   # Actions that should not be monitored by AppSignal
   # ignore_actions:
   #   - ApplicationController#isup
@@ -19,6 +14,14 @@ development:
   <<: *defaults
   active: true
 
+staging:
+  <<: *defaults
+  active: true
+  push_api_key: "ba6970e7-09a2-42d4-9754-2d8ed31005a1"
+  name: "kriya.ai"
+
 production:
   <<: *defaults
   active: true
+  push_api_key: "ba6970e7-09a2-42d4-9754-2d8ed31005a1"
+  name: "kriya.ai"

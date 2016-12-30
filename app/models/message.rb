@@ -273,10 +273,13 @@ class Message < ApplicationRecord
       }
 
     elsif file?
+      uri = URI(image.url)
+
       {
-        content: IO.copy_stream(open(image.url), image.file.filename),
+        content: Net::HTTP.get(uri),
         filename: image.file.filename,
-        channel: slack_channel
+        channels: slack_channel,
+        as_user: true
       }
     elsif post.present?
       text = "I've just created a task at #{post.public_url}"
