@@ -16,12 +16,10 @@ module ApplicationHelper
     end
 
     terms = content_tag :div, class: 'ui ordered list' do
-      concat content_tag(:div, 'When we assign you to a task, you will get notified in email or Slack.',class: 'item')
+      concat content_tag(:div, 'Please DON\'T share your contact information. It\'s against our terms and conditions.',class: 'item')
+      concat content_tag(:div, 'When we assign you to a task, you will get notified in email or Slack. We are currently giving preference to those who are available on demand. Meaning, when we assign a job to you, we expect there to be an immediate response. If you do not respond within 20 min, we will assign the job to someone else. Remember, the more successful we are, the more $$ for you! ',class: 'item')
       concat content_tag(:div, 'After accepting the task, remember to introduce yourself.',class: 'item')
       concat content_tag(:div, 'Explain your rates, propose a few times that work for an initial call,',class: 'item')
-      concat content_tag(:div, 'The budget is a starting point and is always negotiable',class: 'item')
-      concat content_tag(:div, 'If you use Slack, feel free to integrate with it. This will be useful for keeping the lines of communication open.',class: 'item')
-      concat content_tag(:div, 'Please DON\'T share your contact information. It\'s against our terms and conditions.',class: 'item')
 
     end
 
