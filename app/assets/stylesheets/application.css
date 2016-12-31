@@ -17,6 +17,7 @@
  *= require itcss
  *= require docs
  *= require home
+ *= require views
  *= require posts/public
  *= require jquery.fileupload
  *= require fluidbox.min
