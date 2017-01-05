@@ -48,6 +48,10 @@ class ApplicationController < ActionController::Base
     Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 
+  def authenticate_manager!
+    return user_signed_in? && current_user.manager?
+  end
+
   def authenticate!
     return user_signed_in? || freelancer_signed_in?
   end

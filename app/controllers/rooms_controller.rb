@@ -3,7 +3,10 @@ class RoomsController < ApplicationController
   before_action :authenticate_user!, :except => [:create_dummy, :show, :accept, :reject, :mark_messages_seen, :deny_slack]
   before_action :authenticate_freelancer!, only: [:accept, :reject]
   before_action :authenticate!, only: [:mark_messages_seen, :deny_slack]
+  before_action :authenticate_manager!, only: [:freelancers_list, :asign_freelancer, :remove_asigned_freelancer]
+
   respond_to :html, :json, :js
+
   # GET /rooms
   # GET /rooms.json
   def index
