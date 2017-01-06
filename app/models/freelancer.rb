@@ -50,7 +50,7 @@
 class Freelancer < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  enum status: {pause: 'pause', live: 'live'}
+  enum status: { pause: 'pause', live: 'live' }
 
   acts_as_token_authenticatable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
