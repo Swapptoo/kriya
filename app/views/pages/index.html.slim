@@ -44,7 +44,8 @@ css:
             = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: "item"
           br
           - unless user_signed_in? && freelancer_signed_in?
-            = link_to 'About Kriya', 'https://blog.kriya.ai', target: '_blank', id: 'blog_link'
+            = link_to 'Kriya Blog', 'https://blog.kriya.ai', target: '_blank', id: 'blog_link'
+            = link_to 'FAQ', 'https://blog.kriya.ai/ten-things-you-should-know-about-kriya-ai-478e130d1b3e#.7syrzm2ue', target: '_blank', id: 'blog_link'
             = link_to 'Join Workforce', 'https://kriya.ai/network', target: '_blank', id: 'blog_link'
 
   .masthead.segment.bg7
