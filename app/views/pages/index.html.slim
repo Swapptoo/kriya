@@ -20,7 +20,10 @@ css:
   #launch {
     font-size: 7rem !important;
     padding-top: 1rem;
+  }
 
+  #launch.ui.small.sequenced.images .ui.image {
+    background: gray;
   }
 
   .nine.wide.column.p {
@@ -54,7 +57,7 @@ css:
         span.library = link_to (image_tag "logo-invert.png", style: "height: 75px", alt: "Kriya AI"), 'https://kriya.ai'
         div.ui.inverted.header
           h2.tagline Your Instant Workforce
-          span.tagline Connecting teams to the vetted talent for getting work done!
+          span.tagline A.I. Marketplace where teams instantly connect to the vetted talent for getting work done!
         = render "goomp_bot/new_user"
         .ui.hidden.divider
 
@@ -86,7 +89,7 @@ css:
               img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480712150/91-300x277_xrvcmy.png"]
             |  Quality Vetted
           p
-            | Our A.I. systems vet the talent before they get into our system. So at the push of a button, you meet qualified people to get your work done
+            | Our Artificial Intelligence Systems vet the talent before they get into our system. So at the push of a button, you meet qualified people to get your work done
 
         .column
           h2.ui.icon.header
@@ -94,7 +97,7 @@ css:
               img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480711882/chat-bubble-icon-95116_npqtvr.png"]
             | Instant Connection
           p
-            | With Kriya you save time by connecting to the right person, instantly!
+            | You connect to the pre-vetted talent under 30 minutes!
 
       .ui.divider
 
@@ -104,6 +107,13 @@ css:
         h1.ui.icon.header
           img.ui.icon.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1480718688/growth01_km9rdz.png"]
           |  Specially Designed for Smaller Teams
+        .ui.small.images
+          img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/v1483951718/d8DcXmvNTCGOyPJpJ6cA_l3kcxs.png"]
+          img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1483954427/boostlogo_tkt8ab.png"]
+          img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1483954569/cfb2woUf_cpjfvu.png"]
+          img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1483952680/Screen-Shot-2016-05-01-at-10.31.48-PM_d8siqn.png"]
+          img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1483954714/seatjoy_ysbtxl.png"]
+          img.ui.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1483954934/polygon_i2d1oa.png"]
         h1#launch
           | 200+ Projects
         p
@@ -112,9 +122,31 @@ css:
           | Polygon, Delighterr, Liquid through, BoostVC, Organic Marketing, etc.
           br
         p
-          a.ui.large.primary.button[href="https://blog.kriya.ai"]
+          a.ui.large.primary.button[href="https://blog.kriya.ai/ten-things-you-should-know-about-kriya-ai-478e130d1b3e"]
             |  Learn More
             i.right.chevron.icon
+
+  .ui.stripe.community.vertical.segment
+    .ui.two.column.center.aligned.divided.very.relaxed.stackable.grid.container
+      .row
+        .column
+          h2.ui.icon.header
+            img.ui.icon.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/v1482975771/apps.42617.13510798882781999.e140bd7f-8400-4c22-bdcb-90134e7ddcae_dzelwf.png"]
+            |  Forbes
+          p
+            | "Silicon Valley Startup Drives Down
+            br The Cost & Frustration Of Getting To Beta"
+          a.ui.large.button[href="https://www.forbes.com/sites/moiravetter/2016/12/23/silicon-valley-startup-drives-down-the-cost-frustration-of-getting-to-beta/#259c9db71c23" target="_blank"]
+            | Read Article
+        .column
+          h2.ui.icon.header
+            img.ui.icon.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1482976125/ph-logo-2_tcoqqa.png"]
+            |  ProductHunt
+          p
+            | "The new concept, combining AI to the workplace."
+          a.ui.large.button[href="https://www.producthunt.com/posts/kriya-ai/" target="_blank"]
+            | Read Article
+
   .ui.vertical.stripe.quote.segment
     .ui.equal.width.stackable.internally.celled.grid
       .center.aligned.row
@@ -143,27 +175,6 @@ css:
             b
               | Baker Nanduru
             br Founder & CEO of Delighterr
-
-  .ui.stripe.community.vertical.segment
-    .ui.two.column.center.aligned.divided.very.relaxed.stackable.grid.container
-      .row
-        .column
-          h2.ui.icon.header
-            img.ui.icon.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/v1482975771/apps.42617.13510798882781999.e140bd7f-8400-4c22-bdcb-90134e7ddcae_dzelwf.png"]
-            |  Forbes
-          p
-            | "Silicon Valley Startup Drives Down
-            br The Cost & Frustration Of Getting To Beta"
-          a.ui.large.button[href="https://www.forbes.com/sites/moiravetter/2016/12/23/silicon-valley-startup-drives-down-the-cost-frustration-of-getting-to-beta/#259c9db71c23" target="_blank"]
-            | Read Article
-        .column
-          h2.ui.icon.header
-            img.ui.icon.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1482976125/ph-logo-2_tcoqqa.png"]
-            |  ProductHunt
-          p
-            | "The new concept, combining AI to the workplace."
-          a.ui.large.button[href="https://www.producthunt.com/posts/kriya-ai/" target="_blank"]
-            | Read Article
 
 
   .ui.alternate.stripe.vertical.segment

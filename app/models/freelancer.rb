@@ -32,7 +32,7 @@
 #  project_url                :string
 #  professional_profile_link1 :string
 #  professional_profile_link2 :string
-#  status                     :string           default("live")
+#  status                     :string           default("pause")
 #  authentication_token       :string(30)
 #  stripe_publishable_key     :string
 #  stripe_token               :string
