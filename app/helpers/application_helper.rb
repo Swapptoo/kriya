@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def no_header?
-    true
+    current_user.blank?
   end
 
   def toggle_class_name(class_name, condition = true)

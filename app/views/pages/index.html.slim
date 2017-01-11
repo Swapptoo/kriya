@@ -63,16 +63,6 @@ css:
         = render "goomp_bot/new_user"
         .ui.hidden.divider
 
-  .ui.vertical.stripe.intro.segment
-    .ui.stackable.very.relaxed.center.aligned.grid.container
-      .row
-        .twelve.wide.column
-          #world_image
-            img.ui.fluid.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1480704745/world_xdht8p.png"]
-          h1.ui.header
-            | Our Mission
-          p
-            | Distribute the work to the qualified talent for saving time and money
   .feature.alternate.ui.stripe.vertical.segment
     .ui.three.column.center.aligned.divided.relaxed.stackable.grid.container
       .row
@@ -102,7 +92,6 @@ css:
             | You connect to the pre-vetted talent under 30 minutes!
 
       .ui.divider
-
   .ui.stripe.vertical.segment
     .ui.stackable.very.relaxed.grid.container
       .fourteen.wide.center.aligned.centered.column
@@ -128,56 +117,66 @@ css:
             |  Learn More
             i.right.chevron.icon
 
-  .ui.stripe.community.vertical.segment
-    .ui.two.column.center.aligned.divided.very.relaxed.stackable.grid.container
+    .ui.stripe.community.vertical.segment
+      .ui.two.column.center.aligned.divided.very.relaxed.stackable.grid.container
+        .row
+          .column
+            h2.ui.icon.header
+              img.ui.icon.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/v1482975771/apps.42617.13510798882781999.e140bd7f-8400-4c22-bdcb-90134e7ddcae_dzelwf.png"]
+              |  Forbes
+            p
+              | "Silicon Valley Startup Drives Down
+              br The Cost & Frustration Of Getting To Beta"
+            a.ui.large.button[href="https://www.forbes.com/sites/moiravetter/2016/12/23/silicon-valley-startup-drives-down-the-cost-frustration-of-getting-to-beta/#259c9db71c23" target="_blank"]
+              | Read Article
+          .column
+            h2.ui.icon.header
+              img.ui.icon.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1482976125/ph-logo-2_tcoqqa.png"]
+              |  ProductHunt
+            p
+              | "The new concept, combining AI to the workplace."
+            a.ui.large.button[href="https://www.producthunt.com/posts/kriya-ai/" target="_blank"]
+              | Read Article
+
+    .ui.vertical.stripe.quote.segment
+      .ui.equal.width.stackable.internally.celled.grid
+        .center.aligned.row
+          .column
+            h3
+              | "Had a great experience!"
+            p
+              img.ui.avatar.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480717131/042e67d_udtu2z.jpg"]
+              b
+                | Michael McAllen
+              br Co-Founder of Grass Shack Events
+          .column
+            h3
+              | "This is the future. Period."
+            p
+              img.ui.avatar.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480717825/AAEAAQAAAAAAAAMbAAAAJGJlNWU0MDJkLWJjM2MtNGRiZS1iNGY1LTk1MDAyMGM1NWRkMA_ar6dnh.jpg"]
+              b
+                | Vamsi Thatha
+              br Co-Founder of Polygon Inc
+
+          .column
+            h3
+              | "It's delightful!"
+            p
+              img.ui.avatar.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480718077/0a0c8df_xp4grk.jpg"]
+              b
+                | Baker Nanduru
+              br Founder & CEO of Delighterr
+
+  .ui.vertical.stripe.intro.segment
+    .ui.stackable.very.relaxed.center.aligned.grid.container
       .row
-        .column
-          h2.ui.icon.header
-            img.ui.icon.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/v1482975771/apps.42617.13510798882781999.e140bd7f-8400-4c22-bdcb-90134e7ddcae_dzelwf.png"]
-            |  Forbes
+        .twelve.wide.column
+          #world_image
+            img.ui.fluid.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1480704745/world_xdht8p.png"]
+          h1.ui.header
+            | Our Mission
           p
-            | "Silicon Valley Startup Drives Down
-            br The Cost & Frustration Of Getting To Beta"
-          a.ui.large.button[href="https://www.forbes.com/sites/moiravetter/2016/12/23/silicon-valley-startup-drives-down-the-cost-frustration-of-getting-to-beta/#259c9db71c23" target="_blank"]
-            | Read Article
-        .column
-          h2.ui.icon.header
-            img.ui.icon.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_500/v1482976125/ph-logo-2_tcoqqa.png"]
-            |  ProductHunt
-          p
-            | "The new concept, combining AI to the workplace."
-          a.ui.large.button[href="https://www.producthunt.com/posts/kriya-ai/" target="_blank"]
-            | Read Article
-
-  .ui.vertical.stripe.quote.segment
-    .ui.equal.width.stackable.internally.celled.grid
-      .center.aligned.row
-        .column
-          h3
-            | "Had a great experience!"
-          p
-            img.ui.avatar.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480717131/042e67d_udtu2z.jpg"]
-            b
-              | Michael McAllen
-            br Co-Founder of Grass Shack Events
-        .column
-          h3
-            | "This is the future. Period."
-          p
-            img.ui.avatar.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480717825/AAEAAQAAAAAAAAMbAAAAJGJlNWU0MDJkLWJjM2MtNGRiZS1iNGY1LTk1MDAyMGM1NWRkMA_ar6dnh.jpg"]
-            b
-              | Vamsi Thatha
-            br Co-Founder of Polygon Inc
-
-        .column
-          h3
-            | "It's delightful!"
-          p
-            img.ui.avatar.image[src="https://res.cloudinary.com/dyhdmrsdc/image/upload/c_scale,w_150/v1480718077/0a0c8df_xp4grk.jpg"]
-            b
-              | Baker Nanduru
-            br Founder & CEO of Delighterr
-
+            | Distribute the work to the qualified talent for saving time and money
 
   .ui.alternate.stripe.vertical.segment
     .ui.stackable.center.aligned.grid.container
