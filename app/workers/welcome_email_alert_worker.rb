@@ -8,7 +8,7 @@ class WelcomeEmailAlertWorker
 
     unless @recipient.blank?
       UserNotifierMailer.notify_welcome_email(@recipient).deliver_now
-      WelcomeFollowUpAlertWorker.perform_in(4.days, user_id)
+      WelcomeFollowUpAlertWorker.perform_in(1.days, user_id)
     end
 
   end
