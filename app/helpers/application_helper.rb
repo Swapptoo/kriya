@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def no_header?
-    controller_name == 'sessions'
+    true
   end
 
   def toggle_class_name(class_name, condition = true)

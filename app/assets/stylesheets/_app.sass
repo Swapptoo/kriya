@@ -535,7 +535,7 @@ a.fluidbox
         content: "\00a0"
 
 .ui.comments
-  max-width: 1081px
+  max-width: $main-content-width
   margin: 0.3em 0em
   .comment.text
     line-height: 1.4
@@ -627,15 +627,27 @@ hr
   .ui.segment.feed.new
     width: 100% !important
 
+  #new_user.main
+    margin: 0 auto
+    width: 100% !important
+
 /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide.
 @media (min-width: 481px)
   .ui.segment.feed.new
+    width: 100% !important
+
+  #new_user.main
+    margin: 0 auto
     width: 100% !important
 
 /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones
 @media (min-width: 641px)
   .ui.segment.feed.new
     width: 70% !important
+
+  #new_user.main
+    margin: 0 auto
+    width: 100% !important
 
 
 /* tablet, landscape iPad, lo-res laptops ands desktops
@@ -645,6 +657,7 @@ hr
 
   #new_user.main
     margin: 0 auto
+    width: 100% !important
 
 /* big landscape tablets, laptops, and desktops
 @media (min-width: 1025px)
@@ -652,9 +665,9 @@ hr
     width: 70% !important
 
   #new_user.main
-    width: 100%
+    width: 100% !important
     margin: 0 auto
-    max-height: 500px !important
+    max-height: 1000px !important
 
 @media (min-width: 1273px)
   .ui.segment.feed.new
@@ -667,6 +680,6 @@ hr
     width: 70% !important
 
   #new_user.main
-    width: 100%
+    width: 100% !important
     margin: 0 auto
-    max-height: 500px !important
+    max-height: 1000px !important
