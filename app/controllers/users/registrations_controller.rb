@@ -40,7 +40,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
           session.delete('devise.oauth_data')
         end
 
-        WelcomeEmailAlertWorker.perform_in(30.minutes, authdata[:uid])
+        WelcomeEmailAlertWorker.perform_in(10.minutes, authdata[:uid])
       end
 
       @oauth = !authdata.nil?
