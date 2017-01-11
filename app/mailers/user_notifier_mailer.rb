@@ -9,12 +9,31 @@ class UserNotifierMailer < ApplicationMailer
     :from => 'Kriya Task <bot@kriya.ai>'
   }
 
+  FROM_RAVI = 'Ravi Vadrevu <ravi@kriya.ai>'
+  FROM_GREG = 'Greg Wisenberg <greg@kriya.ai>'
+
+
   def notify_room_user(room)
     @sendgrid_category = "Room #{room.id}"
     @user = room.user
     @room = room
 
     mail(:to => @user.email, :subject => "#{room.title}")
+  end
+
+
+  def notify_welcome_email(user)
+    @user = user
+    @sendgrid_category = "Welcome Email"
+    mail(:from => FROM_RAVI, :to => user.email, :subject => 'Welcome to the future... of work')
+
+  end
+
+  def notify_welcome_follow_up_email(user)
+    @user = user
+    @sendgrid_category = "Welcome Email Follow Up"
+    mail(:from => FROM_GREG, :to => user.email, :subject => 'Your Kriya Task')
+
   end
 
   def notify_goomp(room)

@@ -8,3 +8,6 @@
   - slack
   - slack_events_handler
   - unseen_message_alert
+  - welcome_email_alert
+  - welcome_email_follow_up_alert
+

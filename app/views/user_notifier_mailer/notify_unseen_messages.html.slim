@@ -4,3 +4,7 @@
   - else
     p= msg[1] + ": "
     = link_to msg[2].file.filename, msg[2].url, target: "_blank"
+span[style="font-size: 12px;"]
+  |  —
+  br
+  |  You can reply to this email or <%= link_to 'Chat on Kriya', room_url(@room, user_email: @user.email, user_token: @user.authentication_token), style: "color: #888;" %>
