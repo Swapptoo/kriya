@@ -29,15 +29,20 @@ for i, skill_1 in enumerate(data):
 
         if i == ii:
             continue
+        try:
+            skill_1_str = str(skill_1[0])
+            skill_2_str = str(skill_2[0])
 
-        driver.get(url + skill_1[0] + " and " + skill_2[0])
-        check_source(driver)
+            driver.get(url + skill_1_str + " and " + skill_2_str)
+            check_source(driver)
 
-        print(skill_1[0] + " and " + skill_2[0] + " comparison html extracted")
+            print(skill_1_str + " and " + skill_2_str + " comparison html extracted")
 
-        driver.save_screenshot('screens/' + skill_1[0] + ' ' + skill_2[0] + '.png')
-        source = bs(driver.page_source.encode('utf-8')).prettify()
+            driver.save_screenshot('screens/' + skill_1_str + ' ' + skill_2_str + '.png')
+            source = bs(driver.page_source.encode('utf-8')).prettify()
 
-        with open('html/' + skill_1[0] + ' ' + skill_2[0] +  '.html', 'w') as outfile:
-            outfile.write(source)
-            outfile.close()
+            with open('html/' + skill_1_str + ' ' + skill_2_str +  '.html', 'w') as outfile:
+                outfile.write(source)
+                outfile.close()
+        except:
+            continue
