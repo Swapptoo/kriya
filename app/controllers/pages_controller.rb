@@ -37,7 +37,6 @@ class PagesController < ApplicationController
     end
   end
 
-
   protected
 
   def set_room
