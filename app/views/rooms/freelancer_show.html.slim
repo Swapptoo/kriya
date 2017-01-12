@@ -58,7 +58,7 @@
             .ui.divider
             - balance = @room.ask_rate? ? 0.0 : @room.freelancer_balance
             h4 Balance
-            = "#{number_to_currency(balance)} (after fees)"
+            = "#{number_to_currency(balance)}"
           .ui.divider
           - slack_channel = current_freelancer.slack_channels.find_by(room: @room)
           - if slack_channel.nil? || slack_channel.inactive?
