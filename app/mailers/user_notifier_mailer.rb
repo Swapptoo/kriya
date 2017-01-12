@@ -25,7 +25,7 @@ class UserNotifierMailer < ApplicationMailer
   def notify_welcome_email(user)
     @user = user
     @sendgrid_category = "Welcome Email"
-    mail(:from => FROM_RAVI, :to => user.email, :subject => 'Welcome to the future... of work')
+    mail(:from => FROM_RAVI, :to => user.email, :subject => 'Welcome to the future of work!')
 
   end
 
