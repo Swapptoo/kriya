@@ -8,3 +8,5 @@
 public/uploads/*
 .idea/*
 .elasticbeanstalk/app_versions/*
+
+db/schema.rb
