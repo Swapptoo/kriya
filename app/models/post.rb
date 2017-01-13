@@ -19,9 +19,11 @@
 #  content          :text
 #  link_video       :string
 #  token            :string
+#  deleted_at       :datetime
 #
 # Indexes
 #
+#  index_posts_on_deleted_at   (deleted_at)
 #  index_posts_on_goomp_id     (goomp_id)
 #  index_posts_on_subtopic_id  (subtopic_id)
 #  index_posts_on_user_id      (user_id)
@@ -34,6 +36,8 @@
 #
 
 class Post < ApplicationRecord
+  acts_as_paranoid
+
   belongs_to :goomp, touch: true, counter_cache: true
   belongs_to :user, touch: true
   belongs_to :subtopic, optional: true, touch: true

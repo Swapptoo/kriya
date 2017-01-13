@@ -21,6 +21,7 @@
 #
 # Indexes
 #
+#  index_messages_on_deleted_at     (deleted_at)
 #  index_messages_on_freelancer_id  (freelancer_id)
 #  index_messages_on_post_id        (post_id)
 #  index_messages_on_room_id        (room_id)

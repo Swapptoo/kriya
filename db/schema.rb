@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161227013807) do
+ActiveRecord::Schema.define(version: 20170113094203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,18 +112,18 @@ ActiveRecord::Schema.define(version: 20161227013807) do
   end
 
   create_table "freelancers", force: :cascade do |t|
-    t.string   "email",                                 default: "",     null: false
-    t.string   "encrypted_password",                    default: "",     null: false
+    t.string   "email",                                 default: "",      null: false
+    t.string   "encrypted_password",                    default: "",      null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         default: 0,      null: false
+    t.integer  "sign_in_count",                         default: 0,       null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.string   "username"
     t.string   "bio"
     t.string   "first_name"
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(version: 20161227013807) do
     t.string   "project_url"
     t.string   "professional_profile_link1"
     t.string   "professional_profile_link2"
-    t.string   "status",                                default: "live"
+    t.string   "status",                                default: "pause"
     t.string   "authentication_token",       limit: 30
     t.string   "stripe_publishable_key"
     t.string   "stripe_token"
@@ -273,6 +273,8 @@ ActiveRecord::Schema.define(version: 20161227013807) do
     t.text     "content"
     t.string   "link_video"
     t.string   "token"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_posts_on_deleted_at", using: :btree
     t.index ["goomp_id"], name: "index_posts_on_goomp_id", using: :btree
     t.index ["subtopic_id"], name: "index_posts_on_subtopic_id", using: :btree
     t.index ["user_id"], name: "index_posts_on_user_id", using: :btree
@@ -306,6 +308,8 @@ ActiveRecord::Schema.define(version: 20161227013807) do
     t.integer  "first_paid_amount_cents",    default: 0
     t.integer  "kriya_client_fee_cents",     default: 0
     t.integer  "kriya_freelancer_fee_cents", default: 0
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_rooms_on_deleted_at", using: :btree
     t.index ["manager_id"], name: "index_rooms_on_manager_id", using: :btree
     t.index ["user_id"], name: "index_rooms_on_user_id", using: :btree
   end
@@ -407,7 +411,9 @@ ActiveRecord::Schema.define(version: 20161227013807) do
     t.string   "role",                              default: "0"
     t.string   "stripe_id"
     t.string   "authentication_token",   limit: 30
+    t.datetime "deleted_at"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
+    t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end

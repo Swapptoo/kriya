@@ -19,9 +19,11 @@
 #  first_paid_amount_cents    :integer          default(0)
 #  kriya_client_fee_cents     :integer          default(0)
 #  kriya_freelancer_fee_cents :integer          default(0)
+#  deleted_at                 :datetime
 #
 # Indexes
 #
+#  index_rooms_on_deleted_at  (deleted_at)
 #  index_rooms_on_manager_id  (manager_id)
 #  index_rooms_on_user_id     (user_id)
 #
@@ -33,6 +35,7 @@
 
 class Room < ApplicationRecord
   include RoomPayment
+  acts_as_paranoid
 
   has_many :messages, dependent: :destroy
   has_many :slack_channels, dependent: :destroy
