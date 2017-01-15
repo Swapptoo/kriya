@@ -28,7 +28,7 @@ class SlackWorker
 
     recipients.each do |recipient|
       slack_channel = recipient.slack_channels.find_by(room: room)
-      next if slack_channel.nil? || slack_channel.inactive?
+      next if slack_channel.nil? || slack_channel.inactive? || slack_channel.channel_id.nil? 
 
       client = Slack::Web::Client.new token: slack_channel.token
 
